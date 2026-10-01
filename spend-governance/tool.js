@@ -28,12 +28,12 @@
       handoverMonthsSaved: { title: 'Months saved when a client FinOps lead takes over (low, high)' },
     },
     sample: {
-      name: 'Sample Client', spend: '20-50m', providers: ['aws', 'azure'], finops: 'poor', alloc: 'partial', fc: 'over15', towers: 'mid',
-      growth: 'moderate', prior: 'yes', owner: 'no', data: 'partial', stake: 'yes',
+      name: 'Sample Client', spend: '20-50m', finops: 'poor', alloc: 'partial', fc: 'over15', towers: 'mid',
+      growth: 'moderate', prior: 'yes', owner: 'no', data: 'partial',
     },
 
     steps: [
-      { title: 'Client Profile', fields: [F.name(), F.spend(), F.providers(), F.finops()] },
+      { title: 'Client Profile', fields: [F.name(), F.spend(), F.finops()] },
       { title: 'Governance Today', intro: 'Forecasting is the key capability: consumption against future forecast, by SKU, across all towers.', fields: [
         { id: 'alloc', type: 'radio', label: 'Tagging and cost allocation coverage', options: [
           ['good', 'Good', 'Most spend allocated to an owner'], ['partial', 'Partial', 'Inconsistent coverage'], ['poor', 'Poor', 'Little or no allocation']] },
@@ -49,7 +49,7 @@
           ['yes', 'Yes', 'Savings exist that governance must protect'], ['no', 'No', 'Little to protect yet']] },
         { id: 'owner', type: 'radio', label: 'Client FinOps lead identified for handover?', options: [
           ['yes', 'Yes', 'A named owner can take over after the build'], ['no', 'No', 'Proxima will need to help set up the role']] },
-        F.data(), F.stake(),
+        F.data(),
       ] },
     ],
 
@@ -102,7 +102,7 @@
           { label: 'Spend Without an Owner', value: `~${fmtM(unowned)}`, sub: `About ${P.unownedPct[a.alloc]}% of spend, estimated` },
           { label: 'Avg Proxima FTE', value: fmtFTE(avg), sub: 'Over the engagement, after the build phase' },
         ],
-        summary: `${SPEND_LABEL[a.spend]} spend · ${a.providers.map(p => PROV_LABEL[p]).join(', ')} · ${a.finops} FinOps control · ${a.towers === 'few' ? '1–3' : a.towers === 'mid' ? '4–10' : '10+'} towers`,
+        summary: `${SPEND_LABEL[a.spend]} spend · ${a.finops} FinOps control · ${a.towers === 'few' ? '1–3' : a.towers === 'mid' ? '4–10' : '10+'} towers`,
         teamSub: 'Peak team; effort falls after month 3',
         split: [
           ['Proxima', 'Allocation methodology, forecasting model, budget accountability, KPIs, operating model design', `${fmtFTE(sumTeam(team))} FTE peak, ~${fmtFTE(avg)} average`],

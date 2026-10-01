@@ -29,12 +29,12 @@
       reclass: { title: 'COGS / R&D reclassification (% of cloud spend, low – high)', note: 'A reporting effect on gross margin, not cash.' },
     },
     sample: {
-      name: 'Sample Client', spend: '20-50m', providers: ['aws', 'azure'], ctype: 'saas', share: '5-10', unit: 'partial', products: 'few',
+      name: 'Sample Client', spend: '20-50m', ctype: 'saas', share: '5-10', unit: 'partial', products: 'few',
       cogs: 'partial', pricing: 'hybrid', sandbox: 'med', finops: 'partial', data: 'partial',
     },
 
     steps: [
-      { title: 'Client Profile', fields: [F.name(), F.spend(), F.providers(), F.ctype()] },
+      { title: 'Client Profile', fields: [F.name(), F.spend(), F.ctype()] },
       { title: 'Unit Economics', intro: 'How well the client understands cost to serve today.', fields: [
         { id: 'share', type: 'radio', label: 'Cloud spend as a share of revenue', options: [
           ['lt5', 'Under 5%', 'Cloud is a small part of cost of goods'], ['5-10', '5–10%', 'Typical for SaaS'], ['10-20', '10–20%', 'Material margin drag'], ['20plus', '20% or more', 'Cloud dominates cost of goods']] },
@@ -94,7 +94,7 @@
           { label: 'Gross Margin Uplift', value: `${num(ptsLo)}–${num(ptsHi)} pts`, color: 'var(--green)', sub: `Est. revenue ~${fmtM(revenue)} (cloud ${SHARE_LABEL[a.share]} of revenue)` },
           { label: 'COGS / R&D Reclass', value: `${fmtM(rcLo)} – ${fmtM(rcHi)}`, sub: 'Reporting effect, not cash' },
         ],
-        summary: `${SPEND_LABEL[a.spend]} cloud spend · ${a.providers.map(p => PROV_LABEL[p]).join(', ')} · ${a.products === 'one' ? 'single product' : a.products === 'few' ? '2–5 products' : '6+ products'}`,
+        summary: `${SPEND_LABEL[a.spend]} cloud spend · ${a.products === 'one' ? 'single product' : a.products === 'few' ? '2–5 products' : '6+ products'}`,
         teamSub: 'Principal Consultant typically at 0.5',
         split: [
           ['Proxima', 'Cost models, profitability views, COGS/R&D policy, pricing and margin linkage', `${fmtFTE(sumTeam(team))} FTE peak`],

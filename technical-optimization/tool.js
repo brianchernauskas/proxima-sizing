@@ -49,7 +49,7 @@
     sample: {
       name: 'Sample Client', spend: '20-50m', providers: ['aws', 'azure'], finops: 'partial',
       families: ['compute', 'containers', 'storage', 'dataai'], arch: 'mixed', telemetry: 'partial', quickwins: 'yes',
-      capacity: 'limited', appetite: 'moderate', stake: 'yes',
+      capacity: 'limited', appetite: 'moderate',
     },
 
     steps: [
@@ -68,7 +68,6 @@
           ['team', 'Dedicated', 'Named engineers with time allocated'], ['limited', 'Limited', 'Competes with roadmap work'], ['none', 'None', 'Recommendations only']] },
         { id: 'appetite', type: 'radio', label: 'Appetite for platform modernization', options: [
           ['high', 'High', 'Sponsor supports structural change'], ['moderate', 'Moderate', 'Selective, case by case'], ['low', 'Low', 'Quick wins only']] },
-        F.stake(),
       ] },
     ],
 
