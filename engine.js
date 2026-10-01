@@ -548,6 +548,7 @@
       buildShell();
       prefill();
       document.getElementById('app').addEventListener('click', onClick);
+      if (/[?&]config(=|&|$)/.test(location.search)) openConfig(); // hub card "Configure" link
     },
   };
 })();

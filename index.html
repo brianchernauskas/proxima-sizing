@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Proxima Sizing Tools</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20261001c" />
 </head>
 <body>
   <header>
@@ -21,7 +21,7 @@
     <div class="offer-grid" id="grid"></div>
     <p class="note-line" style="margin-top:28px">Looking for the baseline? <a href="https://brianchernauskas.github.io/cloud-baseline-planner/">Cloud Baseline Renewal Roadmap</a>. Commercial ranges are drawn from the Proxima hyperscaler negotiation planners. Planning heuristics only.</p>
   </div>
-  <script src="engine.js"></script>
+  <script src="engine.js?v=20261001c"></script>
   <script>
     document.getElementById('grid').innerHTML = PX.OFFERINGS.map(function (o, i) {
       return '<a class="offer-card" href="' + o.slug + '/"><span class="offer-tag">Offering ' + (i + 1) + ' · ' + PX.esc(o.months) + '</span>' +
