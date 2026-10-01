@@ -426,3 +426,7 @@ select:focus, input[type="text"]:focus { border-color: var(--accent); }
 .offer-open { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; }
 .offer-open:hover { text-decoration: underline; }
 .offer-foot .hdr-link { padding: 6px 12px; font-size: 12px; position: relative; z-index: 1; }
+
+/* Keep the card footer on one line: buttons never wrap, the row shrinks gracefully */
+.offer-foot { flex-wrap: nowrap; }
+.offer-open, .offer-foot .hdr-link { white-space: nowrap; flex-shrink: 0; }
