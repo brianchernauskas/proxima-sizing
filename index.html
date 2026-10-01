@@ -5,16 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Proxima Sizing Tools</title>
-  <style>
-    body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center; background:#0f1117; color:#e8eaf0; font-family:system-ui,-apple-system,'Segoe UI',sans-serif; text-align:center; padding:24px; }
-    h1 { font:700 24px Georgia,serif; margin:0 0 8px; }
-    p { color:#8b90a8; margin:0; }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div>
-    <h1>Proxima Sizing Tools</h1>
-    <p>Engagement sizing tools for Proxima advisors. Coming soon.</p>
+  <header>
+    <div class="header-brand"><span class="brand-pill">Proxima</span>
+      <div><div class="header-title">Engagement Sizing</div><div class="header-sub">Five offerings, from rapid cash release to structural margin and governance change</div></div></div>
+  </header>
+  <div class="container">
+    <div class="hero">
+      <div class="sku-badge">Opportunity sizing</div>
+      <h1>Packaging the opportunities into five Proxima offerings</h1>
+      <p>Each offering can be positioned standalone or sequenced. Answer a few questions to size the opportunity, the Proxima team and the client engineering effort. Answers carry across tools on this device.</p>
+    </div>
+    <div class="offer-grid" id="grid"></div>
+    <p class="note-line" style="margin-top:28px">Looking for the baseline? <a href="https://brianchernauskas.github.io/cloud-baseline-planner/">Cloud Baseline Renewal Roadmap</a>. Commercial ranges are drawn from the Proxima hyperscaler negotiation planners. Planning heuristics only.</p>
   </div>
+  <script src="engine.js"></script>
+  <script>
+    document.getElementById('grid').innerHTML = PX.OFFERINGS.map(function (o, i) {
+      return '<a class="offer-card" href="' + o.slug + '/"><span class="offer-tag">Offering ' + (i + 1) + ' · ' + PX.esc(o.months) + '</span>' +
+        '<h3>' + PX.esc(o.name) + '</h3><p>' + PX.esc(o.blurb) + '</p><span class="offer-fit">Fit: ' + PX.esc(o.fit) + '</span></a>';
+    }).join('');
+  </script>
 </body>
 </html>
