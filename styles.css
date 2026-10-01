@@ -411,3 +411,8 @@ select:focus, input[type="text"]:focus { border-color: var(--accent); }
   .sample-banner, .sample-tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body.is-sample::before { content: 'SAMPLE DATA'; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-32deg); font-size: 110px; font-weight: 800; letter-spacing: .06em; color: rgba(217, 119, 6, .12); z-index: 9999; pointer-events: none; white-space: nowrap; }
 }
+
+.nav-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.print-row .hdr-link { padding: 9px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+.nav-right .hdr-link { padding: 9px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+@media print { .nav-right { display: none !important; } }

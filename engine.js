@@ -237,12 +237,16 @@
             <button class="btn btn-secondary btn-sample-fill" data-nav="fill" data-step="${i}">✨ Fill sample data</button>
             ${i === 0 ? '<button class="btn btn-secondary" data-nav="sample">👁 View sample output</button>' : ''}
           </div>
-          <button class="btn btn-primary" data-nav="${last ? 'finish' : 'next'}">${last ? 'Size the opportunity →' : 'Next: ' + esc(cfg.steps[i + 1].title) + ' →'}</button>
+          <div class="nav-right">
+            <button class="hdr-link" data-nav="config">⚙ Configure</button>
+            <button class="btn btn-primary" data-nav="${last ? 'finish' : 'next'}">${last ? 'Size the opportunity →' : 'Next: ' + esc(cfg.steps[i + 1].title) + ' →'}</button>
+          </div>
         </div></div>`;
     }).join('') + `<div class="section" id="section-${n}">
         <div id="results-content"></div>
         <div id="params-used-line" style="font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:24px;line-height:1.6;"></div>
         <div class="print-row">
+          <button class="hdr-link" data-nav="config">⚙ Configure</button>
           <button class="btn-print" data-nav="print">⎙ Print / Export PDF</button>
           <button class="btn btn-secondary" data-nav="restart">← Start Over</button>
         </div></div>
