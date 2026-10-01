@@ -6,7 +6,7 @@
   PX.register({
     slug: 'margin-transformation', num: 3, name: 'Margin Transformation', months: '3–4 months', fit: 'SaaS clients',
     intro: 'Size the margin opportunity for a SaaS client: unit and product-level cost models, customer profitability, COGS vs R&D treatment, sandbox monetization, and linking cloud spend to pricing and margin.',
-    method: 'Opportunity is a % of cloud spend by lever, scaled by unit-economics maturity. Revenue is estimated from cloud spend and its stated share of revenue, so gross-margin points are indicative.',
+    method: 'Opportunity is a % of cloud spend by lever, scaled by unit-economics maturity and FinOps maturity (cost-to-serve and sandbox levers). Revenue is estimated from cloud spend and its stated share of revenue, so gross-margin points are indicative.',
 
     params: {
       duration: [3, 4],
@@ -65,11 +65,11 @@
       hi = Math.min(hi, 6);
 
       // Opportunity (% of annual cloud spend)
-      const um = P.unitMaturity[a.unit];
+      const um = P.unitMaturity[a.unit], fm = P.shared.finopsFactor[a.finops]; // less left to capture when cost control is already mature
       const sb = P.sandbox[a.sandbox], pr = P.pricing[a.pricing];
       const rows = [
-        ['Cost-to-serve reduction', 'Unit cost models expose heavy and inefficient workloads', r1(P.costToServe[0] * um), r1(P.costToServe[1] * um)],
-        ['Sandbox and free-tier rationalization', `Environments: ${a.sandbox}`, sb[0], sb[1]],
+        ['Cost-to-serve reduction', 'Unit cost models expose heavy and inefficient workloads', r1(P.costToServe[0] * um * fm), r1(P.costToServe[1] * um * fm)],
+        ['Sandbox and free-tier rationalization', `Environments: ${a.sandbox}`, r1(sb[0] * fm), r1(sb[1] * fm)],
         ['Pricing and packaging alignment', `${a.pricing}-based pricing vs. cost to serve`, pr[0], pr[1]],
       ];
       const opp = oppTable('Opportunity by Lever (Cash Margin)', rows, a.spend,
