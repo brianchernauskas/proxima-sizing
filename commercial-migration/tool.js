@@ -45,7 +45,7 @@
     },
     sample: {
       name: 'Sample Client', spend: '20-50m', providers: ['aws'], scope: 'partial', certainty: 'planned', targets: ['gcp'], appetite: 'moderate',
-      commit: 'partial', disc: 'moderate', renewal: '6-18', licensing: 'some', stake: 'yes',
+      commit: 'partial', disc: 'moderate', renewal: '6-18', licensing: 'some',
     },
 
     steps: [
@@ -62,7 +62,6 @@
       { title: 'Commercial Position', fields: [F.commit(), F.disc(), F.renewal(),
         { id: 'licensing', type: 'radio', label: 'Licensing exposure (Windows, SQL, Oracle, marketplace)', options: [
           ['low', 'Low', 'Mostly open-source and native services'], ['some', 'Some', 'Meaningful licensed workloads'], ['heavy', 'Heavy', 'Large licensed estate; BYOL and marketplace']] },
-        F.stake(),
       ] },
     ],
 
@@ -71,7 +70,6 @@
       // Duration (months): scope dependent
       let lo = sc.lowMonths, hi = sc.highMonths;
       if (nt >= 2) { lo += 0.5; hi += 1; }
-      if (a.stake === 'no') hi += 0.5;
       hi = Math.min(hi, 7.5);
 
       // Opportunity (% of total annual spend)

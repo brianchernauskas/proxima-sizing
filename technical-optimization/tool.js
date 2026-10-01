@@ -47,13 +47,13 @@
       cleanup: { title: 'Unused-resource cleanup if not yet captured (% of spend, low – high)' },
     },
     sample: {
-      name: 'Sample Client', spend: '20-50m', providers: ['aws', 'azure'], finops: 'partial',
+      name: 'Sample Client', spend: '20-50m', finops: 'partial',
       families: ['compute', 'containers', 'storage', 'dataai'], arch: 'mixed', telemetry: 'partial', quickwins: 'yes',
       capacity: 'limited', appetite: 'moderate',
     },
 
     steps: [
-      { title: 'Client Profile', fields: [F.name(), F.spend(), F.providers(), F.finops()] },
+      { title: 'Client Profile', fields: [F.name(), F.spend(), F.finops()] },
       { title: 'Technical Estate', fields: [
         { id: 'families', type: 'check', label: 'Workload families in scope', hint: 'select all that apply', options: Object.entries(FAMILIES).map(([k, w]) => [k, w[0], w[1]]) },
         { id: 'arch', type: 'radio', label: 'Architecture maturity', options: [
@@ -72,11 +72,10 @@
     ],
 
     calc(a, P) {
-      const t = PX.TIER_IDX[a.spend], fm = P.shared.finopsFactor[a.finops], nf = a.families.length, np = a.providers.length;
+      const t = PX.TIER_IDX[a.spend], fm = P.shared.finopsFactor[a.finops], nf = a.families.length;
       // Duration (months)
       let [lo, hi] = P.duration;
       if (nf >= 4) { lo += 0.5; hi += 1; } else if (nf >= 3) hi += 0.5;
-      if (np >= 2) hi += 0.5;
       if (a.telemetry === 'partial') { lo += 0.5; hi += 0.5; } if (a.telemetry === 'none') { lo += 1; hi += 1; }
       if (a.capacity === 'none') hi += 1; else if (a.capacity === 'limited') hi += 0.5;
       hi = Math.min(hi, 6);
@@ -116,7 +115,7 @@
           { label: 'Annual Opportunity', value: `${fmtM(opp.dlo)} – ${fmtM(opp.dhi)}`, color: 'var(--green)', sub: `${r1(opp.plo)}–${r1(opp.phi)}% of ${SPEND_LABEL[a.spend]} spend` },
           { label: 'Structural Realised', value: `${Math.round(structural * 100)}%`, sub: 'Capacity and appetite for modernization' },
         ],
-        summary: `${SPEND_LABEL[a.spend]} spend · ${a.providers.map(p => PROV_LABEL[p]).join(', ')} · ${nf} workload famil${nf > 1 ? 'ies' : 'y'}`,
+        summary: `${SPEND_LABEL[a.spend]} spend · ${nf} workload famil${nf > 1 ? 'ies' : 'y'}`,
         teamSub: 'Excludes specialist and client engineers',
         split: [
           ['Proxima', 'Opportunity validation, prioritisation, savings tracking, commercial alignment of changes', `${fmtFTE(sumTeam(team))} FTE peak`],

@@ -32,7 +32,7 @@
     },
     sample: {
       name: 'Sample Client', spend: '20-50m', providers: ['aws', 'azure'], finops: 'partial', nonprod: 'med', licensing: 'some',
-      data: 'partial', stake: 'yes', commit: 'partial', disc: 'moderate', renewal: '6-18', leverage: 'eval',
+      data: 'partial', commit: 'partial', disc: 'moderate', renewal: '6-18', leverage: 'eval',
     },
 
     steps: [
@@ -42,7 +42,7 @@
           ['low', 'Under 20%', 'Dev/test is a small part of the estate'], ['med', '20–40%', 'Typical for active engineering teams'], ['high', 'Over 40%', 'Large dev/test, always-on environments']] },
         { id: 'licensing', type: 'radio', label: 'Licensing exposure (Windows, SQL, marketplace, BYOL)', options: [
           ['low', 'Low', 'Mostly open-source and native services'], ['some', 'Some', 'Meaningful licensed workloads'], ['heavy', 'Heavy', 'Large licensed estate; BYOL and marketplace in play']] },
-        F.data(), F.stake(),
+        F.data(),
       ] },
       { title: 'Commercial Position', intro: 'Sets the size of the deal negotiation lever.', fields: [F.commit(), F.disc(), F.renewal(),
         { id: 'leverage', type: 'radio', label: 'Competitive leverage', options: [
@@ -57,7 +57,6 @@
       if (np >= 2) hi += 0.5;
       if (np >= 3) { lo += 0.5; hi += 0.5; }
       if (a.data === 'partial') hi += 0.5; if (a.data === 'no') { lo += 0.5; hi += 1; }
-      if (a.stake === 'no') { lo += 0.5; hi += 0.5; }
       hi = Math.min(hi, 4.5);
 
       // Opportunity (% of annual spend)
