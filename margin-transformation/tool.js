@@ -1,20 +1,38 @@
 // Offering 3: Margin Transformation (3–4 months, SaaS clients)
 (function () {
-  const { F, SPEND_LABEL, PROV_LABEL, base, oppTable, r1, fmtM, SPEND_MID, num } = PX;
-
-  const TEAM = [
-    { pc: 0.25, sc: 1, c: 0.5 }, { pc: 0.5, sc: 1, c: 1 }, { pc: 0.5, sc: 1, c: 1, ac: 1 },
-    { pc: 1, sc: 1, c: 2, ac: 1 }, { vp: 0.1, pc: 1, sc: 2, c: 2, ac: 1 },
-  ];
-  // Cloud spend as a share of revenue (midpoint used to estimate revenue)
-  const SHARE = { lt5: [3, 'under 5%'], '5-10': [7.5, '5–10%'], '10-20': [15, '10–20%'], '20plus': [25, '20%+'] };
-  const SANDBOX = { low: [0.3, 1], med: [1, 2.5], high: [2.5, 5] };
-  const PRICING = { seat: [2, 5], hybrid: [1.5, 4], usage: [1, 3] }; // margin recovery from aligning price to cost-to-serve, % of cloud spend
+  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, r1, fmtM, SPEND_MID, num, fmtFTE, sumTeam } = PX;
+  const SHARE_LABEL = { lt5: 'under 5%', '5-10': '5–10%', '10-20': '10–20%', '20plus': '20%+' };
 
   PX.register({
     slug: 'margin-transformation', num: 3, name: 'Margin Transformation', months: '3–4 months', fit: 'SaaS clients',
     intro: 'Size the margin opportunity for a SaaS client: unit and product-level cost models, customer profitability, COGS vs R&D treatment, sandbox monetization, and linking cloud spend to pricing and margin.',
     method: 'Opportunity is a % of cloud spend by lever, scaled by unit-economics maturity. Revenue is estimated from cloud spend and its stated share of revenue, so gross-margin points are indicative.',
+
+    params: {
+      duration: [3, 4],
+      team: [T(0, 0.25, 1, 0.5, 0), T(0, 0.5, 1, 1, 0), T(0, 0.5, 1, 1, 1), T(0, 1, 1, 2, 1), T(0.1, 1, 2, 2, 1)],
+      cloudShareOfRevenue: { lt5: 3, '5-10': 7.5, '10-20': 15, '20plus': 25 },
+      costToServe: [2, 6],
+      unitMaturity: { none: 1.2, partial: 1, mature: 0.5 },
+      sandbox: { low: [0.3, 1], med: [1, 2.5], high: [2.5, 5] },
+      pricing: { seat: [2, 5], hybrid: [1.5, 4], usage: [1, 3] },
+      reclass: { unsplit: [15, 35], partial: [5, 15], split: [0, 5] },
+    },
+    paramMeta: {
+      duration: { title: 'Base duration (months, low – high)' },
+      team: { title: 'Proxima team at peak (FTE) by spend tier' },
+      cloudShareOfRevenue: { title: 'Cloud spend as % of revenue (midpoint per answer)', note: 'Used to estimate revenue from cloud spend.' },
+      costToServe: { title: 'Cost-to-serve reduction lever (% of cloud spend, low – high)' },
+      unitMaturity: { title: 'Unit-economics maturity multiplier', note: 'Less to find where cost models already exist.' },
+      sandbox: { title: 'Sandbox and free-tier lever (% of cloud spend) by size' },
+      pricing: { title: 'Pricing alignment lever (% of cloud spend) by pricing model', note: 'Margin recovered by pricing to cost-to-serve. A planning heuristic; validate against customer data.' },
+      reclass: { title: 'COGS / R&D reclassification (% of cloud spend, low – high)', note: 'A reporting effect on gross margin, not cash.' },
+    },
+    sample: {
+      name: 'Sample Client', spend: '20-50m', providers: ['aws', 'azure'], ctype: 'saas', share: '5-10', unit: 'partial', products: 'few',
+      cogs: 'partial', pricing: 'hybrid', sandbox: 'med', finops: 'partial', data: 'partial',
+    },
+
     steps: [
       { title: 'Client Profile', fields: [F.name(), F.spend(), F.providers(), F.ctype()] },
       { title: 'Unit Economics', intro: 'How well the client understands cost to serve today.', fields: [
@@ -35,21 +53,22 @@
         F.finops(), F.data(),
       ] },
     ],
-    calc(a) {
-      const mid = SPEND_MID[a.spend], np = a.providers.length;
-      const sh = SHARE[a.share], revenue = mid / (sh[0] / 100);
+
+    calc(a, P) {
+      const mid = SPEND_MID[a.spend];
+      const sharePct = P.cloudShareOfRevenue[a.share], revenue = mid / (sharePct / 100);
       // Duration (months)
-      let lo = 3, hi = 4;
+      let [lo, hi] = P.duration;
       if (a.products === 'few') { lo += 0.5; hi += 0.5; } if (a.products === 'many') { lo += 1; hi += 1.5; }
       if (a.unit === 'none') { lo += 0.5; hi += 1; } if (a.cogs === 'unsplit') hi += 0.5;
       if (a.data === 'partial') hi += 0.5; if (a.data === 'no') { lo += 0.5; hi += 1; }
       hi = Math.min(hi, 6);
 
       // Opportunity (% of annual cloud spend)
-      const um = { none: 1.2, partial: 1, mature: 0.5 }[a.unit];
-      const sb = SANDBOX[a.sandbox], pr = PRICING[a.pricing];
+      const um = P.unitMaturity[a.unit];
+      const sb = P.sandbox[a.sandbox], pr = P.pricing[a.pricing];
       const rows = [
-        ['Cost-to-serve reduction', 'Unit cost models expose heavy and inefficient workloads', r1(2 * um), r1(6 * um)],
+        ['Cost-to-serve reduction', 'Unit cost models expose heavy and inefficient workloads', r1(P.costToServe[0] * um), r1(P.costToServe[1] * um)],
         ['Sandbox and free-tier rationalization', `Environments: ${a.sandbox}`, sb[0], sb[1]],
         ['Pricing and packaging alignment', `${a.pricing}-based pricing vs. cost to serve`, pr[0], pr[1]],
       ];
@@ -57,10 +76,10 @@
         'Percent of annual cloud spend. Pricing alignment is margin recovered by pricing to cost-to-serve and is a planning heuristic; validate against actual customer data.');
       const ptsLo = opp.dlo / revenue * 100, ptsHi = opp.dhi / revenue * 100;
       // COGS vs R&D reclassification: a reporting effect, not cash
-      const reclass = { unsplit: [15, 35], partial: [5, 15], split: [0, 5] }[a.cogs];
-      const rcLo = mid * reclass[0] / 100, rcHi = mid * reclass[1] / 100;
+      const rc = P.reclass[a.cogs];
+      const rcLo = mid * rc[0] / 100, rcHi = mid * rc[1] / 100;
 
-      const team = base(TEAM, a.spend);
+      const team = base(P.team, a.spend);
       const flags = [
         a.ctype !== 'saas' ? { type: 'warn', title: 'Not a SaaS client', detail: 'This offering fits SaaS cost structures best. For other client types, use Rapid or Technical Optimization.' }
           : { type: 'ok', title: 'SaaS client: strong fit', detail: 'Cloud sits in cost of goods, so margin impact is direct.' },
@@ -72,13 +91,13 @@
         duration: [lo, hi], team, tables: [opp.table], flags,
         kpis: [
           { label: 'Annual Cash Opportunity', value: `${fmtM(opp.dlo)} – ${fmtM(opp.dhi)}`, color: 'var(--green)', sub: `${r1(opp.plo)}–${r1(opp.phi)}% of ${SPEND_LABEL[a.spend]} spend` },
-          { label: 'Gross Margin Uplift', value: `${num(ptsLo)}–${num(ptsHi)} pts`, color: 'var(--green)', sub: `Est. revenue ~${fmtM(revenue)} (cloud ${sh[1]} of revenue)` },
+          { label: 'Gross Margin Uplift', value: `${num(ptsLo)}–${num(ptsHi)} pts`, color: 'var(--green)', sub: `Est. revenue ~${fmtM(revenue)} (cloud ${SHARE_LABEL[a.share]} of revenue)` },
           { label: 'COGS / R&D Reclass', value: `${fmtM(rcLo)} – ${fmtM(rcHi)}`, sub: 'Reporting effect, not cash' },
         ],
         summary: `${SPEND_LABEL[a.spend]} cloud spend · ${a.providers.map(p => PROV_LABEL[p]).join(', ')} · ${a.products === 'one' ? 'single product' : a.products === 'few' ? '2–5 products' : '6+ products'}`,
         teamSub: 'Principal Consultant typically at 0.5',
         split: [
-          ['Proxima', 'Cost models, profitability views, COGS/R&D policy, pricing and margin linkage', `${PX.fmtFTE(PX.sumTeam(team))} FTE peak`],
+          ['Proxima', 'Cost models, profitability views, COGS/R&D policy, pricing and margin linkage', `${fmtFTE(sumTeam(team))} FTE peak`],
           ['Client finance (FP&A)', 'Revenue and cost data, margin definitions, policy sign-off', '0.25–0.5 FTE'],
           ['Client data / engineering', 'Usage telemetry and allocation inputs for product costing', '0.5–1 FTE'],
           ['Client product / pricing', 'Pricing and packaging decisions', '0.1–0.25 FTE'],
