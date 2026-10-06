@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GCP Renewal Negotiation Planner</title>
+  <link rel="stylesheet" href="src/styles.css?v=20260929a" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="logo">
+          <svg width="84" height="22" viewBox="0 0 84 22" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="0" y="18" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-weight="700" fill="#ffffff" letter-spacing="-0.3">Proxima</text></svg>
+          <span class="logo-divider"></span>
+          <span>GCP Negotiation Planner</span>
+        </div>
+        <div class="header-taglines">
+          <div class="header-tagline">World-class renewal strategy, tailored to your situation</div>
+          <div class="header-tagline">Intended for Proxima use only, please contact Brian Chernauskas with questions</div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="step-nav" id="step-nav">
+        <div class="step-item active" data-step="1"><div class="step-circle">1</div><div class="step-label">Company Profile</div></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="2"><div class="step-circle">2</div><div class="step-label">Spend & Contract</div></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="3"><div class="step-circle">3</div><div class="step-label">Use Cases</div></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="4"><div class="step-circle">4</div><div class="step-label">Leverage & Context</div></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="5"><div class="step-circle">5</div><div class="step-label">Your Strategy</div></div>
+      </div>
+
+      <!-- Step 1 -->
+      <section class="step-panel active" id="step-1">
+        <div class="panel-header">
+          <h2>Company Profile</h2>
+          <p>Tell us about your organization so we can calibrate your GCP negotiating position.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Size</label>
+            <div class="radio-cards" id="company-size">
+              <div class="radio-card" data-value="startup"><div class="rc-icon">🚀</div><div class="rc-title">Startup</div><div class="rc-desc">&lt;100 employees</div></div>
+              <div class="radio-card" data-value="smb"><div class="rc-icon">🏢</div><div class="rc-title">SMB</div><div class="rc-desc">100–999 employees</div></div>
+              <div class="radio-card" data-value="midmarket"><div class="rc-icon">🏬</div><div class="rc-title">Mid-Market</div><div class="rc-desc">1,000–4,999 employees</div></div>
+              <div class="radio-card" data-value="enterprise"><div class="rc-icon">🏛️</div><div class="rc-title">Enterprise</div><div class="rc-desc">5,000+ employees</div></div>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="industry">Industry Vertical</label>
+              <select id="industry">
+                <option value="">Select industry…</option>
+                <option value="fintech">Financial Services / Fintech</option>
+                <option value="healthcare">Healthcare / Life Sciences</option>
+                <option value="retail">Retail / E-commerce</option>
+                <option value="saas">SaaS / Technology</option>
+                <option value="media">Media / Entertainment</option>
+                <option value="manufacturing">Manufacturing / Industrial</option>
+                <option value="government">Government / Public Sector</option>
+                <option value="education">Education</option>
+                <option value="energy">Energy / Utilities</option>
+                <option value="gaming">Gaming</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="growth-rate">Annual Revenue Growth Rate</label>
+              <select id="growth-rate">
+                <option value="">Select growth rate…</option>
+                <option value="declining">Declining / Flat (&lt;0%)</option>
+                <option value="slow">Slow (0–10%)</option>
+                <option value="moderate">Moderate (10–30%)</option>
+                <option value="fast">Fast (30–100%)</option>
+                <option value="hypergrowth">Hypergrowth (&gt;100%)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="gcp-tenure">How long have you been a GCP customer?</label>
+              <select id="gcp-tenure">
+                <option value="">Select tenure…</option>
+                <option value="new">&lt;1 year (new customer)</option>
+                <option value="1-3">1–3 years</option>
+                <option value="3-5">3–5 years</option>
+                <option value="5plus">5+ years (established customer)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="contract-type">Current Contract Type</label>
+              <select id="contract-type">
+                <option value="">Select contract type…</option>
+                <option value="payg">Pay-As-You-Go (PAYG)</option>
+                <option value="cud-resource">Resource-based CUDs only</option>
+                <option value="cud-spend">Spend-based CUDs only</option>
+                <option value="cud-both">Both CUD types</option>
+                <option value="ppa">Private Pricing Agreement (PPA)</option>
+                <option value="ea">Enterprise Agreement (EA)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Existing Google Product Footprint (select all that apply)</label>
+            <div class="checkbox-group" id="google-products">
+              <label class="checkbox-item"><input type="checkbox" value="workspace" /> Google Workspace</label>
+              <label class="checkbox-item"><input type="checkbox" value="google-ads" /> Google Ads</label>
+              <label class="checkbox-item"><input type="checkbox" value="youtube" /> YouTube</label>
+              <label class="checkbox-item"><input type="checkbox" value="maps" /> Google Maps Platform</label>
+              <label class="checkbox-item"><input type="checkbox" value="apigee" /> Apigee</label>
+              <label class="checkbox-item"><input type="checkbox" value="looker" /> Looker</label>
+              <label class="checkbox-item"><input type="checkbox" value="none" /> GCP only</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Compliance & Regulatory Requirements</label>
+            <div class="checkbox-group" id="compliance">
+              <label class="checkbox-item"><input type="checkbox" value="hipaa" /> HIPAA</label>
+              <label class="checkbox-item"><input type="checkbox" value="pci" /> PCI-DSS</label>
+              <label class="checkbox-item"><input type="checkbox" value="fedramp" /> FedRAMP</label>
+              <label class="checkbox-item"><input type="checkbox" value="gdpr" /> GDPR</label>
+              <label class="checkbox-item"><input type="checkbox" value="sox" /> SOX</label>
+              <label class="checkbox-item"><input type="checkbox" value="none" /> None specific</label>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(1, this)">✨ Fill Sample Data</button><button class="btn-secondary" onclick="showSample()" style="margin-right:auto">👁 View Sample Output</button><button class="btn-primary" onclick="nextStep(1)">Continue →</button></div>
+      </section>
+
+      <!-- Step 2 -->
+      <section class="step-panel" id="step-2">
+        <div class="panel-header">
+          <h2>Spend & Contract Details</h2>
+          <p>GCP's discount stack is unique — SUDs are automatic, CUDs are self-service, and EA pricing sits on top of both.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="annual-spend">Current Annual GCP Spend</label>
+              <select id="annual-spend">
+                <option value="">Select range…</option>
+                <option value="under250k">&lt;$250K</option>
+                <option value="250k-1m">$250K–$1M</option>
+                <option value="1m-5m">$1M–$5M</option>
+                <option value="5m-10m">$5M–$10M</option>
+                <option value="10m-25m">$10M–$25M</option>
+                <option value="25m-50m">$25M–$50M</option>
+                <option value="50mplus">$50M+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="workspace-spend">Annual Google Workspace Spend</label>
+              <select id="workspace-spend">
+                <option value="">Select range…</option>
+                <option value="none">None / Not using Workspace</option>
+                <option value="under100k">&lt;$100K</option>
+                <option value="100k-500k">$100K–$500K</option>
+                <option value="500k-2m">$500K–$2M</option>
+                <option value="2mplus">$2M+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="spend-growth">Expected GCP Spend Growth (Next 12 months)</label>
+              <select id="spend-growth">
+                <option value="">Select growth…</option>
+                <option value="declining">Declining (&lt;-10%)</option>
+                <option value="flat">Flat (±10%)</option>
+                <option value="moderate">Moderate (+10–30%)</option>
+                <option value="fast">Fast (+30–75%)</option>
+                <option value="hypergrowth">Hypergrowth (+75%+)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="renewal-timeline">When does your contract / CUDs expire?</label>
+              <select id="renewal-timeline">
+                <option value="">Select timeline…</option>
+                <option value="within-1mo">Within 1 month (urgent)</option>
+                <option value="1-3mo">1–3 months</option>
+                <option value="3-6mo">3–6 months</option>
+                <option value="6-12mo">6–12 months (ideal window)</option>
+                <option value="12plusmo">12+ months out</option>
+                <option value="no-contract">No formal contract yet</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="desired-term">Preferred Commitment Term</label>
+              <select id="desired-term">
+                <option value="">Select term…</option>
+                <option value="1yr">1 Year (CUD or EA)</option>
+                <option value="3yr">3 Years (EA / deep CUD discount)</option>
+                <option value="flexible">Flexible / TBD</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cud-utilization">Current CUD Utilization Rate</label>
+              <select id="cud-utilization">
+                <option value="">Select…</option>
+                <option value="na">N/A — no CUDs yet</option>
+                <option value="under70">Under 70% (significant waste)</option>
+                <option value="70-85">70–85% (mild underutilization)</option>
+                <option value="85-100">85–100% (on track)</option>
+                <option value="over100">Over 100% (exceeded commitment)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Discount Programs Currently Active</label>
+            <div class="checkbox-group" id="current-discounts">
+              <label class="checkbox-item"><input type="checkbox" value="sud" /> Sustained Use Discounts (SUDs — automatic)</label>
+              <label class="checkbox-item"><input type="checkbox" value="cud-resource" /> Resource-based CUDs (vCPU/memory commit)</label>
+              <label class="checkbox-item"><input type="checkbox" value="cud-spend" /> Spend-based CUDs</label>
+              <label class="checkbox-item"><input type="checkbox" value="spot-preemptible" /> Spot / Preemptible VMs</label>
+              <label class="checkbox-item"><input type="checkbox" value="ea-discount" /> EA / Private Pricing discount</label>
+              <label class="checkbox-item"><input type="checkbox" value="none" /> None / PAYG only</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="chargeback-isolation">Internal Cost Chargeback Model</label>
+            <select id="chargeback-isolation">
+              <option value="">Select…</option>
+              <option value="project-scope">Project-scope — each team billed by GCP project</option>
+              <option value="billing-account">Billing-account level — centralized tracking only</option>
+              <option value="planning">Planning to implement project-level chargeback</option>
+              <option value="none">No internal chargeback / single cost center</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="flex-cud-footprint">Compute Footprint (Flex CUD consolidation opportunity)</label>
+            <select id="flex-cud-footprint">
+              <option value="">Select…</option>
+              <option value="vms-only">VMs only (Compute Engine)</option>
+              <option value="vms-gke">VMs + GKE Standard/Autopilot</option>
+              <option value="vms-cloudrun">VMs + Cloud Run</option>
+              <option value="full-mix">VMs + GKE + Cloud Run (full mix)</option>
+              <option value="gke-cloudrun-only">GKE / Cloud Run only (no VMs)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="casc">Customer Annual Spend Commitment (CASC)</label>
+            <select id="casc">
+              <option value="">Select…</option>
+              <option value="yes-active">Yes — active CASC in place</option>
+              <option value="yes-negotiating">In negotiation for a CASC</option>
+              <option value="no-eligible">No CASC — but spend likely qualifies</option>
+              <option value="no-small">No CASC — spend too small to qualify</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="support-tier">Current GCP Support Tier</label>
+            <select id="support-tier">
+              <option value="">Select support tier…</option>
+              <option value="basic">Basic (free)</option>
+              <option value="standard">Standard</option>
+              <option value="enhanced">Enhanced</option>
+              <option value="premium">Premium</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(2, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
+          <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section class="step-panel" id="step-3">
+        <div class="panel-header">
+          <h2>GCP Use Cases</h2>
+          <p>GCP's discount mechanics vary significantly by service — especially for compute, AI, and data workloads.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Primary Workload Types (select all that apply)</label>
+            <div class="use-case-grid" id="use-cases">
+              <div class="use-case-card" data-value="compute"><div class="uc-icon">⚙️</div><div class="uc-title">Compute Engine (VMs)</div></div>
+              <div class="use-case-card" data-value="gke"><div class="uc-icon">📦</div><div class="uc-title">Google Kubernetes Engine (GKE)</div></div>
+              <div class="use-case-card" data-value="serverless"><div class="uc-icon">⚡</div><div class="uc-title">Serverless (Cloud Run, Functions)</div></div>
+              <div class="use-case-card" data-value="vertex-ai"><div class="uc-icon">🤖</div><div class="uc-title">AI / ML (Vertex AI, Gemini)</div></div>
+              <div class="use-case-card" data-value="bigquery"><div class="uc-icon">📊</div><div class="uc-title">BigQuery (Data Warehouse)</div></div>
+              <div class="use-case-card" data-value="databases"><div class="uc-icon">🗄️</div><div class="uc-title">Databases (Cloud SQL, Spanner, Bigtable)</div></div>
+              <div class="use-case-card" data-value="storage"><div class="uc-icon">💾</div><div class="uc-title">Storage (Cloud Storage, Filestore)</div></div>
+              <div class="use-case-card" data-value="networking"><div class="uc-icon">🌐</div><div class="uc-title">Networking (Cloud CDN, Interconnect)</div></div>
+              <div class="use-case-card" data-value="dataflow"><div class="uc-icon">🔀</div><div class="uc-title">Dataflow / Dataproc / Pub/Sub</div></div>
+              <div class="use-case-card" data-value="security"><div class="uc-icon">🔒</div><div class="uc-title">Security (Chronicle, Security Command Center)</div></div>
+              <div class="use-case-card" data-value="apigee"><div class="uc-icon">🔌</div><div class="uc-title">API Management (Apigee)</div></div>
+              <div class="use-case-card" data-value="looker"><div class="uc-icon">👁️</div><div class="uc-title">Looker / Business Intelligence</div></div>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="workload-type">Workload Criticality</label>
+              <select id="workload-type">
+                <option value="">Select type…</option>
+                <option value="production-only">Production-heavy (mostly live traffic)</option>
+                <option value="mixed">Mixed production + dev/test</option>
+                <option value="dev-heavy">Dev/test heavy (R&D focus)</option>
+                <option value="batch">Batch / intermittent (Spot VM opportunity)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="spot-vm-usage">Spot / Preemptible VM Usage</label>
+              <select id="spot-vm-usage">
+                <option value="">Select…</option>
+                <option value="none">Not using Spot VMs</option>
+                <option value="some">Some workloads on Spot (&lt;25% of compute)</option>
+                <option value="moderate">Moderate Spot usage (25–50%)</option>
+                <option value="heavy">Heavy Spot usage (&gt;50% of eligible workloads)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="optimization-status">Infrastructure Optimization Status</label>
+              <select id="optimization-status">
+                <option value="">Select…</option>
+                <option value="unoptimized">Largely unoptimized</option>
+                <option value="partially">Partially optimized</option>
+                <option value="well-optimized">Well-optimized (Recommender API actioned)</option>
+                <option value="expert">Expert-level (FinOps team in place)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="bigquery-pricing">BigQuery Pricing Model</label>
+            <select id="bigquery-pricing">
+              <option value="">Select…</option>
+              <option value="on-demand">On-demand (per TB scanned)</option>
+              <option value="flat-rate">Flat-rate / capacity pricing</option>
+              <option value="not-using">Not using BigQuery</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(3, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(3)">← Back</button>
+          <button class="btn-primary" onclick="nextStep(3)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- Step 4 -->
+      <section class="step-panel" id="step-4">
+        <div class="panel-header">
+          <h2>Leverage & Relationship Context</h2>
+          <p>GCP is actively growing market share — understand how to use that to your advantage.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Multi-Cloud & Competitive Alternatives</label>
+            <div class="radio-cards" id="multicloud">
+              <div class="radio-card" data-value="gcp-only"><div class="rc-icon">☁️</div><div class="rc-title">GCP Only</div><div class="rc-desc">All-in on Google Cloud</div></div>
+              <div class="radio-card" data-value="gcp-primary"><div class="rc-icon">⚖️</div><div class="rc-title">GCP Primary</div><div class="rc-desc">Some AWS / Azure workloads</div></div>
+              <div class="radio-card" data-value="multi-cloud"><div class="rc-icon">🌐</div><div class="rc-title">True Multi-Cloud</div><div class="rc-desc">Significant spend on 2+ clouds</div></div>
+              <div class="radio-card" data-value="evaluating"><div class="rc-icon">🔍</div><div class="rc-title">Evaluating GCP</div><div class="rc-desc">Currently on AWS/Azure, evaluating GCP</div></div>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="relationship-quality">Google Account Team Relationship</label>
+              <select id="relationship-quality">
+                <option value="">Select…</option>
+                <option value="none">No dedicated rep</option>
+                <option value="poor">Weak / transactional relationship</option>
+                <option value="moderate">Moderate — occasional contact</option>
+                <option value="strong">Strong — regular cadence with AE/CSE</option>
+                <option value="strategic">Strategic — executive sponsorship from Google</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Strategic Plans (next 12 months)</label>
+            <div class="checkbox-group" id="strategic-plans">
+              <label class="checkbox-item"><input type="checkbox" value="migrate-to-gcp" /> Migrating workloads TO GCP from AWS/Azure/on-prem</label>
+              <label class="checkbox-item"><input type="checkbox" value="ai-expansion" /> Expanding AI/ML workloads (Vertex AI, Gemini)</label>
+              <label class="checkbox-item"><input type="checkbox" value="workspace-expand" /> Expanding Google Workspace seats or tiers</label>
+              <label class="checkbox-item"><input type="checkbox" value="data-platform" /> Building or expanding data platform (BigQuery, Looker)</label>
+              <label class="checkbox-item"><input type="checkbox" value="onprem-exit" /> Exiting on-premises data centers</label>
+              <label class="checkbox-item"><input type="checkbox" value="marketplace" /> Expanding ISV software via GCP Marketplace</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="switching-from">Switching From / Competitive Context</label>
+            <select id="switching-from">
+              <option value="">Select…</option>
+              <option value="aws">Primarily AWS — evaluating or moving to GCP</option>
+              <option value="azure">Primarily Azure — evaluating or moving to GCP</option>
+              <option value="both">Both AWS and Azure workloads</option>
+              <option value="onprem">On-premises — cloud migration in progress</option>
+              <option value="staying">Staying on GCP — renewal only</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(4, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(4)">← Back</button>
+          <button class="btn-primary" onclick="generateStrategy()">Generate My Strategy →</button>
+        </div>
+      </section>
+
+      <!-- Step 5 -->
+      <section class="step-panel" id="step-5">
+        <div id="strategy-output"></div>
+        <div class="step-actions" style="margin-top:2rem;">
+          <button class="btn-secondary" onclick="prevStep(5)">← Edit Inputs</button>
+          <button class="btn-primary" onclick="window.print()">🖨️ Export Strategy</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>This tool provides strategic guidance based on publicly available Google Cloud negotiation best practices. Actual discounts depend on account team relationships and Google business priorities at time of negotiation.</p>
+    </footer>
+  </div>
+  <script src="src/app.js?v=20260929a"></script>
+</body>
+</html>

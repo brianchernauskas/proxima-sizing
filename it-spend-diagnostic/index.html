@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IT Spend Diagnostic | Proxima</title>
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-wordmark">Proxima</span>
+      <span class="logo-divider"></span>
+      <span>IT Spend Diagnostic</span>
+    </div>
+    <div class="header-taglines">
+      <div class="header-tagline">Supplier portfolio triage — where the negotiable spend actually sits</div>
+      <div class="header-tagline">Intended for Proxima use only, please contact Brian Chernauskas with questions</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="stage-nav">
+    <div class="stage active" data-stage="1"><div class="stage-dot">1</div><div class="stage-label">Load Spend</div></div>
+    <div class="stage-line"></div>
+    <div class="stage" data-stage="2"><div class="stage-dot">2</div><div class="stage-label">Map Columns</div></div>
+    <div class="stage-line"></div>
+    <div class="stage" data-stage="3"><div class="stage-dot">3</div><div class="stage-label">Reconcile</div></div>
+    <div class="stage-line"></div>
+    <div class="stage" data-stage="4"><div class="stage-dot">4</div><div class="stage-label">Findings</div></div>
+  </div>
+
+  <!-- ── Stage 1: Load ── -->
+  <section class="panel active" id="panel-1">
+    <div class="panel-head">
+      <h2>Load Spend File</h2>
+      <p>Two years of supplier spend. Any IT category — cloud, software, telecom, hardware, services.</p>
+    </div>
+
+    <div class="privacy">
+      <strong>Nothing you load here leaves this machine.</strong> The file is parsed in your browser. This page makes no
+      network requests with your data, writes nothing to browser storage, and forgets everything on reload — you can
+      disconnect from the network and it will still work, which is the simplest way to demonstrate that to a client.
+      Supplier names are the one thing that cannot be dropped, since they are what the analysis keys on, so treat the
+      loaded view as client-confidential and use <strong>Export anonymised summary</strong> in stage 4 for anything you
+      intend to share or store.
+    </div>
+
+    <div class="dropzone" id="dropzone">
+      <div class="dropzone-icon">📄</div>
+      <div class="dropzone-main">Drop a CSV here, or click to choose a file</div>
+      <div class="dropzone-sub">Comma or tab separated. Save as CSV from Excel if needed.</div>
+      <input type="file" id="file-input" accept=".csv,.tsv,.txt" style="display:none" />
+    </div>
+
+    <div class="form-group" style="margin-top:18px;">
+      <label for="paste-area">Or paste rows directly (including the header row)</label>
+      <textarea id="paste-area" class="paste-area" placeholder="Supplier,Category,FY2025,FY2026&#10;Microsoft Corp,Software,2400000,2900000&#10;Amazon Web Services,,1800000,2200000"></textarea>
+      <p class="field-hint">Pasting from Excel works — it arrives tab separated.</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="btn-parse">Parse rows →</button>
+      <button class="btn btn-ghost" id="btn-sample">Load sample data</button>
+    </div>
+    <div id="parse-feedback" style="margin-top:14px;"></div>
+  </section>
+
+  <!-- ── Stage 2: Map ── -->
+  <section class="panel" id="panel-2">
+    <div class="panel-head">
+      <h2>Map Columns</h2>
+      <p>Confirm which columns hold what. Best guesses are pre-selected from the header row.</p>
+    </div>
+    <div id="map-preview" style="margin-bottom:18px;"></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="col-supplier">Supplier name</label>
+        <select id="col-supplier"></select>
+      </div>
+      <div class="form-group">
+        <label for="col-category">Category (optional)</label>
+        <select id="col-category"></select>
+        <p class="field-hint">Blank or unmappable values fall back to name-based classification.</p>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="col-prior">Earlier period spend</label>
+        <select id="col-prior"></select>
+      </div>
+      <div class="form-group">
+        <label for="col-current">Later period spend</label>
+        <select id="col-current"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="label-prior">Earlier period label</label>
+        <input type="text" id="label-prior" value="Prior year" />
+      </div>
+      <div class="form-group">
+        <label for="label-current">Later period label</label>
+        <input type="text" id="label-current" value="Current year" />
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="goStage(1)">← Back</button>
+      <button class="btn btn-primary" id="btn-reconcile">Reconcile →</button>
+    </div>
+  </section>
+
+  <!-- ── Stage 3: Reconcile ── -->
+  <section class="panel" id="panel-3">
+    <div class="panel-head">
+      <h2>Reconcile Suppliers &amp; Categories</h2>
+      <p>Name variants merged, categories resolved. Review anything flagged before reading the findings.</p>
+    </div>
+    <div class="form-group" style="margin-bottom:18px;">
+      <label for="custom-rules">Your classification rules <span style="font-weight:400;color:var(--text-secondary)">(optional)</span></label>
+      <textarea id="custom-rules" class="paste-area" style="min-height:82px" placeholder="One rule per line, as  keyword = Category&#10;consulting partners = IT Services&#10;acme = Managed Services&#10;# lines starting with # are ignored"></textarea>
+      <p class="field-hint">
+        Matched against the supplier name, and they beat the built-in name keywords. Use these for the
+        vendors only you would recognise. They live in memory for this session only — copy the box out
+        if you want to reuse them on the next engagement.
+      </p>
+      <div><button class="btn btn-ghost" id="btn-apply-rules">Apply rules</button></div>
+    </div>
+
+    <div id="reconcile-output"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="goStage(2)">← Back</button>
+      <button class="btn btn-primary" id="btn-analyse">View findings →</button>
+    </div>
+  </section>
+
+  <!-- ── Stage 4: Findings ── -->
+  <section class="panel" id="panel-4">
+    <div class="panel-head">
+      <h2>Portfolio Findings</h2>
+      <p>Ranked by where negotiation effort is most likely to return value.</p>
+    </div>
+    <div class="toggle-row">
+      <label><input type="checkbox" id="toggle-ranges" /> Show indicative savings ranges</label>
+      <p class="field-hint">
+        Off by default. Ranges are category-typical assumptions applied to addressable spend before any contract has been
+        read — useful for internal sizing or a pitch, misleading if quoted as a commitment. The assumption table is shown
+        alongside so the basis is always visible.
+      </p>
+    </div>
+    <div id="findings-output"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="goStage(3)">← Back</button>
+      <button class="btn btn-primary" id="btn-export">Export anonymised summary</button>
+      <button class="btn btn-ghost" onclick="window.print()">Print / PDF</button>
+      <button class="btn btn-ghost" id="btn-clear">Clear all data</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  <p>Proxima internal use only — parsed locally, never uploaded, not persisted</p>
+  <div class="footer-wordmark">Proxima.</div>
+</footer>
+
+<script src="src/app.js"></script>
+<script>
+</script>
+</body>
+</html>

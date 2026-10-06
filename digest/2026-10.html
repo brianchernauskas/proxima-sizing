@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Negotiation Research Digest — October 2026</title>
+  <link rel="stylesheet" href="digest.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark">Proxima<span>.</span></div>
+  <div class="header-right">
+    <a class="back-link" href="index.html">← All issues</a>
+    <a class="back-link" href="../updates.html">Running log</a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle theme</button>
+  </div>
+</header>
+
+<div class="masthead">
+  <p class="masthead-eyebrow">Proxima Internal — Research Digest</p>
+  <h1>Cloud Negotiation<br>Research Digest</h1>
+  <p class="issue-date">Issue 04 · October 5, 2026</p>
+  <p class="standfirst">Where the three hyperscalers, Salesforce, Adobe and Oracle moved this period, what practitioners are reporting, and what it changes about how we advise a renewal.</p>
+</div>
+
+<div class="issue">
+
+  <!-- WHAT'S NEW -->
+  <section class="section">
+    <div class="section-head">
+      <h2>What's New</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">5 items</span>
+    </div>
+    <ul class="item-list">
+
+      <li class="item salesforce">
+        <span class="item-tag">Salesforce</span>
+        <h3>Enterprise and Unlimited give way to Core, Advanced and Max</h3>
+        <p>Salesforce consolidated its Agentforce Sales, Service and Industries editions into Core ($195/user/month, 500,000 Flex Credits), Advanced ($395, 1 million) and Max ($550, 2.75 million), with Agentforce, Slack, analytics and a Premier Success Plan bundled into the seat price. Existing Enterprise and Unlimited customers keep current pricing for now. — <a class="src-link" href="https://www.salesforce.com/news/stories/salesforce-simplifies-editions-2026/" target="_blank" rel="noopener">Salesforce Newsroom →</a></p>
+      </li>
+
+      <li class="item azure">
+        <span class="item-tag">Azure</span>
+        <h3>Copilot becomes a seat plus a meter</h3>
+        <p>Microsoft's redesigned Copilot keeps the seat licence for Chat and Office apps but bills Cowork, Code, Autopilot and long-running agents through Copilot Credits. No credit rates were published. Separately, CSP growth margins replaced the M365 E5, E7 and Copilot promotions on October 1, so any customer discount now depends on what the partner passes through. — <a class="src-link" href="https://blogs.microsoft.com/blog/2026/09/25/introducing-the-new-copilot-with-home-code-and-autopilot/" target="_blank" rel="noopener">Microsoft Blog →</a></p>
+      </li>
+
+      <li class="item aws">
+        <span class="item-tag">AWS</span>
+        <h3>EC2 Capacity Block rates reset again on October 7</h3>
+        <p>AWS's pricing page lists new GPU Capacity Block rates effective October 7 (P6-B300 $16.146, P5 $5.970 per accelerator-hour), about 15% above the July rates by our calculation. AWS publishes no percentage and says prices are updated with supply and demand. — <a class="src-link" href="https://aws.amazon.com/ec2/capacityblocks/pricing/" target="_blank" rel="noopener">AWS Capacity Blocks pricing →</a></p>
+      </li>
+
+      <li class="item gcp">
+        <span class="item-tag">GCP</span>
+        <h3>Gemini Code Assist drops out of Gemini Enterprise renewals</h3>
+        <p>New and renewing Gemini Enterprise Standard and Plus subscriptions bought online no longer include Gemini Code Assist as of September 17. Existing terms keep access; customers who want it are sent to sales. — <a class="src-link" href="https://docs.cloud.google.com/gemini/enterprise/docs/release-notes" target="_blank" rel="noopener">Gemini Enterprise release notes →</a></p>
+      </li>
+
+      <li class="item adobe">
+        <span class="item-tag">Adobe</span>
+        <h3>Adobe closes Topaz Labs, with no word on how it will be metered</h3>
+        <p>The acquisition closed September 23. Topaz stays standalone while its capabilities come to Firefly and Photoshop first. Adobe did not say whether integrated features need a separate subscription or draw on generative credits, which matters in its Q4 renewal season. — <a class="src-link" href="https://blog.adobe.com/en/publish/2026/09/23/adobe-completes-acquisition-of-topaz-labs" target="_blank" rel="noopener">Adobe Blog →</a></p>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- AWS -->
+  <section class="section">
+    <div class="section-head">
+      <h2>AWS</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider aws">
+      <p>The story of the month is GPU pricing, which AWS now treats as a market rate rather than a rate card. Capacity Blocks went up in July and were reset again effective October 7, and the pricing page itself says prices follow supply and demand. A PPA commitment sized on one quarter's GPU rates is stale by the next.</p>
+      <p>The other change is quieter: Marketplace private offers can now auto-renew, optionally with a pre-agreed price change. Both matter most for clients drawing Marketplace spend against their commitment.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://aws.amazon.com/ec2/capacityblocks/pricing/" target="_blank" rel="noopener">AWS Capacity Blocks pricing</a> ·
+        <a href="https://aws.amazon.com/about-aws/whats-new/2026/09/aws-marketplace-auto-renewals-for-private-offers/" target="_blank" rel="noopener">AWS What's New — Marketplace auto-renewals</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AZURE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Azure</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider azure">
+      <p>Microsoft is moving its AI revenue from seats to usage. The Copilot relaunch puts agent features on Copilot Credits with no published rates, and the FinOps-for-AI controls announced alongside it (spending policies, approval workflows) confirm that the meter is meant to be managed by the customer. In any Copilot negotiation, ask for the credit rate card, prepaid or MACC-drawn options, and who owns the limit.</p>
+      <p>The channel is shifting too. CSP promotions ended September 30 and became partner growth margins on October 1, and from October 1 a 5% uplift applies to annual-term CSP software billed monthly. Neither touches EA pricing, but both change what a CSP customer can ask a partner for.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://blogs.microsoft.com/blog/2026/09/25/introducing-the-new-copilot-with-home-code-and-autopilot/" target="_blank" rel="noopener">Microsoft Blog — new Copilot</a> ·
+        <a href="https://learn.microsoft.com/en-us/partner-center/announcements/2026-september" target="_blank" rel="noopener">Partner Center — September</a> ·
+        <a href="https://learn.microsoft.com/en-us/partner-center/announcements/2026-august" target="_blank" rel="noopener">Partner Center — August</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GCP -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Google Cloud</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider gcp">
+      <p>One meaningful move: Gemini Code Assist stopped being part of Gemini Enterprise Standard and Plus at renewal, with no price change. It is an entitlement loss that behaves like a price increase for any team that used it.</p>
+      <p>Google also opened Gemini Enterprise pay-as-you-go and overage controls to invoiced billing accounts earlier in the month. Check Code Assist usage before any renewal and negotiate it back into the seat or EA price.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://docs.cloud.google.com/gemini/enterprise/docs/release-notes" target="_blank" rel="noopener">Gemini Enterprise release notes</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SALESFORCE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Salesforce</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider salesforce">
+      <p>The month was about repackaging. Core, Advanced and Max turn Enterprise plus an Agentforce add-on into a single bundled number, and the post-Dreamforce commentary suggests the sales team will push upgrades to the top edition hard through Salesforce's Q3 and Q4. Executives also said outcome-based AI pricing is coming, with no prices or definitions yet.</p>
+      <p>The advisory posture is the same for all of it: price the bundle against actual add-on and Flex Credit use, keep a Core or Advanced quote as the baseline, and treat outcome pricing as a proposal to be defined, not a published term. The analyst and press items below are secondary.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://www.salesforce.com/news/stories/salesforce-simplifies-editions-2026/" target="_blank" rel="noopener">Salesforce Newsroom</a> ·
+        <a href="https://www.theregister.com/software/2026/09/21/salesforce-wants-to-charge-for-ai-outcomes-but-first-it-needs-to-figure-out-how/5297402" target="_blank" rel="noopener">The Register</a> ·
+        <a href="https://finance.yahoo.com/markets/stocks/articles/agentforce-triggers-renewal-surge-sparking-102117886.html" target="_blank" rel="noopener">Benzinga via Yahoo Finance</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADOBE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Adobe</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider adobe">
+      <p>Topaz Labs closed on September 23, the last pending acquisition on our watch list. Adobe says Topaz stays a standalone brand and its capabilities go to Firefly and Photoshop first, without saying how they will be metered.</p>
+      <p>That is the question to put to Adobe in writing before agreeing credit allowances in a renewal, and September to November is when most enterprise renewals are negotiated. Clients who buy Topaz separately should keep that renewal short and apart from ETLA or VIP.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://blog.adobe.com/en/publish/2026/09/23/adobe-completes-acquisition-of-topaz-labs" target="_blank" rel="noopener">Adobe Blog</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORACLE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Oracle</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider oracle">
+      <p>No primary-sourced Oracle commercial change this period. Oracle published a Technical Support Policies document dated August 17, 2026, which we could not review for changes this cycle.</p>
+      <p>Licensing advisors report 2026 renewal letters dropping the 36-month audit cap language. That is secondary commentary we have not corroborated, so it is not logged as fact. Check the audit clause on any renewal in flight.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://www.oracle.com/contracts/docs/057419.pdf" target="_blank" rel="noopener">Oracle Technical Support Policies</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRACTITIONER PULSE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Community &amp; Practitioner Pulse</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">3 items</span>
+    </div>
+    <ul class="item-list">
+
+      <li class="item">
+        <span class="item-tag">Pattern</span>
+        <h3>AI is being priced as usage on top of the seat, across vendors</h3>
+        <p>Microsoft Copilot Credits, Salesforce Flex Credits and outcome pricing, and Adobe generative credits all follow the same shape: a seat price plus a consumption layer. Ask every vendor for the rate card for the consumption layer before agreeing the seat price.</p>
+      </li>
+
+      <li class="item">
+        <span class="item-tag">Pattern</span>
+        <h3>"Simplification" announcements are renewal pitches</h3>
+        <p>Salesforce's new editions and its reported push toward Max follow the pattern of a bundle presented as simpler. Model the add-ons actually in use against the bundled price.</p>
+      </li>
+
+      <li class="item">
+        <span class="item-tag">Audit</span>
+        <h3>Oracle audit-cap language reportedly being removed at renewal (unverified)</h3>
+        <p>Licensing advisors report that some 2026 renewal letters drop the one-audit-per-36-months cap. We could not corroborate it from a primary source.</p>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- TOOL UPDATES -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Recommended Tool Updates</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">Status as of Oct 5, 2026</span>
+    </div>
+    <div class="backlog-wrap">
+      <table class="backlog">
+        <thead>
+          <tr><th>Tool</th><th>Recommendation</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Azure</td>
+            <td>Add a tactic pricing the Copilot Credit usage layer alongside the seat.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>GCP</td>
+            <td>Add a Gemini Enterprise renewal tactic for the Code Assist removal.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>Adobe</td>
+            <td>Update the Topaz Labs context row to closed and add the credit-metering question.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>AWS</td>
+            <td>Add an alert for the October 7 Capacity Block repricing.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>Azure</td>
+            <td>Add CSP guidance covering the October 1 growth margins and the 5% monthly-billing uplift on software.</td>
+            <td><span class="status open">Open</span></td>
+          </tr>
+          <tr>
+            <td>Oracle</td>
+            <td>Review the August 17, 2026 Technical Support Policies document for changes and add an audit-clause check to the renewal tactics if corroborated.</td>
+            <td><span class="status open">Open</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SOURCING NOTE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Sourcing Note</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="callout">
+      <strong>Figures from secondary sources:</strong> the Salesforce top-edition upgrade rate (about 5%) and the renewal example come from a BNP Paribas analyst note reported by Benzinga, and the example is a single unverified anecdote. The outcome-based pricing comments come from The Register's report of an investor webinar. The Oracle audit-cap claim comes from licensing advisors and is uncorroborated. The roughly 15% Capacity Block increase is our own calculation from AWS's July and October rates, not an AWS figure.
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>Proxima internal use only — research conducted October 5, 2026</p>
+  <div class="footer-links">
+    <a href="https://tools.briansavesbillions.com/aws-negotiation-planner/" target="_blank" rel="noopener">AWS Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/azure-negotiation-planner/" target="_blank" rel="noopener">Azure Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/gcp-negotiation-planner/" target="_blank" rel="noopener">GCP Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/salesforce-negotiation-planner/" target="_blank" rel="noopener">Salesforce Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/adobe-negotiation-planner/" target="_blank" rel="noopener">Adobe Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/oracle-negotiation-planner/" target="_blank" rel="noopener">Oracle Planner</a>
+  </div>
+  <div class="footer-wordmark">Proxima.</div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The FinOps Playbook</title>
+<style>
+  :root{
+    --ink:#0f1b2d; --ink2:#334155; --muted:#64748b; --line:#e2e8f0;
+    --bg:#f6f8fb; --card:#ffffff;
+    --aws:#ff9900; --aws-d:#c77700;
+    --azure:#0089d6; --azure-d:#005ba1;
+    --gcp:#ea4335; --gcp-d:#b5261a;
+    --accent:#4f46e5; --accent-d:#3730a3;
+    --green:#16a34a; --amber:#d97706; --red:#dc2626;
+    --inform:#2563eb; --optimize:#16a34a; --operate:#7c3aed;
+    --shadow:0 1px 3px rgba(15,27,45,.08),0 8px 24px rgba(15,27,45,.06);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;font-size:16px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Layout */
+  .wrap{display:flex;min-height:100vh}
+  nav.side{width:270px;flex:0 0 270px;background:#0f1b2d;color:#cbd5e1;position:sticky;top:0;height:100vh;
+    overflow-y:auto;padding:22px 0}
+  nav.side .brand{padding:0 22px 16px;border-bottom:1px solid #1e293b;margin-bottom:10px}
+  nav.side .brand h1{font-size:16px;margin:0 0 4px;color:#fff;line-height:1.3}
+  nav.side .brand span{font-size:12px;color:#7c8aa5;letter-spacing:.03em}
+  nav.side button{display:block;width:100%;text-align:left;background:none;border:none;color:#cbd5e1;
+    padding:10px 22px;font-size:14px;cursor:pointer;border-left:3px solid transparent;font-family:inherit}
+  nav.side button:hover{background:#16233a;color:#fff}
+  nav.side button.active{background:#16233a;color:#fff;border-left-color:var(--accent)}
+  nav.side .num{display:inline-block;width:22px;color:#5b6b86;font-variant-numeric:tabular-nums}
+  nav.side button.active .num{color:var(--accent)}
+  nav.side .grp{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#5b6b86;padding:16px 22px 6px}
+
+  main{flex:1;min-width:0;max-width:1000px;margin:0 auto;padding:40px 48px 120px}
+  section.page{display:none;animation:fade .25s ease}
+  section.page.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2.title{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:8px}
+  .lede{font-size:18px;color:var(--ink2);margin:0 0 28px;max-width:70ch}
+  h3{font-size:21px;margin:34px 0 12px;padding-top:6px}
+  h4{font-size:16px;margin:22px 0 8px;color:var(--ink)}
+  p{margin:0 0 14px;max-width:74ch}
+  ul,ol{max-width:74ch;padding-left:22px}
+  li{margin:6px 0}
+  strong{color:var(--ink)}
+  .muted{color:var(--muted)}
+
+  /* Cards & callouts */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:18px 0;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:820px){.g2,.g3{grid-template-columns:1fr}}
+  .coach{border-left:4px solid var(--accent);background:linear-gradient(90deg,#eef2ff,#fff 60%);
+    border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0}
+  .coach .tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-d);display:block;margin-bottom:4px}
+  .analogy{border-left:4px solid var(--amber);background:linear-gradient(90deg,#fffbeb,#fff 60%);border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0}
+  .analogy .tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:4px}
+  .warn{border-left:4px solid var(--red);background:linear-gradient(90deg,#fef2f2,#fff 60%);border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0}
+  .warn .tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:4px}
+  .keyterm{background:#eef2ff;border-radius:6px;padding:1px 6px;font-weight:600;color:var(--accent-d);white-space:nowrap}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#0f1b2d;color:#fff;font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:#f8fafc}
+  td.aws{color:var(--aws-d);font-weight:600}
+  td.azure{color:var(--azure-d);font-weight:600}
+  td.gcp{color:var(--gcp-d);font-weight:600}
+  .scroller{overflow-x:auto}
+
+  /* Pills */
+  .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;margin:2px 4px 2px 0}
+  .pill.aws{background:#fff3e0;color:var(--aws-d)}
+  .pill.azure{background:#e3f2fd;color:var(--azure-d)}
+  .pill.gcp{background:#fdecea;color:var(--gcp-d)}
+  .pill.g{background:#dcfce7;color:#166534}
+  .pill.inform{background:#dbeafe;color:#1d4ed8}
+  .pill.optimize{background:#dcfce7;color:#166534}
+  .pill.operate{background:#ede9fe;color:#5b21b6}
+
+  /* Infographic pieces */
+  .pyramid{display:flex;flex-direction:column;align-items:center;gap:6px;margin:18px 0}
+  .pyramid .row{color:#fff;border-radius:8px;padding:12px 16px;text-align:center;font-weight:600;box-shadow:var(--shadow)}
+  .pyramid .r1{width:55%;background:#7c3aed}
+  .pyramid .r2{width:72%;background:#4f46e5}
+  .pyramid .r3{width:88%;background:#2563eb}
+  .pyramid .r4{width:100%;background:#0f1b2d}
+  .pyramid small{display:block;font-weight:400;opacity:.85;font-size:12px}
+
+  .stack{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+  .stack .lvl{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;box-shadow:var(--shadow)}
+  .stack .pct{flex:0 0 88px;font-weight:800;font-size:20px;color:var(--accent)}
+  .stack .bar{flex:1;height:14px;background:#eef2ff;border-radius:999px;overflow:hidden}
+  .stack .bar i{display:block;height:100%;background:linear-gradient(90deg,#4f46e5,#7c3aed)}
+  @media(max-width:560px){.stack .lvl{flex-wrap:wrap}.stack .bar{flex:1 1 100%;order:3}}
+
+  .timeline{position:relative;margin:22px 0 22px 8px;padding-left:26px;border-left:2px solid var(--line)}
+  .timeline .step{position:relative;margin-bottom:20px}
+  .timeline .step::before{content:"";position:absolute;left:-33px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 2px var(--accent)}
+  .timeline .step h4{margin:0 0 3px}
+  .timeline .when{font-size:12px;color:var(--accent-d);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+
+  .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}
+  @media(max-width:820px){.statrow{grid-template-columns:1fr 1fr}}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+  .stat .big{font-size:30px;font-weight:800;line-height:1}
+  .stat .lbl{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+  .matrix{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border-radius:12px;overflow:hidden;margin:18px 0;box-shadow:var(--shadow)}
+  .matrix .q{background:#fff;padding:16px}
+  .matrix .q h4{margin:0 0 4px}
+  .matrix .q.hi{background:#f0fdf4}
+  .matrix .q.lo{background:#fef2f2}
+  @media(max-width:560px){.matrix{grid-template-columns:1fr}}
+
+  .checklist{list-style:none;padding-left:0;max-width:74ch}
+  .checklist li{padding-left:30px;position:relative;margin:8px 0}
+  .checklist li::before{content:"\2713";position:absolute;left:0;top:0;color:var(--green);font-weight:800;
+    background:#dcfce7;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px}
+
+  .glossary dt{font-weight:700;margin-top:14px;color:var(--ink)}
+  .glossary dd{margin:2px 0 0;color:var(--ink2)}
+  .glossary dl{max-width:78ch}
+
+  /* The FinOps lifecycle: three phases */
+  .cycle{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:stretch;gap:10px;margin:20px 0}
+  .cycle .ph{border-radius:14px;padding:18px;color:#fff;box-shadow:var(--shadow)}
+  .cycle .ph h4{margin:0 0 4px;color:#fff;font-size:18px}
+  .cycle .ph p{margin:0;font-size:14px;opacity:.92}
+  .cycle .ph .q{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.8;margin-bottom:6px}
+  .cycle .inf{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
+  .cycle .opt{background:linear-gradient(135deg,#16a34a,#15803d)}
+  .cycle .ope{background:linear-gradient(135deg,#7c3aed,#5b21b6)}
+  .cycle .arrow{display:grid;place-items:center;color:var(--muted);font-size:22px;font-weight:700}
+  .cycle-back{text-align:center;font-size:13px;color:var(--muted);margin:-8px 0 18px}
+  @media(max-width:820px){.cycle{grid-template-columns:1fr}.cycle .arrow{transform:rotate(90deg);height:18px}}
+
+  /* Allocation spectrum */
+  .spectrum{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:20px 0;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .spectrum div{padding:14px 14px 16px;background:#fff;border-right:1px solid var(--line)}
+  .spectrum div:last-child{border-right:none}
+  .spectrum b{display:block;font-size:14px;margin-bottom:4px}
+  .spectrum span{font-size:13px;color:var(--ink2);display:block}
+  .spectrum .s1{border-top:5px solid #cbd5e1}
+  .spectrum .s2{border-top:5px solid #93c5fd}
+  .spectrum .s3{border-top:5px solid #6366f1}
+  .spectrum .s4{border-top:5px solid #3730a3}
+  @media(max-width:820px){.spectrum{grid-template-columns:1fr 1fr}.spectrum div{border-bottom:1px solid var(--line)}}
+  @media(max-width:480px){.spectrum{grid-template-columns:1fr}}
+
+  .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0f1b2d;color:#e2e8f0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px;overflow-x:auto;white-space:nowrap}
+  .formula b{color:#a5b4fc;font-weight:600}
+
+  .pagenav{display:flex;justify-content:space-between;margin-top:48px;padding-top:20px;border-top:1px solid var(--line);gap:12px}
+  .pagenav button{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 18px;cursor:pointer;
+    font-family:inherit;font-size:14px;color:var(--ink2);box-shadow:var(--shadow);max-width:48%}
+  .pagenav button:hover{border-color:var(--accent);color:var(--accent)}
+  .pagenav button b{display:block;color:var(--ink);font-size:14px}
+  .pagenav button span{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+
+  .mobilebar{display:none}
+  @media(max-width:820px){
+    nav.side{display:none}
+    main{padding:20px 18px 100px}
+    .mobilebar{display:block;position:sticky;top:0;background:#0f1b2d;padding:12px 16px;z-index:20;margin:-20px -18px 18px}
+    .mobilebar select{width:100%;padding:10px;border-radius:8px;border:none;font-size:15px}
+  }
+  .fn{font-size:12.5px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="side">
+    <div class="brand">
+      <h1>The FinOps Playbook</h1>
+      <span>PRINCIPAL CONSULTANT ONBOARDING • PROXIMA</span>
+    </div>
+    <div class="grp">Foundations</div>
+    <button data-p="0" class="active"><span class="num">00</span>Start Here</button>
+    <button data-p="1"><span class="num">01</span>FinOps 101</button>
+    <div class="grp">The Framework</div>
+    <button data-p="2"><span class="num">02</span>Phases, Domains &amp; Capabilities</button>
+    <button data-p="3"><span class="num">03</span>Maturity: Crawl, Walk, Run</button>
+    <div class="grp">Inform</div>
+    <button data-p="4"><span class="num">04</span>Allocation &amp; Visibility</button>
+    <button data-p="5"><span class="num">05</span>Showback &amp; Chargeback</button>
+    <div class="grp">Optimize</div>
+    <button data-p="6"><span class="num">06</span>Commitment Management</button>
+    <button data-p="7"><span class="num">07</span>Usage Optimization</button>
+    <div class="grp">Operate</div>
+    <button data-p="8"><span class="num">08</span>Governance &amp; Operating Model</button>
+    <button data-p="9"><span class="num">09</span>AI, SaaS &amp; Beyond Cloud</button>
+    <div class="grp">In the Field</div>
+    <button data-p="10"><span class="num">10</span>FinOps Meets the Deal</button>
+    <button data-p="11"><span class="num">11</span>Sourcing the Work</button>
+    <div class="grp">Reference</div>
+    <button data-p="12"><span class="num">12</span>KPIs, Glossary &amp; Cheat Sheet</button>
+  </nav>
+
+  <main>
+    <div class="mobilebar">
+      <select id="msel"></select>
+    </div>
+
+    <!-- ============ 0 START HERE ============ -->
+    <section class="page show" id="p0">
+      <div class="kicker">Welcome to the desk</div>
+      <h2 class="title">FinOps: the discipline that makes the negotiation worth winning</h2>
+      <p class="lede">A great cloud contract on a wasteful estate is still a bad outcome. This guide teaches FinOps — how organizations see, allocate, optimize, and govern technology spend — explained plainly, with pictures, and always connected back to the deal.</p>
+
+      <div class="coach">
+        <span class="tag">Coach's opening note</span>
+        <p style="margin:0">If the Cloud Negotiations Playbook is about <strong>the price</strong>, this one is about <strong>the quantity</strong>. Cloud cost is always <em>rate × usage</em>. Negotiation attacks the rate once every few years. FinOps attacks both, every single month. Clients who get this right walk into renewals with clean data, a defensible forecast, and no waste baked into the commitment — which is exactly the client a principal wants to represent.</p>
+      </div>
+
+      <h3>The mental model: rate × usage</h3>
+      <div class="grid g2">
+        <div class="card"><h4>💲 Rate — "pay less for what you use"</h4><p style="margin:0">Commitment discounts (Savings Plans, Reservations, CUDs), enterprise agreements, licensing benefits, and negotiated credits. Usually owned <strong>centrally</strong> by the FinOps team and procurement.</p></div>
+        <div class="card"><h4>📉 Usage — "use less of what you pay for"</h4><p style="margin:0">Rightsizing, turning things off, cleaning up waste, better architecture. Owned <strong>by engineering</strong>, because only engineers can change what's running.</p></div>
+      </div>
+      <div class="analogy"><span class="tag">Analogy: the household electricity bill</span><p style="margin:0">You can shop for a cheaper tariff (<strong>rate</strong>) or you can turn off the lights in empty rooms (<strong>usage</strong>). Switching tariffs once a year is a one-time win; teaching the whole family to flip the switch is a habit. FinOps is building that habit across a company of thousands — and knowing who left which light on.</p></div>
+
+      <h3>How to use this guide</h3>
+      <p>Sections follow the FinOps Foundation's own structure: foundations, the framework, then the three lifecycle phases — <span class="pill inform">Inform</span> <span class="pill optimize">Optimize</span> <span class="pill operate">Operate</span> — and finally how it all lands in a Proxima engagement. Watch for the same three signposts as the negotiation playbook:</p>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">A "do this in the real world" tip — how a principal actually applies the concept.</p></div>
+      <div class="analogy"><span class="tag">Analogy</span><p style="margin:0">A plain-English comparison to something you already understand.</p></div>
+      <div class="warn"><span class="tag">Watch out</span><p style="margin:0">A trap, gotcha, or place clients (and junior consultants) lose money.</p></div>
+
+      <h3>The framework in one glance</h3>
+      <div class="statrow">
+        <div class="stat"><div class="big" style="color:var(--accent)">6</div><div class="lbl">Principles</div></div>
+        <div class="stat"><div class="big" style="color:var(--inform)">3</div><div class="lbl">Lifecycle phases</div></div>
+        <div class="stat"><div class="big" style="color:var(--optimize)">4</div><div class="lbl">Domains</div></div>
+        <div class="stat"><div class="big" style="color:var(--operate)">~22</div><div class="lbl">Capabilities</div></div>
+      </div>
+      <p class="fn">Structure per the FinOps Foundation Framework (finops.org/framework). The Foundation revises capability names and scope roughly annually — in 2025 it widened FinOps beyond public cloud to SaaS, licensing, data center, and AI ("Scopes"). Treat the names here as the current vocabulary, and check the source before quoting a capability verbatim to a client.</p>
+
+      <div class="pagenav">
+        <span></span>
+        <button data-goto="1"><span>Next</span><b>01 · FinOps 101 →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 1 FINOPS 101 ============ -->
+    <section class="page" id="p1">
+      <div class="kicker">Foundations</div>
+      <h2 class="title">FinOps 101 — what it is, and what it isn't</h2>
+      <p class="lede">FinOps is an operational discipline and a cultural practice. It is not a tool, not a cost-cutting project, and not something finance does to engineering.</p>
+
+      <h3>The definition that matters</h3>
+      <div class="card">
+        <p style="margin:0 0 10px"><span class="keyterm">FinOps</span> (Cloud Financial Operations) is the practice of bringing <strong>financial accountability to the variable spend model of cloud</strong>, so engineering, finance, product, and procurement teams make business trade-offs between <strong>speed, cost, and quality</strong> — together, and with data.</p>
+        <p style="margin:0">The goal is <strong>not</strong> to spend less. The goal is to <strong>maximize business value per dollar</strong>. Sometimes that means spending <em>more</em> — on a launch, on a region, on AI capacity — because the return justifies it.</p>
+      </div>
+
+      <h3>Why FinOps exists at all</h3>
+      <p>In a data center, spend was decided by a few people in procurement, a few times a year, with purchase orders. In the cloud, <strong>any engineer with a keyboard can commit company money in seconds</strong> — and nobody sees the invoice for 30 days. Decentralized buying power plus delayed, unreadable bills is the problem FinOps solves.</p>
+      <div class="scroller"><table>
+        <thead><tr><th></th><th>Old world (data center)</th><th>Cloud world</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Who spends</strong></td><td>Procurement, via POs</td><td>Every engineer, via API calls</td></tr>
+          <tr><td><strong>When spend is decided</strong></td><td>Annual capacity plan</td><td>Continuously, minute by minute</td></tr>
+          <tr><td><strong>Cost shape</strong></td><td>Fixed, depreciated CapEx</td><td>Variable OpEx that changes daily</td></tr>
+          <tr><td><strong>Visibility</strong></td><td>Know what you bought</td><td>Millions of billing line items a month</td></tr>
+          <tr><td><strong>Failure mode</strong></td><td>Under-provisioning (ran out)</td><td>Over-provisioning (forgot to turn off)</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The six FinOps principles</h3>
+      <p>These are the Foundation's principles — the "constitution." When a client's practice feels stuck, one of these is usually being violated.</p>
+      <div class="grid g2">
+        <div class="card"><h4>1. Teams need to collaborate</h4><p style="margin:0">Finance, engineering, product, and procurement work together in near real time. No throwing reports over the wall.</p></div>
+        <div class="card"><h4>2. Business value drives technology decisions</h4><p style="margin:0">Judge spend by what it returns (unit economics), not by the total. A rising bill can be good news.</p></div>
+        <div class="card"><h4>3. Everyone takes ownership for their technology usage</h4><p style="margin:0">Accountability is pushed to the edge — the team that runs it owns its cost, the way they own its uptime.</p></div>
+        <div class="card"><h4>4. FinOps data should be accessible, timely, and accurate</h4><p style="margin:0">Cost data is shared openly and fast. A monthly PDF is not a feedback loop; a daily dashboard is.</p></div>
+        <div class="card"><h4>5. FinOps should be enabled centrally</h4><p style="margin:0">A central team sets standards, buys commitments, negotiates rates, and builds the tooling — so engineers can focus on usage.</p></div>
+        <div class="card"><h4>6. Take advantage of the variable cost model</h4><p style="margin:0">Variable cost is a feature. Scale down, use spot, buy commitments only for the baseline — don't recreate the data center in the cloud.</p></div>
+      </div>
+
+      <h3>The personas — who's in the room</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Persona</th><th>What they care about</th><th>What they need from FinOps</th></tr></thead>
+        <tbody>
+          <tr><td><strong>FinOps Practitioner</strong></td><td>Running the practice; bridging teams</td><td>Clean data, executive sponsorship, authority to buy commitments</td></tr>
+          <tr><td><strong>Engineering</strong></td><td>Speed, reliability, not being nagged</td><td>Cost data in their tools, specific recommendations, guardrails not gates</td></tr>
+          <tr><td><strong>Finance</strong></td><td>Accurate forecasts, budgets, accruals</td><td>Allocation to cost centers, predictable spend, amortized views</td></tr>
+          <tr><td><strong>Procurement</strong></td><td>Rates, contracts, vendor risk</td><td>Usage forecasts to size commitments; renewal timelines</td></tr>
+          <tr><td><strong>Product</strong></td><td>Margins, pricing, roadmap</td><td>Cost per customer / feature / transaction</td></tr>
+          <tr><td><strong>Leadership</strong></td><td>Value, strategy, no surprises</td><td>Unit economics trends, efficiency KPIs, spend vs. plan</td></tr>
+        </tbody>
+      </table></div>
+      <p class="fn">The Foundation also names "allied personas" whose disciplines overlap FinOps: ITAM (asset management), ITFM (IT financial management / TBM), sustainability, security, and ITSM.</p>
+
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">Proxima usually enters through <strong>procurement or finance</strong>. The engagement succeeds or fails on whether you win over <strong>engineering</strong>. Speak their language: "this recommendation is safe to apply, here's the evidence, and here's how it affects your SLO" beats "you're over budget" every time.</p></div>
+
+      <div class="warn"><span class="tag">Watch out: FinOps is not a cost-cutting project</span><p style="margin:0">A one-off "cloud cost reduction" sprint gets savings in quarter one and gives them back by quarter four, because nothing changed about <em>how</em> decisions are made. If a client frames FinOps as a project with an end date, reframe it as an operating capability — or expect the waste to grow back.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="0"><span>Previous</span><b>← 00 · Start Here</b></button>
+        <button data-goto="2"><span>Next</span><b>02 · Phases, Domains &amp; Capabilities →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 2 FRAMEWORK ============ -->
+    <section class="page" id="p2">
+      <div class="kicker">The framework</div>
+      <h2 class="title">Phases, domains &amp; capabilities</h2>
+      <p class="lede">The FinOps Foundation Framework is the shared vocabulary of the industry. Learn its three layers and you can place any client conversation on the map in seconds.</p>
+
+      <h3>Layer 1 — The lifecycle: three phases on a loop</h3>
+      <div class="cycle">
+        <div class="ph inf"><span class="q">Where are we?</span><h4>Inform</h4><p>Visibility and allocation. Get the data in, attribute every dollar to an owner, forecast, budget, and benchmark.</p></div>
+        <div class="arrow">→</div>
+        <div class="ph opt"><span class="q">What could we do?</span><h4>Optimize</h4><p>Find the opportunities: rate optimization (commitments, discounts) and usage optimization (rightsizing, waste).</p></div>
+        <div class="arrow">→</div>
+        <div class="ph ope"><span class="q">How do we sustain it?</span><h4>Operate</h4><p>Turn opportunities into action: policy, automation, governance, cadence, and continuous improvement.</p></div>
+      </div>
+      <p class="cycle-back">↺ Operate feeds back into Inform — the loop never ends, and teams run it at different speeds for different capabilities.</p>
+      <div class="analogy"><span class="tag">Analogy: getting fit</span><p style="margin:0"><strong>Inform</strong> is stepping on the scale and tracking what you eat. <strong>Optimize</strong> is choosing the diet and the training plan. <strong>Operate</strong> is actually going to the gym every week, and adjusting when it stops working. Skip Inform and you're guessing; skip Operate and you're on a crash diet.</p></div>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">The phases are not a waterfall. A client can be "Run" on commitments but "Crawl" on allocation. In practice, <strong>allocation (Inform) is the bottleneck</strong> for almost everyone — you can't hold teams accountable for costs you can't attribute to them.</p></div>
+
+      <h3>Layer 2 — The four domains</h3>
+      <p>Domains are the <em>outcomes</em> a FinOps practice exists to deliver. Each groups a set of capabilities.</p>
+      <div class="grid g2">
+        <div class="card"><h4>🔎 Understand Usage &amp; Cost</h4><p style="margin:0">Gather and structure the data so everyone knows what is being spent, where, and by whom.</p></div>
+        <div class="card"><h4>📈 Quantify Business Value</h4><p style="margin:0">Connect spend to plans and outcomes: forecasts, budgets, benchmarks, and unit economics.</p></div>
+        <div class="card"><h4>⚙️ Optimize Usage &amp; Cost</h4><p style="margin:0">Improve efficiency on both the rate and the usage side, plus architecture, licensing, and sustainability.</p></div>
+        <div class="card"><h4>🏛 Manage the FinOps Practice</h4><p style="margin:0">Run FinOps as a function: governance, education, tooling, chargeback, onboarding, and assessment.</p></div>
+      </div>
+
+      <h3>Layer 3 — The capabilities</h3>
+      <p>Capabilities are the concrete things a practice does. This is the checklist you assess a client against.</p>
+      <div class="scroller"><table>
+        <thead><tr><th>Domain</th><th>Capabilities</th><th>Where it's covered</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Understand Usage &amp; Cost</strong></td><td>Data Ingestion · Allocation · Reporting &amp; Analytics · Anomaly Management</td><td>§04</td></tr>
+          <tr><td><strong>Quantify Business Value</strong></td><td>Planning &amp; Estimating · Forecasting · Budgeting · KPIs &amp; Benchmarking · Unit Economics</td><td>§04, §12</td></tr>
+          <tr><td><strong>Optimize Usage &amp; Cost</strong></td><td>Architecting for Cloud · Rate Optimization · Workload Optimization · Licensing &amp; SaaS · Cloud Sustainability</td><td>§06, §07, §09</td></tr>
+          <tr><td><strong>Manage the FinOps Practice</strong></td><td>FinOps Practice Operations · Policy &amp; Governance · FinOps Assessment · FinOps Tools &amp; Services · Education &amp; Enablement · Invoicing &amp; Chargeback · Onboarding Workloads · Intersecting Disciplines</td><td>§05, §08</td></tr>
+        </tbody>
+      </table></div>
+      <p class="fn">Capability names follow the 2024–2025 Framework. The Foundation periodically renames and merges capabilities (e.g. governance, policy and risk), so use these as a structure rather than a contractual list.</p>
+
+      <h3>Scopes — FinOps is no longer just public cloud</h3>
+      <p>The 2025 Framework added <span class="keyterm">Scopes</span>: the same phases and capabilities applied to other technology spend with a consumption or subscription shape. Common scopes include:</p>
+      <div class="grid g3">
+        <div class="card"><h4>☁️ Public Cloud</h4><p style="margin:0">The original home of FinOps — AWS, Azure, GCP, OCI.</p></div>
+        <div class="card"><h4>🧠 AI</h4><p style="margin:0">Tokens, GPUs, provisioned model throughput. Fast-growing and poorly allocated.</p></div>
+        <div class="card"><h4>💳 SaaS &amp; Licensing</h4><p style="margin:0">Seats, consumption SaaS (Snowflake, Datadog), and BYOL software.</p></div>
+        <div class="card"><h4>🏢 Data Center</h4><p style="margin:0">Colo, private cloud, hardware — allocated with the same discipline.</p></div>
+        <div class="card"><h4>🗂 Other Cloud+</h4><p style="margin:0">Any spend with variable, usage-based cost that benefits from ownership and allocation.</p></div>
+        <div class="card"><h4>🎯 Why it matters</h4><p style="margin:0">It aligns FinOps with how Proxima already works: across the whole IT supplier estate, not one bill.</p></div>
+      </div>
+
+      <div class="pagenav">
+        <button data-goto="1"><span>Previous</span><b>← 01 · FinOps 101</b></button>
+        <button data-goto="3"><span>Next</span><b>03 · Maturity: Crawl, Walk, Run →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 3 MATURITY ============ -->
+    <section class="page" id="p3">
+      <div class="kicker">The framework</div>
+      <h2 class="title">Maturity — Crawl, Walk, Run</h2>
+      <p class="lede">The Foundation's maturity model is deliberately simple. It's assessed <em>per capability</em>, and the right target isn't always "Run."</p>
+
+      <h3>The three stages</h3>
+      <div class="grid g3">
+        <div class="card" style="border-top:5px solid #93c5fd"><h4>🐣 Crawl</h4><p style="margin:0">Little reporting and tooling. Measurement gives some insight. Basic KPIs exist. Processes are reactive and depend on a few individuals. Fixing the easy, obvious things.</p></div>
+        <div class="card" style="border-top:5px solid #6366f1"><h4>🚶 Walk</h4><p style="margin:0">The capability is understood and followed across the organization. Hard edge cases are identified but often deferred. Automation and processes cover most of the requirements.</p></div>
+        <div class="card" style="border-top:5px solid #3730a3"><h4>🏃 Run</h4><p style="margin:0">Understood and followed by all teams. Difficult edge cases are addressed. Very high goals set and met. Automation is the default approach.</p></div>
+      </div>
+
+      <h3>Illustrative maturity markers</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Measure</th><th>Crawl</th><th>Walk</th><th>Run</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Spend allocated to an owner</strong></td><td>&lt; 50%</td><td>~80%</td><td>&gt; 90%</td></tr>
+          <tr><td><strong>Forecast variance vs. actual</strong></td><td>~20%</td><td>~15%</td><td>&lt; 12%</td></tr>
+          <tr><td><strong>Commitment coverage (eligible, steady-state)</strong></td><td>~60%</td><td>~70%</td><td>~80%+</td></tr>
+          <tr><td><strong>Anomaly detection</strong></td><td>Found on the invoice</td><td>Alerts, manual triage</td><td>Routed to owner within a day</td></tr>
+          <tr><td><strong>Cost reporting</strong></td><td>Monthly, finance only</td><td>Weekly, by business unit</td><td>Daily, in engineers' tools</td></tr>
+          <tr><td><strong>Accountability model</strong></td><td>None / central team only</td><td>Showback</td><td>Chargeback + unit economics</td></tr>
+        </tbody>
+      </table></div>
+      <p class="fn">Numbers are directional markers drawn from Foundation maturity guidance and common practice, not hard thresholds. Workload variability changes what "good" coverage looks like.</p>
+
+      <div class="coach"><span class="tag">Coach's note: "Run" is not always the goal</span><p style="margin:0">Maturity should match the size of the prize. A client spending $2M a year on cloud should not build a Run-stage chargeback engine — the process costs more than it saves. Recommend the <strong>lowest maturity that captures most of the value</strong> for each capability, and invest in Run only where spend is large and volatile.</p></div>
+
+      <h3>How to run a quick maturity assessment</h3>
+      <div class="timeline">
+        <div class="step"><span class="when">Step 1</span><h4>Pick the capabilities that matter</h4><p style="margin:0">Usually 6–8: allocation, reporting, anomaly management, forecasting, rate optimization, workload optimization, policy &amp; governance, chargeback.</p></div>
+        <div class="step"><span class="when">Step 2</span><h4>Interview each persona</h4><p style="margin:0">Finance, engineering leads, procurement, and the FinOps lead (if one exists). Ask for evidence, not opinions: "show me the report."</p></div>
+        <div class="step"><span class="when">Step 3</span><h4>Score current vs. target</h4><p style="margin:0">Crawl/Walk/Run today, and the target given spend size and business goals. The gap is the roadmap.</p></div>
+        <div class="step"><span class="when">Step 4</span><h4>Prioritize by value and effort</h4><p style="margin:0">Tie each gap to dollars. Allocation gaps block everything else; commitment gaps are usually the fastest money.</p></div>
+      </div>
+
+      <div class="matrix">
+        <div class="q hi"><h4>Quick wins — high value, low effort</h4><p style="margin:0">Idle resource cleanup, commitment coverage on steady compute, storage lifecycle policies, dev/test scheduling.</p></div>
+        <div class="q"><h4>Strategic bets — high value, high effort</h4><p style="margin:0">Allocation overhaul, chargeback, unit economics, architectural modernization.</p></div>
+        <div class="q"><h4>Fill-ins — low value, low effort</h4><p style="margin:0">Minor tag hygiene, small report tweaks, niche service rightsizing.</p></div>
+        <div class="q lo"><h4>Avoid — low value, high effort</h4><p style="margin:0">Building custom tooling that a native tool already provides; perfect allocation of trivial shared costs.</p></div>
+      </div>
+
+      <div class="pagenav">
+        <button data-goto="2"><span>Previous</span><b>← 02 · Phases, Domains &amp; Capabilities</b></button>
+        <button data-goto="4"><span>Next</span><b>04 · Allocation &amp; Visibility →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 4 ALLOCATION ============ -->
+    <section class="page" id="p4">
+      <div class="kicker"><span style="color:var(--inform)">Inform</span></div>
+      <h2 class="title">Allocation &amp; visibility — who spent what, and why</h2>
+      <p class="lede">Everything in FinOps rests on this. If you can't attribute a dollar to an owner, you can't forecast it, optimize it, or charge it back.</p>
+
+      <h3>Step one: get the data in</h3>
+      <p>The raw material is the provider's detailed billing export — not the invoice PDF.</p>
+      <div class="scroller"><table>
+        <thead><tr><th>Provider</th><th>Detailed billing data</th><th>Native cost tool</th></tr></thead>
+        <tbody>
+          <tr><td class="aws">AWS</td><td>Cost &amp; Usage Report (CUR 2.0) / Data Exports, incl. FOCUS format</td><td>Cost Explorer, Cost Optimization Hub, Budgets</td></tr>
+          <tr><td class="azure">Azure</td><td>Cost Management exports (actual &amp; amortized), incl. FOCUS format</td><td>Cost Management + Billing, Advisor, FinOps toolkit</td></tr>
+          <tr><td class="gcp">Google Cloud</td><td>Cloud Billing export to BigQuery, incl. FOCUS view</td><td>Cloud Billing reports, FinOps hub, Recommender</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>FOCUS — the Rosetta Stone for bills</h3>
+      <div class="card">
+        <p style="margin:0 0 10px"><span class="keyterm">FOCUS</span> (FinOps Open Cost &amp; Usage Specification) is an open standard, stewarded by the FinOps Foundation, that defines common column names and meanings for billing data — <em>BilledCost, EffectiveCost, ListCost, ChargeCategory, ServiceName, CommitmentDiscountId</em> and so on.</p>
+        <p style="margin:0">v1.0 went GA in 2024 and later releases expanded coverage (including SaaS and invoice reconciliation). AWS, Azure, Google Cloud, and Oracle all publish FOCUS-formatted exports, as do a growing number of SaaS vendors.</p>
+      </div>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">For a multi-cloud client, ask for <strong>FOCUS exports</strong> first. It turns a week of normalizing three incompatible billing schemas into an afternoon, and it's the cleanest input for Proxima's baseline and diagnostic tools.</p></div>
+
+      <h3>The four ways to look at the same dollar</h3>
+      <p>Clients argue about "the number" because they're looking at different cost views. Know which one you're quoting.</p>
+      <div class="scroller"><table>
+        <thead><tr><th>View</th><th>What it shows</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Unblended / billed</strong></td><td>What was charged, when it was charged — an upfront RI payment is a big spike in the purchase month</td><td>Reconciling to the invoice (finance, AP)</td></tr>
+          <tr><td><strong>Amortized</strong></td><td>Upfront and recurring commitment fees spread across the term and the resources that used them</td><td>Allocation, showback, team budgets</td></tr>
+          <tr><td><strong>Net amortized</strong></td><td>Amortized, minus negotiated discounts (PPA/EDP, private rates) and credits</td><td>True cost of ownership, unit economics</td></tr>
+          <tr><td><strong>List / on-demand equivalent</strong></td><td>What it would have cost at public list price</td><td>Measuring savings and Effective Savings Rate</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><span class="tag">Watch out: the "whose number" fight</span><p style="margin:0">Finance quotes billed cost, engineering sees amortized cost in a dashboard, and procurement tracks net against the commitment. All three are right, and the meeting goes nowhere. Agree <strong>one view per purpose</strong> at the start of an engagement and label every chart with it.</p></div>
+
+      <h3>Allocation: the hierarchy of methods</h3>
+      <div class="stack">
+        <div class="lvl"><div class="pct" style="color:#3730a3">Best</div><div class="bar"><i style="width:95%"></i></div><div><strong>Account / subscription / project structure</strong> — one owner per account. Can't be forgotten or mistyped.</div></div>
+        <div class="lvl"><div class="pct" style="color:#4f46e5">Good</div><div class="bar"><i style="width:70%"></i></div><div><strong>Tags / labels</strong> — key-value metadata on resources (cost center, app, env, owner).</div></div>
+        <div class="lvl"><div class="pct" style="color:#6366f1">OK</div><div class="bar"><i style="width:45%"></i></div><div><strong>Rules &amp; virtual tagging</strong> — allocation rules in a FinOps tool that fill gaps after the fact.</div></div>
+        <div class="lvl"><div class="pct" style="color:#94a3b8">Last</div><div class="bar"><i style="width:20%;background:#cbd5e1"></i></div><div><strong>Proportional spread</strong> — distribute the unallocated remainder by a key. Honest, but nobody owns it.</div></div>
+      </div>
+
+      <h4>A minimum viable tagging standard</h4>
+      <div class="scroller"><table>
+        <thead><tr><th>Tag key</th><th>Example</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><code>cost-center</code></td><td>CC-4410</td><td>Maps to the finance GL — required for chargeback</td></tr>
+          <tr><td><code>application</code></td><td>checkout-api</td><td>Unit economics and product-level cost</td></tr>
+          <tr><td><code>environment</code></td><td>prod / staging / dev</td><td>Scheduling and non-prod waste targeting</td></tr>
+          <tr><td><code>owner</code></td><td>team-payments</td><td>Who gets the anomaly alert and the rightsizing ticket</td></tr>
+          <tr><td><code>data-classification</code></td><td>confidential</td><td>Optional — shared with security, boosts adoption</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><span class="tag">Watch out: untaggable spend</span><p style="margin:0">Some costs can never carry a tag: support fees, marketplace charges, some data transfer, shared Kubernetes clusters, commitment purchases, credits. A client proudly reporting "95% tag compliance" may still have 20–30% of <em>spend</em> unallocated. Always measure allocation as <strong>% of dollars</strong>, not % of resources.</p></div>
+
+      <h3>Shared costs: splitting the bill fairly</h3>
+      <div class="grid g3">
+        <div class="card"><h4>Even split</h4><p style="margin:0">Divide equally across consumers. Simple and defensible for small, stable shared costs (e.g. a security tooling fee).</p></div>
+        <div class="card"><h4>Proportional</h4><p style="margin:0">Split in the same ratio as each team's direct spend. The most common default.</p></div>
+        <div class="card"><h4>Fixed / driver-based</h4><p style="margin:0">Split by a measured driver: CPU requests on a Kubernetes cluster, GB stored, API calls. Fairest, most effort.</p></div>
+      </div>
+
+      <h3>Forecasting, budgeting &amp; anomalies</h3>
+      <div class="grid g3">
+        <div class="card"><h4>📊 Forecasting</h4><p style="margin:0">Trend-based forecasts plus known drivers (launches, migrations, decommissions). Forecast accuracy is what makes a commitment size defensible in a negotiation.</p></div>
+        <div class="card"><h4>🎯 Budgeting</h4><p style="margin:0">Budgets per owner, set from the forecast, reviewed monthly. Alerts at thresholds (e.g. 80% / 100% / forecast-to-exceed).</p></div>
+        <div class="card"><h4>🚨 Anomaly management</h4><p style="margin:0">Detect unexpected spend spikes daily, route to the resource owner, record the cause. A runaway job caught on day 1 costs a thirtieth of one caught on the invoice.</p></div>
+      </div>
+
+      <h3>Unit economics — the grown-up metric</h3>
+      <p>Total spend tells you <em>how much</em>. Unit cost tells you <em>whether it's good</em>.</p>
+      <div class="formula"><b>Unit cost</b> = allocated cloud cost ÷ business driver &nbsp;&nbsp;e.g. $ per order · $ per active customer · $ per 1K API calls · $ per GB processed</div>
+      <div class="analogy"><span class="tag">Analogy: the delivery company</span><p style="margin:0">A courier's fuel bill doubled. Disaster? Not if deliveries tripled — fuel <strong>per parcel</strong> fell by a third. Unit economics is how FinOps stops leadership from panicking at a growing bill that's actually a thriving business, and how it catches a flat bill hiding a worsening one.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="3"><span>Previous</span><b>← 03 · Maturity</b></button>
+        <button data-goto="5"><span>Next</span><b>05 · Showback &amp; Chargeback →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 5 SHOWBACK / CHARGEBACK ============ -->
+    <section class="page" id="p5">
+      <div class="kicker"><span style="color:var(--inform)">Inform</span> · Manage the practice</div>
+      <h2 class="title">Showback &amp; chargeback — making cost someone's problem</h2>
+      <p class="lede">Allocation tells you who spent it. Showback and chargeback decide what happens next: do teams merely <em>see</em> their costs, or do they <em>pay</em> for them?</p>
+
+      <h3>The definitions</h3>
+      <div class="grid g2">
+        <div class="card"><h4>👀 Showback</h4><p style="margin:0">Teams receive a report of the costs they drove — <strong>no money moves</strong>. Visibility creates awareness and peer pressure. Low friction, fast to launch.</p></div>
+        <div class="card"><h4>💸 Chargeback</h4><p style="margin:0">Costs are <strong>formally billed to the team's budget</strong> via internal cross-charges in the general ledger. Real financial accountability — and real political friction.</p></div>
+      </div>
+      <div class="analogy"><span class="tag">Analogy: the restaurant bill</span><p style="margin:0">A group dinner with one bill split evenly encourages everyone to order the lobster. <strong>Showback</strong> is the waiter telling each person what their order cost. <strong>Chargeback</strong> is separate checks. People order differently when it's their own card.</p></div>
+
+      <h3>The accountability spectrum</h3>
+      <div class="spectrum">
+        <div class="s1"><b>No allocation</b><span>One central IT bill. Nobody knows who drives cost. Waste is invisible.</span></div>
+        <div class="s2"><b>Showback</b><span>Costs reported by team. Awareness, no budget impact. Most orgs start here.</span></div>
+        <div class="s3"><b>Partial chargeback</b><span>Direct costs charged; shared platform costs held centrally or shown only.</span></div>
+        <div class="s4"><b>Full chargeback</b><span>All costs, incl. shared and support, billed to consumers against budgets.</span></div>
+      </div>
+
+      <h3>Side by side</h3>
+      <div class="scroller"><table>
+        <thead><tr><th></th><th>Showback</th><th>Chargeback</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Money moves?</strong></td><td>No</td><td>Yes — internal GL cross-charge</td></tr>
+          <tr><td><strong>Allocation accuracy needed</strong></td><td>"Good enough" (70–80% of spend)</td><td>High (90%+) — people dispute bills</td></tr>
+          <tr><td><strong>Behavior change</strong></td><td>Moderate — relies on culture</td><td>Strong — hits team budgets</td></tr>
+          <tr><td><strong>Setup effort</strong></td><td>Weeks</td><td>Quarters; needs finance &amp; ERP integration</td></tr>
+          <tr><td><strong>Political risk</strong></td><td>Low</td><td>High — disputes over shared costs</td></tr>
+          <tr><td><strong>Best for</strong></td><td>Starting out; product-led orgs; small shared estates</td><td>Multiple P&amp;Ls, business units with own budgets, IT-as-a-service models</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="coach"><span class="tag">Coach's note: showback first, always</span><p style="margin:0">Run <strong>at least two quarters of showback</strong> before any chargeback. It flushes out allocation errors while nothing is at stake, lets teams clean up before they're billed, and builds trust in the numbers. Chargeback launched on bad data teaches every engineering leader to distrust FinOps — permanently.</p></div>
+
+      <h3>The design decisions you'll have to make</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Decision</th><th>Options</th><th>Typical recommendation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Which cost view?</strong></td><td>Billed · amortized · net amortized · list</td><td>Net amortized — teams see real cost with commitment benefits spread fairly</td></tr>
+          <tr><td><strong>Who gets commitment savings?</strong></td><td>Central team keeps them · spread to resources that used them · spread to all proportionally</td><td>Spread to the resources that used them (amortized), with a central "unused commitment" line owned by FinOps</td></tr>
+          <tr><td><strong>Rate basis</strong></td><td>Actual cost · fixed internal rate card · on-demand list</td><td>Actual cost; a rate card only where predictability matters more than accuracy</td></tr>
+          <tr><td><strong>Shared platform costs</strong></td><td>Hold centrally · even · proportional · driver-based</td><td>Driver-based for large platforms (Kubernetes, data lake); proportional for the rest</td></tr>
+          <tr><td><strong>Support, tax, credits</strong></td><td>Central · proportional</td><td>Proportional to direct spend; credits follow the spend they relate to</td></tr>
+          <tr><td><strong>Unallocated spend</strong></td><td>Central overhead · proportional spread</td><td>Show it as its own line with a named owner and a target to shrink it</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Worked example: splitting a shared Kubernetes cluster</h3>
+      <p>A shared cluster costs <strong>$120,000/month</strong> (nodes, control plane, load balancers). Three teams run workloads; the driver is reserved CPU requests.</p>
+      <div class="scroller"><table>
+        <thead><tr><th>Team</th><th>CPU requests</th><th>Share</th><th>Allocated cost</th></tr></thead>
+        <tbody>
+          <tr><td>Payments</td><td>480 vCPU</td><td>40%</td><td>$48,000</td></tr>
+          <tr><td>Search</td><td>360 vCPU</td><td>30%</td><td>$36,000</td></tr>
+          <tr><td>Analytics</td><td>240 vCPU</td><td>20%</td><td>$24,000</td></tr>
+          <tr><td><em>Idle / unrequested capacity</em></td><td>120 vCPU</td><td>10%</td><td>$12,000 → platform team</td></tr>
+        </tbody>
+      </table></div>
+      <p class="fn">Keeping idle capacity as a visible platform-team line — instead of spreading it — gives the platform team a reason to right-size node pools. Spread it, and the waste disappears into everyone's bill.</p>
+
+      <div class="warn"><span class="tag">The classic chargeback traps</span>
+        <ul style="margin:8px 0 0">
+          <li><strong>Charging before allocation is trusted:</strong> the first month is all disputes and no behavior change.</li>
+          <li><strong>Penalizing commitment buyers:</strong> if the central team keeps all RI/SP savings, teams see on-demand prices and learn nothing about efficiency.</li>
+          <li><strong>Charging for what teams can't control:</strong> billing a product team for a platform decision breeds resentment, not savings.</li>
+          <li><strong>Mid-year budget shocks:</strong> introduce chargeback at the annual budget cycle, so teams are funded for the costs they'll now carry.</li>
+          <li><strong>Over-engineering:</strong> allocating a $400/month shared fee across 60 cost centers with a bespoke driver.</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <button data-goto="4"><span>Previous</span><b>← 04 · Allocation &amp; Visibility</b></button>
+        <button data-goto="6"><span>Next</span><b>06 · Commitment Management →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 6 COMMITMENTS ============ -->
+    <section class="page" id="p6">
+      <div class="kicker"><span style="color:var(--optimize)">Optimize</span> · Rate optimization</div>
+      <h2 class="title">Commitment management — buying the baseline, not the peak</h2>
+      <p class="lede">Commitment discounts are the single largest, fastest savings lever in most estates — and the most common source of stranded money. Managing them is a continuous portfolio, not a one-time purchase.</p>
+
+      <h3>The vehicles, by provider</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Provider</th><th>Vehicle</th><th>Commits to</th><th>Flexibility</th><th>Discount (up to)</th></tr></thead>
+        <tbody>
+          <tr><td class="aws">AWS</td><td><strong>Compute Savings Plan</strong></td><td>$/hour of compute, 1 or 3 yr</td><td>High — any EC2 family/region, Fargate, Lambda</td><td>~66%</td></tr>
+          <tr><td class="aws">AWS</td><td><strong>EC2 Instance Savings Plan</strong></td><td>$/hour in one instance family + region</td><td>Medium — any size/OS within family</td><td>~72%</td></tr>
+          <tr><td class="aws">AWS</td><td><strong>Reserved Instances</strong> (EC2, RDS, ElastiCache, OpenSearch, Redshift)</td><td>Specific instance attributes</td><td>Low (Standard) / exchangeable (Convertible)</td><td>~72%</td></tr>
+          <tr><td class="azure">Azure</td><td><strong>Savings Plan for Compute</strong></td><td>$/hour of compute, 1 or 3 yr</td><td>High — across VM series, regions, App Service, Functions premium</td><td>~65%</td></tr>
+          <tr><td class="azure">Azure</td><td><strong>Reservations</strong> (VMs, SQL, Cosmos DB, storage, etc.)</td><td>Specific SKU/region</td><td>Low — instance size flexibility within a series</td><td>~72%</td></tr>
+          <tr><td class="gcp">Google Cloud</td><td><strong>Resource-based CUDs</strong></td><td>vCPU / memory / GPU in a region</td><td>Medium — any machine shape within the family</td><td>~55–70%</td></tr>
+          <tr><td class="gcp">Google Cloud</td><td><strong>Spend-based (Flex) CUDs</strong></td><td>$/hour across eligible services</td><td>High — across families and regions</td><td>~28% (1 yr) / ~46% (3 yr)</td></tr>
+        </tbody>
+      </table></div>
+      <p class="fn">Maximum public discounts vs. on-demand; realized rates depend on family, region, OS, term, and payment option (all/partial/no upfront). Check current provider pricing pages before modeling. Google moved spend-based CUDs to SKU-level pricing in 2025 — see the Cloud Negotiations Playbook for detail.</p>
+
+      <h3>The two numbers that run the portfolio</h3>
+      <div class="grid g2">
+        <div class="card"><h4>Coverage</h4><div class="formula" style="white-space:normal">eligible usage covered by commitments ÷ total eligible usage</div><p style="margin:0">Too low = paying on-demand for steady workloads. <strong>Leaving money on the table.</strong></p></div>
+        <div class="card"><h4>Utilization</h4><div class="formula" style="white-space:normal">commitment hours used ÷ commitment hours purchased</div><p style="margin:0">Too low = paying for commitments nothing is using. <strong>Burning money.</strong></p></div>
+      </div>
+      <div class="matrix">
+        <div class="q"><h4>Low coverage · high utilization</h4><p style="margin:0">Under-committed. Safe to buy more — every new commitment will be used.</p></div>
+        <div class="q hi"><h4>High coverage · high utilization</h4><p style="margin:0">The sweet spot. Maintain, ladder renewals, watch for workload shifts.</p></div>
+        <div class="q lo"><h4>Low coverage · low utilization</h4><p style="margin:0">Wrong commitments. Bought the wrong family/region; exchange or let expire and re-buy flexibly.</p></div>
+        <div class="q"><h4>High coverage · low utilization</h4><p style="margin:0">Over-committed. Stop buying; find workloads to absorb it; use exchange/marketplace options.</p></div>
+      </div>
+
+      <h3>Break-even: the math every principal should do in their head</h3>
+      <div class="formula"><b>Break-even utilization</b> = 1 − discount &nbsp;&nbsp;→&nbsp;&nbsp; a 40% discount breaks even at 60% utilization</div>
+      <div class="stack">
+        <div class="lvl"><div class="pct">28%</div><div class="bar"><i style="width:72%"></i></div><div>Discount → must use <strong>72%</strong> of it to beat on-demand</div></div>
+        <div class="lvl"><div class="pct">40%</div><div class="bar"><i style="width:60%"></i></div><div>Discount → must use <strong>60%</strong></div></div>
+        <div class="lvl"><div class="pct">60%</div><div class="bar"><i style="width:40%"></i></div><div>Discount → must use only <strong>40%</strong></div></div>
+      </div>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">This is why 3-year commitments aren't as scary as clients think: a deep discount tolerates a lot of under-use. The real risk isn't the discount rate — it's the <strong>workload disappearing</strong> (a migration, a divestiture, a move to containers or a different family). Size 3-year commitments to what will <em>certainly</em> still exist, and use 1-year or flexible plans for the rest.</p></div>
+
+      <h3>Portfolio strategy</h3>
+      <div class="grid g2">
+        <div class="card"><h4>🪜 Ladder the purchases</h4><p style="margin:0">Buy in small tranches monthly or quarterly instead of one big purchase. Expirations spread out, so you can adjust to change without a cliff — and you're never forced into a large renewal decision at a bad moment.</p></div>
+        <div class="card"><h4>🧱 Layer by flexibility</h4><p style="margin:0">Most rigid, deepest discount (RIs, resource CUDs) for the stable core. Flexible plans (Compute SPs, Flex CUDs) for the middle. On-demand and spot for the spiky top.</p></div>
+        <div class="card"><h4>🏛 Centralize purchasing</h4><p style="margin:0">One team buys, at the payer/billing-account level, with a standing mandate and coverage target. Decentralized buying leads to duplicate, fragmented, poorly utilized commitments.</p></div>
+        <div class="card"><h4>🔄 Optimize before you commit</h4><p style="margin:0">Rightsize and clean up first. Committing to oversized instances locks in the waste for three years at a discount.</p></div>
+      </div>
+
+      <h3>The layered coverage model</h3>
+      <div class="stack">
+        <div class="lvl"><div class="pct" style="color:#94a3b8">Spiky</div><div class="bar"><i style="width:100%;background:#cbd5e1"></i></div><div>Peaks, experiments, batch → <strong>on-demand &amp; spot</strong></div></div>
+        <div class="lvl"><div class="pct" style="color:#6366f1">Variable</div><div class="bar"><i style="width:78%"></i></div><div>Likely-to-persist but shifting → <strong>1-yr flexible plans</strong></div></div>
+        <div class="lvl"><div class="pct" style="color:#4f46e5">Steady</div><div class="bar"><i style="width:58%"></i></div><div>Predictable but may modernize → <strong>3-yr flexible plans</strong></div></div>
+        <div class="lvl"><div class="pct" style="color:var(--green)">Core</div><div class="bar"><i style="width:40%;background:linear-gradient(90deg,#16a34a,#4f46e5)"></i></div><div>Certain for the full term → <strong>3-yr RIs / resource CUDs</strong></div></div>
+      </div>
+
+      <h3>Getting out of a bad commitment</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Provider</th><th>Exit / adjustment options</th></tr></thead>
+        <tbody>
+          <tr><td class="aws">AWS</td><td>Convertible RIs can be exchanged for equal-or-greater value. Standard RIs can be sold on the RI Marketplace (restrictions apply). Savings Plans generally cannot be cancelled or exchanged — the key reason to ladder them.</td></tr>
+          <tr><td class="azure">Azure</td><td>Reservations can be exchanged, and cancelled for a refund within a rolling annual cap. Microsoft has tightened exchange rules for compute reservations in favor of savings plans — confirm current policy before relying on it. Savings plans cannot be cancelled.</td></tr>
+          <tr><td class="gcp">Google Cloud</td><td>CUDs cannot be cancelled. Resource-based CUDs can be merged or split across projects via sharing within the billing account. Plan with the least room for error.</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Commitments and the enterprise agreement</h3>
+      <div class="coach"><span class="tag">Coach's note: where commitment management meets negotiation</span><p style="margin:0">Commitment purchases generally <strong>count toward</strong> the enterprise commitment — AWS Savings Plans and RIs burn down a PPA; Azure reservation and savings plan purchases burn down a MACC. And the negotiated discount usually applies <em>on top</em> of the commitment rate. So the commitment portfolio and the enterprise deal must be modeled together: the forecast that sizes one also sizes the other. Double-counting growth in both is the classic over-commitment.</p></div>
+      <div class="warn"><span class="tag">Watch out: third-party commitment managers</span><p style="margin:0">Automated commitment services (and reseller-held "pooled" commitments) can deliver strong coverage with little effort — but check who owns the commitment, how fees are calculated (often a share of savings against on-demand, which overstates value), and whether provider rule changes on commitment sharing affect the model. AWS tightened RI/Savings Plan sharing for resellers in 2025.</p></div>
+
+      <ul class="checklist">
+        <li>Measure coverage and utilization separately, per vehicle, every month.</li>
+        <li>Rightsize before buying; never commit to the waste.</li>
+        <li>Ladder purchases in small tranches; avoid expiration cliffs.</li>
+        <li>Match flexibility to certainty: rigid for the core, flexible for the middle.</li>
+        <li>Allocate commitment benefits to the teams that used them (amortized).</li>
+        <li>Model the commitment portfolio together with the PPA/MACC forecast.</li>
+      </ul>
+
+      <div class="pagenav">
+        <button data-goto="5"><span>Previous</span><b>← 05 · Showback &amp; Chargeback</b></button>
+        <button data-goto="7"><span>Next</span><b>07 · Usage Optimization →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 7 USAGE OPTIMIZATION ============ -->
+    <section class="page" id="p7">
+      <div class="kicker"><span style="color:var(--optimize)">Optimize</span> · Workload optimization</div>
+      <h2 class="title">Usage optimization — using less of what you pay for</h2>
+      <p class="lede">Rate optimization is a spreadsheet exercise. Usage optimization changes what's running — which means it only happens when engineers trust the recommendation and have time to act on it.</p>
+
+      <h3>The waste taxonomy</h3>
+      <div class="grid g2">
+        <div class="card"><h4>💤 Idle resources</h4><p style="margin:0">VMs at near-zero CPU, databases with no connections, load balancers with no targets. Delete or stop.</p></div>
+        <div class="card"><h4>📦 Orphaned resources</h4><p style="margin:0">Unattached disks, old snapshots, unused elastic IPs, forgotten test environments. Pure waste, low risk to remove.</p></div>
+        <div class="card"><h4>🐘 Oversized resources</h4><p style="margin:0">Instances sized for a peak that never comes. Rightsize to observed utilization with headroom.</p></div>
+        <div class="card"><h4>🌙 Always-on non-prod</h4><p style="margin:0">Dev and test running 168 hours a week when people work ~50. Schedule them off nights and weekends.</p></div>
+        <div class="card"><h4>🗄 Wrong storage tier</h4><p style="margin:0">Rarely read data on hot storage. Lifecycle policies to infrequent-access and archive tiers.</p></div>
+        <div class="card"><h4>🕰 Legacy generations</h4><p style="margin:0">Old instance families cost more for less performance. Modernize to current-gen or ARM (Graviton, Cobalt, Axion).</p></div>
+      </div>
+
+      <h3>The levers, ranked by effort</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Lever</th><th>Typical saving on target</th><th>Effort</th><th>Risk</th><th>Who acts</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Delete orphaned / idle</strong></td><td>100% of the resource</td><td>Low</td><td>Low (with owner check)</td><td>FinOps + owner</td></tr>
+          <tr><td><strong>Schedule non-prod</strong></td><td>~60–70% of runtime cost</td><td>Low</td><td>Low</td><td>Platform team</td></tr>
+          <tr><td><strong>Storage lifecycle &amp; tiering</strong></td><td>~40–90% on moved data</td><td>Low</td><td>Low–medium (retrieval cost)</td><td>Data owners</td></tr>
+          <tr><td><strong>Rightsizing</strong></td><td>~20–50% per resource</td><td>Medium</td><td>Medium (performance)</td><td>Engineering</td></tr>
+          <tr><td><strong>Generation / ARM migration</strong></td><td>~10–40% price-performance</td><td>Medium</td><td>Medium (compatibility)</td><td>Engineering</td></tr>
+          <tr><td><strong>Spot / preemptible</strong></td><td>Up to ~90%</td><td>Medium–high</td><td>Interruption</td><td>Engineering</td></tr>
+          <tr><td><strong>Autoscaling &amp; containers</strong></td><td>Varies widely</td><td>High</td><td>Medium</td><td>Engineering</td></tr>
+          <tr><td><strong>Re-architecture</strong> (serverless, managed services)</td><td>Varies widely</td><td>High</td><td>High</td><td>Architecture</td></tr>
+        </tbody>
+      </table></div>
+      <p class="fn">Ranges are directional and depend heavily on the estate. Use provider tools (AWS Compute Optimizer &amp; Cost Optimization Hub, Azure Advisor, Google Recommender) and client data for real figures.</p>
+
+      <div class="warn"><span class="tag">Watch out: the order of operations</span><p style="margin:0">Rightsizing an instance that's covered by a Reserved Instance can <strong>strand the reservation</strong> — the smaller instance no longer matches, and the RI goes unused. Coordinate usage and rate optimization: flexible commitments (Savings Plans, Flex CUDs) tolerate rightsizing; rigid ones don't.</p></div>
+
+      <h3>Why recommendations don't get done</h3>
+      <p>Every client has a tool showing hundreds of thousands of dollars in "recommendations." Most never happen. The reasons are predictable:</p>
+      <div class="grid g2">
+        <div class="card"><h4>No owner</h4><p style="margin:0">Can't route the ticket without allocation. Back to §04.</p></div>
+        <div class="card"><h4>No trust</h4><p style="margin:0">Engineers have been burned by a naive rightsizing that ignored memory or peaks. Show the evidence behind every recommendation.</p></div>
+        <div class="card"><h4>No time</h4><p style="margin:0">Cost work competes with features. Put it in the sprint, not in an email.</p></div>
+        <div class="card"><h4>No incentive</h4><p style="margin:0">If savings don't show up in the team's own view (showback), nobody feels the win.</p></div>
+      </div>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">Present savings as a <strong>ranked, owned backlog</strong>, not a total. "$1.2M of opportunity" is noise. "Team Payments: 14 items, $180K/yr, top 3 are low-risk and take a day" is a plan an engineering manager can say yes to. Report realized savings monthly so the program earns credibility.</p></div>
+
+      <h3>Building cost into engineering</h3>
+      <ul class="checklist">
+        <li><strong>Cost in the pull request</strong> — infrastructure-as-code cost estimates before changes merge.</li>
+        <li><strong>Architecture reviews</strong> include a cost section for new services.</li>
+        <li><strong>Default-off non-prod</strong> — environments are scheduled unless someone opts out.</li>
+        <li><strong>Guardrails, not gates</strong> — policies block the egregious (e.g. largest GPU instances in dev) and warn on the rest.</li>
+        <li><strong>Efficiency as a quality metric</strong> alongside latency and availability.</li>
+      </ul>
+
+      <div class="pagenav">
+        <button data-goto="6"><span>Previous</span><b>← 06 · Commitment Management</b></button>
+        <button data-goto="8"><span>Next</span><b>08 · Governance &amp; Operating Model →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 8 GOVERNANCE ============ -->
+    <section class="page" id="p8">
+      <div class="kicker"><span style="color:var(--operate)">Operate</span></div>
+      <h2 class="title">Governance &amp; operating model — making it stick</h2>
+      <p class="lede">Operate is where most FinOps programs stall. The data is there and the opportunities are known; what's missing is the team, the cadence, and the policies that turn insight into habit.</p>
+
+      <h3>The FinOps team: where it sits</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Reports into</th><th>Strength</th><th>Weakness</th></tr></thead>
+        <tbody>
+          <tr><td><strong>CFO / Finance</strong></td><td>Budget authority, forecast rigor, procurement links</td><td>Seen as "cost police" by engineering; weak technical credibility</td></tr>
+          <tr><td><strong>CIO / CTO / Cloud Platform</strong></td><td>Engineering trust, can automate and enforce</td><td>Can under-invest in forecasting, allocation, and finance integration</td></tr>
+          <tr><td><strong>Cloud Center of Excellence</strong></td><td>Sits with architecture &amp; governance standards</td><td>Can become a bottleneck if it owns execution, not enablement</td></tr>
+          <tr><td><strong>Procurement / Sourcing</strong></td><td>Strong on rates and contracts</td><td>Little influence over usage — half the equation</td></tr>
+        </tbody>
+      </table></div>
+      <p>Whatever the reporting line, the Foundation's consistent finding is that successful practices have an <strong>executive sponsor</strong>, a <strong>dedicated central team</strong> that <em>enables</em> rather than does, and <strong>named FinOps champions</strong> embedded in engineering teams.</p>
+
+      <h3>Who does what — a simple RACI</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Activity</th><th>FinOps team</th><th>Engineering</th><th>Finance</th><th>Procurement</th><th>Leadership</th></tr></thead>
+        <tbody>
+          <tr><td>Allocation standards &amp; tagging policy</td><td>A/R</td><td>C</td><td>C</td><td>I</td><td>I</td></tr>
+          <tr><td>Commitment purchases</td><td>R</td><td>C</td><td>A</td><td>C</td><td>I</td></tr>
+          <tr><td>Rightsizing &amp; waste cleanup</td><td>C</td><td>A/R</td><td>I</td><td>—</td><td>I</td></tr>
+          <tr><td>Forecast &amp; budget</td><td>R</td><td>C</td><td>A</td><td>I</td><td>I</td></tr>
+          <tr><td>Enterprise agreement / renewal</td><td>C</td><td>C</td><td>C</td><td>A/R</td><td>I</td></tr>
+          <tr><td>Anomaly response</td><td>R (detect)</td><td>A/R (fix)</td><td>I</td><td>—</td><td>—</td></tr>
+          <tr><td>Unit economics &amp; KPIs</td><td>R</td><td>C</td><td>C</td><td>—</td><td>A</td></tr>
+        </tbody>
+      </table></div>
+      <p class="fn">R = responsible, A = accountable, C = consulted, I = informed. Adapt per client.</p>
+
+      <h3>The operating cadence</h3>
+      <div class="timeline">
+        <div class="step"><span class="when">Daily</span><h4>Anomalies</h4><p style="margin:0">Automated detection; alerts routed to resource owners; FinOps triages the unowned.</p></div>
+        <div class="step"><span class="when">Weekly</span><h4>Team cost reviews</h4><p style="margin:0">Engineering teams glance at their dashboards; top optimization items go into sprint planning.</p></div>
+        <div class="step"><span class="when">Monthly</span><h4>Business review &amp; commitments</h4><p style="margin:0">Spend vs. budget and forecast by business unit; coverage/utilization review; commitment tranche purchased; realized savings reported.</p></div>
+        <div class="step"><span class="when">Quarterly</span><h4>Executive review</h4><p style="margin:0">Unit economics trends, maturity progress, forecast re-baseline, upcoming contract events.</p></div>
+        <div class="step"><span class="when">Annually</span><h4>Budget &amp; strategy</h4><p style="margin:0">Budget setting from bottom-up forecasts, chargeback model changes, target maturity for next year, enterprise agreement planning.</p></div>
+      </div>
+
+      <h3>Policy &amp; guardrails</h3>
+      <div class="grid g2">
+        <div class="card"><h4>🏷 Tagging enforcement</h4><p style="margin:0">Required tags enforced at creation: AWS Organizations tag policies and SCPs, Azure Policy, GCP organization policies with labels/tags.</p></div>
+        <div class="card"><h4>🚧 Service &amp; region guardrails</h4><p style="margin:0">Restrict expensive instance types, unapproved regions, or unapproved marketplace purchases in non-prod.</p></div>
+        <div class="card"><h4>💰 Budgets &amp; alerts</h4><p style="margin:0">Every account/subscription/project has a budget and owner-routed alerts. Optional automated actions for sandboxes.</p></div>
+        <div class="card"><h4>♻️ Lifecycle automation</h4><p style="margin:0">Auto-expire sandboxes, delete old snapshots, schedule non-prod, enforce storage lifecycle rules.</p></div>
+      </div>
+
+      <h3>The tooling landscape</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Category</th><th>Examples</th><th>When it's enough</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Native provider tools</strong></td><td>AWS Cost Explorer / Cost Optimization Hub · Azure Cost Management / FinOps toolkit · Google Cloud FinOps hub</td><td>Single cloud, early maturity, modest spend</td></tr>
+          <tr><td><strong>FinOps platforms</strong></td><td>Apptio Cloudability · Flexera One · VMware Tanzu CloudHealth · Vantage · CloudZero · Finout · Ternary</td><td>Multi-cloud, allocation complexity, showback/chargeback at scale</td></tr>
+          <tr><td><strong>Commitment automation</strong></td><td>ProsperOps · Zesty · Archera · provider-native recommendations</td><td>Large, dynamic compute estates with limited team capacity</td></tr>
+          <tr><td><strong>Kubernetes cost</strong></td><td>OpenCost / Kubecost · provider split-cost allocation</td><td>Significant shared container platforms</td></tr>
+          <tr><td><strong>Engineering-side</strong></td><td>Infracost (IaC cost estimates) · observability-integrated cost</td><td>Shift-left culture, platform engineering teams</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><span class="tag">Watch out: buying a tool instead of building a practice</span><p style="margin:0">A FinOps platform is a <strong>multiplier on a process that already exists</strong>. Bought first, it becomes a dashboard nobody opens. Get allocation standards, owners, and a cadence working with native tools, then buy a platform to scale it. And negotiate the tool itself: many price as a percentage of cloud spend under management — a fee that grows with the bill it's meant to shrink.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="7"><span>Previous</span><b>← 07 · Usage Optimization</b></button>
+        <button data-goto="9"><span>Next</span><b>09 · AI, SaaS &amp; Beyond Cloud →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 9 AI / SAAS ============ -->
+    <section class="page" id="p9">
+      <div class="kicker"><span style="color:var(--operate)">Operate</span> · Scopes</div>
+      <h2 class="title">AI, SaaS &amp; beyond cloud</h2>
+      <p class="lede">The same Inform → Optimize → Operate loop now applies to the fastest-growing, least-governed spend in the enterprise: AI and consumption-based SaaS.</p>
+
+      <h3>FinOps for AI — why it's different</h3>
+      <div class="grid g2">
+        <div class="card"><h4>🔤 New units</h4><p style="margin:0">Input and output tokens, images, audio minutes, GPU-hours, provisioned throughput units. Pricing differs by model, context length, and caching — and changes frequently.</p></div>
+        <div class="card"><h4>⚡ Scarce capacity</h4><p style="margin:0">GPUs are supply-constrained. Capacity reservations and provisioned throughput trade flexibility for guaranteed access, often with steep minimums.</p></div>
+        <div class="card"><h4>🧪 Experimental spend</h4><p style="margin:0">Many teams, many pilots, many API keys — often on corporate cards or outside the cloud bill entirely. Allocation is weak by default.</p></div>
+        <div class="card"><h4>📉 Value is uncertain</h4><p style="margin:0">Unit economics (cost per resolved ticket, per generated document) matter more than ever, because ROI is still being proven.</p></div>
+      </div>
+
+      <h3>The AI cost levers</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Lever</th><th>What it means</th><th>Typical impact</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Model selection</strong></td><td>Use the smallest model that meets the quality bar; route easy requests to cheaper models</td><td>Often the largest lever — price gaps between tiers can be 10×+</td></tr>
+          <tr><td><strong>Prompt caching</strong></td><td>Reuse repeated context (system prompts, documents) at a discounted cached rate</td><td>Large on repetitive, long-context workloads</td></tr>
+          <tr><td><strong>Batch processing</strong></td><td>Submit non-urgent work to batch APIs at discounted rates</td><td>Commonly ~50% off where latency doesn't matter</td></tr>
+          <tr><td><strong>Prompt &amp; output discipline</strong></td><td>Trim context, cap output length, avoid re-sending history</td><td>Moderate, compounding</td></tr>
+          <tr><td><strong>Provisioned vs. on-demand</strong></td><td>Reserved model throughput (e.g. Azure OpenAI PTUs, Bedrock / Vertex provisioned throughput) vs. pay-per-token</td><td>Saves at high steady volume; wastes at low utilization — same break-even math as §06</td></tr>
+          <tr><td><strong>GPU utilization</strong></td><td>Right-size instances, share GPUs, schedule training, use capacity blocks for bursts</td><td>Large for self-hosted models</td></tr>
+        </tbody>
+      </table></div>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">Start AI FinOps with <strong>allocation</strong>, not optimization: one gateway or account structure so every token is attributable to a team and use case. Then attach a business metric. Then optimize. It's the same order as cloud — clients just skip it because the spend feels experimental.</p></div>
+      <div class="warn"><span class="tag">Watch out: AI commitments</span><p style="margin:0">Provisioned throughput and GPU reservations are commitments with the same break-even math as a Savings Plan — but model generations turn over far faster than instance families. A 12-month reservation on a model that's superseded in six is a stranded commitment. Keep terms short and insist on model-portability or exchange rights when negotiating.</p></div>
+
+      <h3>FinOps for SaaS &amp; licensing</h3>
+      <div class="grid g3">
+        <div class="card"><h4>Seat-based SaaS</h4><p style="margin:0">Inform: license inventory and usage. Optimize: reclaim inactive seats, right-tier editions. Operate: joiner/leaver automation.</p></div>
+        <div class="card"><h4>Consumption SaaS</h4><p style="margin:0">Snowflake, Databricks, Datadog: credits and ingest volumes behave like cloud. Allocate by warehouse/workspace/team; commit to baselines.</p></div>
+        <div class="card"><h4>Licensing in cloud</h4><p style="margin:0">BYOL and hybrid benefits (e.g. Azure Hybrid Benefit), license-included vs. bring-your-own pricing, and audit exposure from vCPU-based licensing.</p></div>
+      </div>
+      <p>FOCUS-formatted exports from SaaS vendors are making it possible to put these costs on the same dashboard as cloud — which is exactly where the Foundation's Scopes are heading.</p>
+
+      <h3>Sustainability — the allied discipline</h3>
+      <p>Carbon and cost are closely correlated: idle resources, oversized instances, and hot storage for cold data waste both. Provider carbon tools (AWS Customer Carbon Footprint Tool, Azure Emissions Impact Dashboard, Google Cloud Carbon Footprint) let a FinOps program report emissions alongside spend. Useful for winning sponsorship from ESG leaders — and increasingly a reporting obligation.</p>
+
+      <div class="pagenav">
+        <button data-goto="8"><span>Previous</span><b>← 08 · Governance &amp; Operating Model</b></button>
+        <button data-goto="10"><span>Next</span><b>10 · FinOps Meets the Deal →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 10 FINOPS MEETS THE DEAL ============ -->
+    <section class="page" id="p10">
+      <div class="kicker">In the field</div>
+      <h2 class="title">FinOps meets the deal</h2>
+      <p class="lede">Where this playbook and the Cloud Negotiations Playbook join. FinOps is what makes a commitment defensible, a forecast credible, and a discount real.</p>
+
+      <h3>Why FinOps is negotiation prep</h3>
+      <div class="grid g2">
+        <div class="card"><h4>1. A clean baseline</h4><p style="margin:0">Optimize before negotiating, or you commit to the waste. The baseline should be the <strong>post-optimization</strong> run-rate, not today's bill.</p></div>
+        <div class="card"><h4>2. A credible forecast</h4><p style="margin:0">Commitment size is a forecast. Allocation by business unit plus known drivers makes the number defensible — to the CFO and to the vendor.</p></div>
+        <div class="card"><h4>3. A commitment portfolio in view</h4><p style="margin:0">Existing RIs/SPs/CUDs and their expirations shape how much enterprise commitment is safe and when to sign.</p></div>
+        <div class="card"><h4>4. Governance the vendor can see</h4><p style="margin:0">A client that can prove it hits its commitments gets better terms, ramps, and flexibility — it's lower risk to the provider.</p></div>
+      </div>
+
+      <h3>The FinOps-to-renewal timeline</h3>
+      <div class="timeline">
+        <div class="step"><span class="when">T minus 12 months</span><h4>Assess &amp; allocate</h4><p style="margin:0">Maturity assessment; get billing exports (ideally FOCUS); push allocation above ~80% of spend; stand up showback.</p></div>
+        <div class="step"><span class="when">T minus 9–12 months</span><h4>Optimize the estate</h4><p style="margin:0">Waste cleanup, non-prod scheduling, rightsizing. Capture the run-rate reduction <em>before</em> it's baked into a commitment.</p></div>
+        <div class="step"><span class="when">T minus 6–9 months</span><h4>Forecast &amp; model commitments</h4><p style="margin:0">Bottom-up forecast by business unit; model the commitment portfolio and enterprise commitment together; set coverage targets.</p></div>
+        <div class="step"><span class="when">T minus 3–6 months</span><h4>Hand off to negotiation</h4><p style="margin:0">Baseline, forecast, and scenarios feed the negotiation strategy. Hold large commitment purchases that would lock in position early.</p></div>
+        <div class="step"><span class="when">Close</span><h4>Contract to operations</h4><p style="margin:0">Translate the contract into FinOps terms: commitment burn-down tracking, credit expiry dates, price-protection checks, true-up dates.</p></div>
+        <div class="step"><span class="when">Ongoing</span><h4>Operate &amp; prepare the next one</h4><p style="margin:0">Monthly burn-down vs. commitment, coverage/utilization, and a data trail that makes the next renewal easier.</p></div>
+      </div>
+
+      <h3>A Proxima FinOps engagement, in 90 days</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Window</th><th>Focus</th><th>Deliverables</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Days 0–30</strong><br><span class="pill inform">Inform</span></td><td>Data access, allocation baseline, maturity assessment, stakeholder interviews</td><td>Spend baseline by provider/BU · allocation coverage % · maturity scorecard · quick-win list</td></tr>
+          <tr><td><strong>Days 31–60</strong><br><span class="pill optimize">Optimize</span></td><td>Quick wins executed, commitment portfolio analysis, owned optimization backlog</td><td>Realized savings report · commitment coverage/utilization review &amp; purchase plan · ranked team backlogs</td></tr>
+          <tr><td><strong>Days 61–90</strong><br><span class="pill operate">Operate</span></td><td>Operating model, policies, cadence, showback launch, renewal alignment</td><td>Target operating model &amp; RACI · tagging policy · showback reports · KPI dashboard · renewal readiness brief</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Discovery questions that reveal maturity fast</h3>
+      <ul class="checklist">
+        <li>"What percentage of last month's <em>spend</em> can you attribute to an owner?" (Not tag compliance — spend.)</li>
+        <li>"Show me the report your engineering teams look at. How often do they look?"</li>
+        <li>"Who is allowed to buy Savings Plans or reservations, and when did they last buy?"</li>
+        <li>"What were coverage and utilization last month, per vehicle?"</li>
+        <li>"How far off was last quarter's cloud forecast?"</li>
+        <li>"What was your last cost anomaly, and how many days until someone noticed?"</li>
+        <li>"When does each commitment and enterprise agreement expire?"</li>
+        <li>"Do you know your cloud cost per customer, transaction, or product?"</li>
+      </ul>
+
+      <div class="coach"><span class="tag">Coach's note: using the Proxima toolkit</span><p style="margin:0">The <strong>IT Spend Diagnostic</strong> finds where negotiable money sits across suppliers; the <strong>Cloud Baseline Planner</strong> establishes the optimized run-rate; the provider <strong>negotiation planners</strong> turn that baseline and forecast into a commitment strategy. This playbook is the discipline that makes each of those inputs trustworthy.</p></div>
+      <p>The obvious question a client will ask in the first meeting is <strong>"who actually does this work?"</strong> — Proxima, their team, their reseller, or someone else. <a href="#" data-goto="11">Section 11</a> covers the delivery options, how each one is funded, and the answer to give.</p>
+
+      <div class="warn"><span class="tag">The classic traps at the FinOps–negotiation seam</span>
+        <ul style="margin:8px 0 0">
+          <li><strong>Locking in waste:</strong> signing the enterprise commitment on the pre-optimization bill.</li>
+          <li><strong>Double-counting growth:</strong> the same growth used to size both the RI/SP portfolio and the PPA/MACC.</li>
+          <li><strong>Buying commitments mid-negotiation:</strong> large purchases just before signing hand the vendor the spend without the concession.</li>
+          <li><strong>No owner for the contract after signing:</strong> credits expire unused, burn-down drifts, price protection goes unchecked.</li>
+          <li><strong>Optimizing after committing:</strong> a successful rightsizing program that pushes the client below its commitment floor.</li>
+        </ul>
+      </div>
+
+      <div class="pagenav">
+        <button data-goto="9"><span>Previous</span><b>← 09 · AI, SaaS &amp; Beyond Cloud</b></button>
+        <button data-goto="11"><span>Next</span><b>11 · Sourcing the Work →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 11 SOURCING THE WORK ============ -->
+    <section class="page" id="p11">
+      <div class="kicker">In the field</div>
+      <h2 class="title">Sourcing the FinOps work — options when you don't own a practice</h2>
+      <p class="lede">Proxima doesn't run a FinOps delivery practice today. That's as much a positioning choice as a gap: the independence that makes our commercial advice credible is exactly what most FinOps delivery models compromise. This section is the menu — who can do the work, who pays for it, and where the conflicts hide.</p>
+
+      <div class="coach">
+        <span class="tag">Coach's framing</span>
+        <p style="margin:0">Split the work in two before you decide anything. <strong>The commercial half</strong> — baseline, allocation standards, forecast, commitment strategy, contract — is sourcing work Proxima already does. <strong>The engineering half</strong> — rightsizing, scheduling, tagging enforcement, platform tooling, automation — needs hands in the client's cloud accounts. You almost never need to own both to run a valuable engagement; you need a credible answer for who does each.</p>
+      </div>
+
+      <h3>The five delivery models</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Model</th><th>Who does the work</th><th>How it's paid for</th><th>Best when</th><th>Main risk</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1. Advisory-led, client-executed</strong><br><span class="muted">Proxima today</span></td><td>Proxima assesses, designs, and sizes; client engineering executes</td><td>Fixed fee or retainer</td><td>A renewal is driving the work and the client has capable platform engineers</td><td>Execution stalls if no internal owner is named</td></tr>
+          <tr><td><strong>2. Client builds a practice</strong></td><td>Client hires a FinOps lead + champions; Proxima designs the operating model and trains</td><td>Client headcount; Proxima fee for design &amp; enablement</td><td>Cloud spend is large and permanent (roughly $20M+/yr)</td><td>Takes 2–4 quarters to produce results; needs an executive sponsor</td></tr>
+          <tr><td><strong>3. Specialist FinOps consultancy</strong></td><td>A pure-play FinOps/cloud-economics firm, as our subcontractor or as a referral</td><td>Day rate, fixed fee, or subscription</td><td>Deep tooling, Kubernetes, or data-platform cost work is needed</td><td>They may also want the commercial/negotiation scope — agree boundaries in writing</td></tr>
+          <tr><td><strong>4. VAR / reseller / MSP</strong></td><td>The partner that resells or manages the client's cloud bundles optimization services</td><td>Usually funded by resell margin and provider incentives — often "free"</td><td>Mid-market clients with thin internal teams and no appetite to pay fees</td><td>Structural conflict: their revenue grows with the bill they're meant to shrink</td></tr>
+          <tr><td><strong>5. Automation / platform-as-a-service</strong></td><td>Software plus a light managed service, mostly on the rate side</td><td>Subscription, or a share of measured savings</td><td>Large, dynamic compute estates; fast wins on commitment coverage</td><td>Fee basis can overstate value; it doesn't touch usage or culture</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>How VARs and resellers actually get paid</h3>
+      <p>The client rarely sees this, and it explains almost every behavior you'll observe from a partner-led FinOps offer.</p>
+      <div class="grid g2">
+        <div class="card"><h4>💱 Resell margin &amp; partner of record</h4><p style="margin:0">Under the hyperscaler channel programs (AWS Solution Provider, Microsoft CSP, Google Cloud reseller/MSP), the partner buys cloud wholesale and bills the client, keeping a spread or rebating part of it. "Free FinOps" is funded out of that spread — the client pays for it in the rate.</p></div>
+        <div class="card"><h4>🎁 Provider funding</h4><p style="margin:0">Hyperscalers pay partners to run assessments and migrations: AWS MAP and Optimization &amp; Licensing Assessments, Microsoft's Azure migration/modernization funding and ECIF, Google's migration and partner incentive programs. This is genuinely cheap for the client — the provider is paying — but it comes with a migration or consumption agenda.</p></div>
+        <div class="card"><h4>🧾 Services &amp; platform fees</h4><p style="margin:0">A managed FinOps service on top of a licensed platform (often priced as a percentage of cloud spend under management — a fee that grows with the bill).</p></div>
+        <div class="card"><h4>📊 Gainshare</h4><p style="margin:0">A share of "savings," usually measured against on-demand list or a pre-engagement run-rate. The baseline definition is the entire negotiation.</p></div>
+      </div>
+
+      <div class="warn"><span class="tag">Watch out: the four conflicts to name out loud</span>
+        <ul style="margin:8px 0 0">
+          <li><strong>Margin vs. mandate:</strong> a partner earning a percentage of consumption has a structural reason not to shrink it. Ask how their commercial model survives a 25% reduction in the client's bill.</li>
+          <li><strong>Partner of record:</strong> moving billing through a reseller can change eligibility for private pricing, support terms, and who sits in the room at renewal. Never let a client change partner-of-record status mid-negotiation without modeling the effect on the PPA/MACC.</li>
+          <li><strong>Pooled commitments:</strong> some MSP models hold commitments in their own name and pool the benefit. Check whose balance sheet the commitment sits on and what happens at exit — AWS tightened reseller RI/Savings Plan sharing in 2025, which broke several of these models.</li>
+          <li><strong>Savings math:</strong> a fee taken as a share of savings against <em>on-demand list</em> charges the client for discounts they already had. Insist the baseline is the actual pre-engagement run-rate.</li>
+        </ul>
+      </div>
+
+      <h3>Matching the model to the client</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Client profile</th><th>Recommended shape</th><th>Proxima's role</th></tr></thead>
+        <tbody>
+          <tr><td><strong>&lt; $5M cloud spend, small IT team</strong></td><td>VAR- or MSP-led, or native tools plus light advisory</td><td>Vet the partner, set the standards, audit the outcome</td></tr>
+          <tr><td><strong>$5–25M, renewal in the next year</strong></td><td>Advisory-led assessment now; commitment automation for the rate side</td><td>Prime — baseline, forecast, commitment strategy, negotiation</td></tr>
+          <tr><td><strong>$25M+, mature engineering org</strong></td><td>Client builds an in-house practice</td><td>Design the operating model, train, then stay on for the commercial cycle</td></tr>
+          <tr><td><strong>Any size, no internal capacity to execute</strong></td><td>Specialist consultancy subcontracted under Proxima, or a referral</td><td>Prime and govern, or refer and stay on the commercial scope</td></tr>
+          <tr><td><strong>Multi-supplier IT estate, cloud is one part</strong></td><td>Proxima-led across the estate, partners for cloud engineering depth</td><td>Prime — this is the IT Spend Diagnostic pattern</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The named landscape</h3>
+      <p>A map of who's actually out there, by category. This is <strong>orientation, not a recommendation list</strong> — Proxima has no commercial relationship with any of them, and the market moves fast (ProsperOps, the best-known commitment automation vendor, was acquired by Flexera in January 2026). Verify current status before you name anyone to a client.</p>
+      <div class="scroller"><table>
+        <thead><tr><th>Category</th><th>Named examples</th><th>How they're paid</th><th>Use them when…</th><th>Flag</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Pure-play FinOps / cloud economics consultancies</strong></td>
+            <td>Duckbill (AWS-focused; also sells cloud contract negotiation) · Virtasant (outcome-based, "no savings, no fee") · Strategic Blue (London-based, FinOps + cloud purchasing)</td>
+            <td>Fees, outcome-based, or resale spread</td>
+            <td>Deep technical cost work on a complex estate</td>
+            <td>⚠️ Several also sell <strong>negotiation</strong> — direct overlap with Proxima's core scope. Agree boundaries before introducing them.</td>
+          </tr>
+          <tr>
+            <td><strong>Group-buy / broker resellers</strong></td>
+            <td>CloudKeeper (group buying + "EDP+" style commitments) · Strategic Blue</td>
+            <td>Resale margin, group-pooled commitments, share of savings</td>
+            <td>Mid-market clients too small for their own enterprise discount</td>
+            <td>⚠️ They become partner of record, and commitments may sit in <em>their</em> name. Check exit terms.</td>
+          </tr>
+          <tr>
+            <td><strong>Commitment automation</strong></td>
+            <td>ProsperOps (Flexera company since Jan 2026) · Zesty · Archera (adds "commitment insurance") · nOps</td>
+            <td>Subscription or a share of measured savings</td>
+            <td>Large, dynamic compute estates; fast rate-side wins</td>
+            <td>⚠️ Savings baselines are often vendor-defined (ProsperOps prices off its own ESR metric) — hard to benchmark across vendors.</td>
+          </tr>
+          <tr>
+            <td><strong>FinOps platforms (some with managed service)</strong></td>
+            <td>Flexera (now incl. ProsperOps &amp; Chaos Genius) · IBM Cloudability/Apptio · CloudHealth (Broadcom) · Vantage · CloudZero · Finout · Ternary</td>
+            <td>Subscription, often a percentage of cloud spend under management</td>
+            <td>The client needs a tooling backbone for allocation and showback</td>
+            <td>⚠️ A fee that scales with the bill it's meant to shrink. Negotiate the floor, the cap, and the renewal.</td>
+          </tr>
+          <tr>
+            <td><strong>VARs / MSPs with FinOps practices</strong></td>
+            <td>SoftwareOne · Crayon · Rackspace Technology (publishes "GainShare" and no-upfront-cost models) · SHI · CDW · Presidio · Kyndryl · TD SYNNEX (distributor-level practice on IBM Cloudability, launched Oct 2025)</td>
+            <td>Resale margin + hyperscaler funding + services fees</td>
+            <td>Mid-market, thin internal teams, no appetite for fees</td>
+            <td>⚠️ The margin conflict in its purest form — most also resell the client's licensing. Ask what they earn on the estate.</td>
+          </tr>
+          <tr>
+            <td><strong>Global SIs / Big Four</strong></td>
+            <td>Accenture · Deloitte · PwC · KPMG · Cognizant · Capgemini · IBM</td>
+            <td>Day rates, transformation programs</td>
+            <td>Global, multi-year operating-model change alongside a wider transformation</td>
+            <td>⚠️ Expensive, often junior delivery, and frequently tied to their own platform or a migration agenda.</td>
+          </tr>
+          <tr>
+            <td><strong>The hyperscalers themselves</strong></td>
+            <td>Microsoft and Google Cloud both hold FinOps Certified Service Provider status; AWS runs its own optimization and licensing assessments</td>
+            <td>Free or provider-funded</td>
+            <td>Free expertise and the best possible data on their own platform</td>
+            <td>⚠️ They will never recommend spending less with themselves, moving workloads out, or how to negotiate against them.</td>
+          </tr>
+        </tbody>
+      </table></div>
+      <p class="fn">Compiled September 2026 from vendor and FinOps Foundation sources. The Foundation publishes certification programs (Certified Service Provider, Certified Platform, Certified Training Provider) and a member directory at <a href="https://www.finops.org/" target="_blank" rel="noopener">finops.org</a> — check certification status there rather than taking a partner's word for it. Certification proves training and framework alignment, not independence.</p>
+
+      <div class="coach"><span class="tag">Coach's note: a shortlist worth building</span><p style="margin:0">If Proxima wants two names on the bench rather than a market map, pick for <strong>complementarity, not coverage</strong>: one specialist consultancy for engineering depth on the Optimize/Operate side, and one commitment-automation vendor for rate-side wins we can't execute ourselves. Screen out anyone who sells cloud contract negotiation — they'd be sitting next to us in the only room that matters — and anyone who takes resale margin on the client's cloud, because introducing them undercuts the independence we lead with.</p></div>
+
+      <h3>Due diligence on any FinOps partner</h3>
+      <p>Whether you're referring, subcontracting, or reviewing a partner the client already has, ask these. The answers sort the genuinely independent from the margin-funded fast.</p>
+      <ul class="checklist">
+        <li>Do you resell or manage any of this client's cloud, and what margin or rebate do you earn on it?</li>
+        <li>How is your fee calculated — against list price, on-demand, or the client's actual pre-engagement run-rate?</li>
+        <li>Who holds the commitments, in whose name, and what happens to them if we terminate?</li>
+        <li>Who owns the billing data, the tooling configuration, and the allocation rules at exit?</li>
+        <li>Are you a FinOps Foundation Certified Service Provider, and which named staff hold current certifications?</li>
+        <li>Will you contractually leave the client's direct provider relationship and private pricing untouched?</li>
+        <li>Show realized savings on a comparable estate — net of your fee, measured against a real baseline.</li>
+        <li>Does your recommendation engine ever favor a product or provider you resell?</li>
+      </ul>
+
+      <h3>If Proxima wants to build the capability</h3>
+      <div class="grid g2">
+        <div class="card"><h4>🎓 Train (cheapest, slowest)</h4><p style="margin:0">Put existing consultants through FinOps Foundation certification (Certified Practitioner is the entry point, plus role-specific tracks) and join the Foundation. Gives vocabulary and credibility on the Inform and rate side — not engineering depth.</p></div>
+        <div class="card"><h4>🤝 Partner formally</h4><p style="margin:0">A named delivery partner with a reciprocal referral and subcontract agreement, so Proxima can prime an engagement and staff the engineering half on demand. Fastest route to a credible offer.</p></div>
+        <div class="card"><h4>🧑‍💻 Borrow</h4><p style="margin:0">An associate or contractor bench of FinOps practitioners, white-labelled. Variable cost, no bench risk, but quality depends on individuals.</p></div>
+        <div class="card"><h4>🏗 Hire a lead</h4><p style="margin:0">One senior practitioner paired with existing sourcing consultants seeds a practice. Only worth it with a pipeline of engagements to fund the bench.</p></div>
+      </div>
+
+      <h3>Commercial models for the engagement</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Model</th><th>Fits</th><th>Design note</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fixed-fee assessment</strong></td><td>The 30/60/90 engagement in §10</td><td>Clean, predictable, and the natural on-ramp to a renewal mandate</td></tr>
+          <tr><td><strong>Subscription advisory</strong></td><td>Ongoing cadence, quarterly reviews, renewal calendar</td><td>Keeps the data fresh between deals — the highest-value position to hold</td></tr>
+          <tr><td><strong>Gainshare</strong></td><td>Clients who won't fund a fee up front</td><td>Define the baseline, the measurement window, and exclusions precisely, or it ends in dispute</td></tr>
+          <tr><td><strong>Subcontract (Proxima primes)</strong></td><td>Client wants one throat to choke</td><td>Proxima owns quality and the client relationship; margin on partner delivery</td></tr>
+          <tr><td><strong>Referral (partner primes)</strong></td><td>Work we don't want to own</td><td>Protects independence; agree in advance that Proxima keeps the commercial scope</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="coach"><span class="tag">Coach's recommendation — the stance to take today</span><p style="margin:0">Lead with the half we're best at and be explicit about the half we're not. Proxima owns <strong>Inform and the rate/contract side</strong>: baseline, allocation standards, forecast, commitment strategy, negotiation. Partner for the <strong>engineering-heavy Operate work</strong>. And say the thing no VAR can say: <em>we take no margin on your cloud consumption, so our advice to spend less costs us nothing</em>. That independence is the differentiator — a practice built by taking resell margin would quietly cost us the reason clients hire us.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="10"><span>Previous</span><b>← 10 · FinOps Meets the Deal</b></button>
+        <button data-goto="12"><span>Next</span><b>12 · KPIs, Glossary &amp; Cheat Sheet →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 12 GLOSSARY ============ -->
+    <section class="page" id="p12">
+      <div class="kicker">Reference</div>
+      <h2 class="title">KPIs, glossary &amp; cheat sheet</h2>
+      <p class="lede">The numbers to track and the vocabulary to use. Skim it now; come back whenever a meeting throws a new term at you.</p>
+
+      <h3>The 60-second pre-meeting cheat sheet</h3>
+      <div class="grid g3">
+        <div class="card"><h4 style="color:var(--inform)">Inform</h4><p style="margin:0"><strong>Ask:</strong> % of spend allocated?<br><strong>Data:</strong> CUR / exports / FOCUS<br><strong>Model:</strong> showback → chargeback<br><strong>North star:</strong> unit cost</p></div>
+        <div class="card"><h4 style="color:var(--optimize)">Optimize</h4><p style="margin:0"><strong>Rate:</strong> coverage &amp; utilization<br><strong>Usage:</strong> idle, oversized, non-prod<br><strong>Math:</strong> break-even = 1 − discount<br><strong>North star:</strong> ESR</p></div>
+        <div class="card"><h4 style="color:var(--operate)">Operate</h4><p style="margin:0"><strong>Team:</strong> sponsor + central + champions<br><strong>Cadence:</strong> daily → annual<br><strong>Policy:</strong> tags, budgets, guardrails<br><strong>North star:</strong> forecast accuracy</p></div>
+      </div>
+
+      <h3>The KPI scorecard</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>KPI</th><th>Formula</th><th>Direction</th><th>Phase</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Allocation coverage</strong></td><td>allocated spend ÷ total spend</td><td>↑ (aim &gt;80–90%)</td><td><span class="pill inform">Inform</span></td></tr>
+          <tr><td><strong>Forecast accuracy</strong></td><td>1 − |forecast − actual| ÷ actual</td><td>↑</td><td><span class="pill inform">Inform</span></td></tr>
+          <tr><td><strong>Anomaly time-to-detect</strong></td><td>days from spike start to owner notified</td><td>↓</td><td><span class="pill inform">Inform</span></td></tr>
+          <tr><td><strong>Unit cost</strong></td><td>allocated cost ÷ business driver</td><td>↓ (or flat while growing)</td><td><span class="pill inform">Inform</span></td></tr>
+          <tr><td><strong>Commitment coverage</strong></td><td>covered eligible usage ÷ total eligible usage</td><td>↑ to target</td><td><span class="pill optimize">Optimize</span></td></tr>
+          <tr><td><strong>Commitment utilization</strong></td><td>used commitment ÷ purchased commitment</td><td>↑ (aim &gt;95%)</td><td><span class="pill optimize">Optimize</span></td></tr>
+          <tr><td><strong>Effective Savings Rate (ESR)</strong></td><td>(on-demand equivalent − actual) ÷ on-demand equivalent</td><td>↑</td><td><span class="pill optimize">Optimize</span></td></tr>
+          <tr><td><strong>Waste %</strong></td><td>idle + orphaned spend ÷ total spend</td><td>↓</td><td><span class="pill optimize">Optimize</span></td></tr>
+          <tr><td><strong>Realized savings</strong></td><td>actioned savings, annualized</td><td>↑</td><td><span class="pill optimize">Optimize</span></td></tr>
+          <tr><td><strong>Policy compliance</strong></td><td>resources meeting tagging/guardrail policy ÷ total</td><td>↑</td><td><span class="pill operate">Operate</span></td></tr>
+          <tr><td><strong>Recommendation adoption</strong></td><td>recommendations actioned ÷ recommendations raised</td><td>↑</td><td><span class="pill operate">Operate</span></td></tr>
+          <tr><td><strong>Spend vs. budget variance</strong></td><td>(actual − budget) ÷ budget, per owner</td><td>→ 0</td><td><span class="pill operate">Operate</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Full glossary</h3>
+      <div class="glossary"><dl>
+        <dt>Allocation</dt><dd>Attributing cloud costs to owners (teams, products, cost centers) through account structure, tags, and rules.</dd>
+        <dt>Amortized cost</dt><dd>Cost view that spreads upfront and recurring commitment fees over the term and across the resources that benefited.</dd>
+        <dt>Anomaly</dt><dd>An unexpected change in spend versus a learned pattern — usually a runaway resource, misconfiguration, or unplanned launch.</dd>
+        <dt>Billed / unblended cost</dt><dd>Cost as charged on the invoice, at the time it was charged.</dd>
+        <dt>Break-even utilization</dt><dd>The minimum use of a commitment that beats on-demand pricing: 1 − discount rate.</dd>
+        <dt>Chargeback</dt><dd>Formally billing technology costs to the consuming team's budget via internal accounting entries.</dd>
+        <dt>CCoE (Cloud Center of Excellence)</dt><dd>A cross-functional team that sets cloud standards, architecture patterns, and governance — often home to FinOps.</dd>
+        <dt>Commitment-based discount</dt><dd>A lower rate in exchange for committing to usage or spend for a term: Savings Plans, Reserved Instances, Reservations, CUDs.</dd>
+        <dt>Committed Use Discount (CUD)</dt><dd>Google Cloud's commitment discount — resource-based (vCPU/memory) or spend-based (Flex).</dd>
+        <dt>Convertible RI</dt><dd>An AWS Reserved Instance that can be exchanged for different attributes of equal or greater value.</dd>
+        <dt>Coverage</dt><dd>The share of eligible usage covered by commitment discounts.</dd>
+        <dt>Crawl / Walk / Run</dt><dd>The FinOps Foundation's three-stage maturity model, assessed per capability.</dd>
+        <dt>CUR (Cost &amp; Usage Report)</dt><dd>AWS's most detailed billing dataset, now delivered through AWS Data Exports.</dd>
+        <dt>Domain</dt><dd>One of the four outcome areas in the FinOps Framework, each grouping several capabilities.</dd>
+        <dt>Effective Savings Rate (ESR)</dt><dd>The blended percentage saved versus on-demand across all rate optimization — the best single rate KPI.</dd>
+        <dt>FinOps</dt><dd>Cloud Financial Operations — the practice of maximizing business value from technology spend through collaboration between engineering, finance, procurement, and product.</dd>
+        <dt>FinOps Certified Service Provider</dt><dd>A FinOps Foundation designation for consultancies and managed service providers that meet its training and practice requirements — a useful (not sufficient) filter when vetting a delivery partner.</dd>
+        <dt>FinOps Foundation</dt><dd>The Linux Foundation project that maintains the FinOps Framework, FOCUS, and certification programs.</dd>
+        <dt>Gainshare</dt><dd>A fee taken as a share of measured savings. Its value depends entirely on the agreed baseline — actual pre-engagement run-rate, not on-demand list.</dd>
+        <dt>FOCUS</dt><dd>FinOps Open Cost &amp; Usage Specification — an open standard schema for billing data across providers and SaaS vendors.</dd>
+        <dt>Inform / Optimize / Operate</dt><dd>The three iterative phases of the FinOps lifecycle.</dd>
+        <dt>Laddering</dt><dd>Buying commitments in small, regular tranches so expirations are staggered and risk is spread.</dd>
+        <dt>List / on-demand equivalent cost</dt><dd>What usage would have cost at public list price — the reference point for measuring savings.</dd>
+        <dt>Net amortized cost</dt><dd>Amortized cost after negotiated discounts and credits — the truest cost of ownership view.</dd>
+        <dt>Partner of record</dt><dd>The reseller or partner attached to a cloud account under a provider channel program (AWS Solution Provider, Microsoft CSP, Google reseller). Changing it moves billing, margin, and sometimes negotiating position.</dd>
+        <dt>Persona</dt><dd>A role in the FinOps model — practitioner, engineering, finance, procurement, product, leadership — plus allied personas.</dd>
+        <dt>Provisioned throughput</dt><dd>Reserved AI model capacity (e.g. Azure OpenAI PTUs) priced per unit-hour regardless of token use.</dd>
+        <dt>Rate optimization</dt><dd>Reducing the price paid per unit — commitments, negotiated discounts, licensing benefits.</dd>
+        <dt>Rightsizing</dt><dd>Matching resource size to observed need, with appropriate headroom.</dd>
+        <dt>Savings Plan</dt><dd>AWS and Azure's flexible commitment to an hourly spend amount for 1 or 3 years.</dd>
+        <dt>Scope</dt><dd>A category of technology spend the FinOps Framework applies to — public cloud, AI, SaaS, licensing, data center.</dd>
+        <dt>Shared cost</dt><dd>A cost consumed by multiple owners (platforms, support, networking) that must be split by a chosen method.</dd>
+        <dt>Showback</dt><dd>Reporting costs to the teams that drove them, without moving money between budgets.</dd>
+        <dt>Spot / preemptible</dt><dd>Deeply discounted spare capacity that the provider can reclaim at short notice.</dd>
+        <dt>Tag / label</dt><dd>Key-value metadata attached to a cloud resource, used for allocation, automation, and policy.</dd>
+        <dt>Unit economics</dt><dd>Cost expressed per unit of business value — per customer, transaction, or product.</dd>
+        <dt>Usage optimization</dt><dd>Reducing the quantity consumed — idle cleanup, rightsizing, scheduling, architecture.</dd>
+        <dt>Utilization</dt><dd>The share of purchased commitment actually used.</dd>
+        <dt>Virtual tagging</dt><dd>Allocation rules applied in a FinOps tool to attribute untagged or untaggable spend after the fact.</dd>
+      </dl></div>
+
+      <div class="coach"><span class="tag">Final word from your coach</span><p style="margin:0">Remember three things: <strong>allocation comes first</strong>, <strong>optimize before you commit</strong>, and <strong>FinOps is a habit, not a project</strong>. Clients who internalize those walk into every renewal as the best-prepared buyer the vendor will see all year — and that's the client you want to be negotiating for.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="11"><span>Previous</span><b>← 11 · Sourcing the Work</b></button>
+        <button data-goto="0"><span>Back to</span><b>00 · Start Here ↑</b></button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  var pages = document.querySelectorAll('section.page');
+  var btns = document.querySelectorAll('nav.side button[data-p]');
+  var labels = ['00 · Start Here','01 · FinOps 101','02 · Phases, Domains & Capabilities','03 · Maturity: Crawl, Walk, Run','04 · Allocation & Visibility','05 · Showback & Chargeback','06 · Commitment Management','07 · Usage Optimization','08 · Governance & Operating Model','09 · AI, SaaS & Beyond Cloud','10 · FinOps Meets the Deal','11 · Sourcing the Work','12 · KPIs, Glossary & Cheat Sheet'];
+
+  var msel = document.getElementById('msel');
+  labels.forEach(function(l,i){var o=document.createElement('option');o.value=i;o.textContent=l;msel.appendChild(o);});
+  msel.addEventListener('change',function(){go(parseInt(this.value));});
+
+  function go(n){
+    pages.forEach(function(p){p.classList.remove('show');});
+    document.getElementById('p'+n).classList.add('show');
+    btns.forEach(function(b){b.classList.toggle('active', b.getAttribute('data-p')==String(n));});
+    if(msel) msel.value = n;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){go(parseInt(b.getAttribute('data-p')));});});
+  document.querySelectorAll('[data-goto]').forEach(function(b){
+    b.addEventListener('click',function(e){e.preventDefault();go(parseInt(b.getAttribute('data-goto')));});
+  });
+</script>
+</body>
+</html>

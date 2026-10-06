@@ -1,35 +1,533 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Proxima Sizing Tools</title>
-  <link rel="stylesheet" href="styles.css?v=20261001f" />
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxima — Intelligence Tools</title>
+  <style>
+    :root {
+      --bg:           #080D16;
+      --surface:      #0F1724;
+      --card:         #111B2B;
+      --card-hover:   #152235;
+      --border:       #1E2D42;
+      --border-sub:   #162030;
+      --text:         #E8EFF8;
+      --text-2:       #7D8FA3;
+      --text-3:       #3E5068;
+      --proxima:      #818CF8;
+      --proxima-dim:  rgba(129,140,248,.12);
+      --aws:          #F59E0B;
+      --aws-dim:      rgba(245,158,11,.1);
+      --azure:        #3B82F6;
+      --azure-dim:    rgba(59,130,246,.1);
+      --microsoft:    #0EA5A4;
+      --microsoft-dim: rgba(14,165,164,.1);
+      --gcp:          #34D399;
+      --gcp-dim:      rgba(52,211,153,.1);
+      --grid:         #FB923C;
+      --grid-dim:     rgba(251,146,60,.1);
+      --capacity:     #38BDF8;
+      --capacity-dim: rgba(56,189,248,.1);
+      --playbook:     #22D3EE;
+      --playbook-dim: rgba(34,211,238,.1);
+      --deals:        #A78BFA;
+      --deals-dim:    rgba(167,139,250,.1);
+      --baseline:     #F472B6;
+      --baseline-dim: rgba(244,114,182,.1);
+      --news:         #818CF8;
+      --news-dim:     rgba(129,140,248,.12);
+      --saas:         #00A1E0;
+      --saas-dim:     rgba(0,161,224,.1);
+      --spend:        #14B8A6;
+      --spend-dim:    rgba(20,184,166,.1);
+    }
+    :root[data-theme="light"],
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+      --bg:          #F0F4F9;
+      --surface:     #FFFFFF;
+      --card:        #FFFFFF;
+      --card-hover:  #F7F9FC;
+      --border:      #D1DCE8;
+      --border-sub:  #E4EBF3;
+      --text:        #0F1724;
+      --text-2:      #4A5A6E;
+      --text-3:      #9AABB8;
+    }}
+    :root[data-theme="light"] {
+      --bg:#F0F4F9; --surface:#FFFFFF; --card:#FFFFFF; --card-hover:#F7F9FC;
+      --border:#D1DCE8; --border-sub:#E4EBF3; --text:#0F1724; --text-2:#4A5A6E; --text-3:#9AABB8;
+    }
+    :root[data-theme="dark"] {
+      --bg:#080D16; --surface:#0F1724; --card:#111B2B; --card-hover:#152235;
+      --border:#1E2D42; --border-sub:#162030; --text:#E8EFF8; --text-2:#7D8FA3; --text-3:#3E5068;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+
+    /* AUTH GATE */
+
+    /* HEADER */
+    .site-header { border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:54px; }
+    .wordmark { font-family:Georgia,serif;font-size:19px;font-weight:700;letter-spacing:-.4px;color:var(--text); }
+    .wordmark span { color:var(--proxima); }
+    .header-right { display:flex;align-items:center;gap:16px; }
+    .tool-count-pill { font-size:11px;font-weight:600;letter-spacing:.06em;background:var(--proxima-dim);color:var(--proxima);padding:3px 10px;border-radius:20px; }
+    .theme-toggle { background:none;border:1px solid var(--border);color:var(--text-2);cursor:pointer;padding:5px 12px;font-size:11px;letter-spacing:.06em;font-family:inherit;border-radius:4px; }
+    .theme-toggle:hover { border-color:var(--text-2);color:var(--text); }
+
+    /* HERO */
+    .hero { padding:48px 40px 36px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px;border-bottom:1px solid var(--border); }
+    .hero-left { max-width:520px; }
+    .hero-eyebrow { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--proxima);margin-bottom:14px; }
+    .hero h1 { font-family:Georgia,serif;font-size:clamp(26px,3.5vw,38px);font-weight:700;line-height:1.15;letter-spacing:-.5px;color:var(--text);text-wrap:balance;margin-bottom:12px; }
+    .hero p { font-size:14px;color:var(--text-2);line-height:1.7; }
+    .hero-stats { display:flex;gap:24px;flex-shrink:0; }
+    .hero-stat { text-align:right; }
+    .hero-stat-num { font-family:Georgia,serif;font-size:32px;font-weight:700;line-height:1;color:var(--text); }
+    .hero-stat-label { font-size:11px;color:var(--text-3);letter-spacing:.04em;margin-top:4px; }
+    @media(max-width:640px) { .hero { flex-direction:column;padding:32px 20px 24px; } .hero-stats { display:none; } }
+
+    /* TOOL SECTIONS */
+    .tools-section { padding:0 40px 80px; }
+    @media(max-width:640px) { .tools-section { padding:0 20px 60px; } }
+
+    .tool-group { margin-top:40px; }
+    .group-header { display:flex;align-items:center;gap:14px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border-sub); }
+    .group-label { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3); }
+    .group-count { font-size:11px;color:var(--text-3);background:var(--border-sub);padding:2px 8px;border-radius:10px; }
+
+    /* CARD GRID */
+    .tool-grid { display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px; }
+
+    /* CARD — use div so nested links are valid */
+    .tool-card {
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:22px 22px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      position:relative;
+      cursor:pointer;
+      transition:background .15s, border-color .15s, transform .12s;
+      overflow:hidden;
+    }
+    .tool-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px; }
+    .tool-card:hover { background:var(--card-hover);border-color:var(--border);transform:translateY(-1px); }
+
+    .tool-card.aws::before    { background:var(--aws); }
+    .tool-card.azure::before  { background:var(--azure); }
+    .tool-card.microsoft::before { background:var(--microsoft); }
+    .tool-card.gcp::before    { background:var(--gcp); }
+    .tool-card.grid::before   { background:var(--grid); }
+    .tool-card.capacity::before { background:var(--capacity); }
+    .tool-card.playbook::before { background:var(--playbook); }
+    .tool-card.deals::before  { background:var(--deals); }
+    .tool-card.baseline::before { background:var(--baseline); }
+    .tool-card.news::before { background:var(--news); }
+    .tool-card.saas::before { background:var(--saas); }
+    .tool-card.spend::before { background:var(--spend); }
+
+    .tool-tag { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;display:inline-block;width:fit-content;border-radius:3px; }
+    .aws .tool-tag      { color:var(--aws);      background:var(--aws-dim); }
+    .azure .tool-tag    { color:var(--azure);    background:var(--azure-dim); }
+    .microsoft .tool-tag { color:var(--microsoft); background:var(--microsoft-dim); }
+    .gcp .tool-tag      { color:var(--gcp);      background:var(--gcp-dim); }
+    .grid .tool-tag     { color:var(--grid);     background:var(--grid-dim); }
+    .capacity .tool-tag { color:var(--capacity); background:var(--capacity-dim); }
+    .playbook .tool-tag { color:var(--playbook); background:var(--playbook-dim); }
+    .deals .tool-tag    { color:var(--deals);    background:var(--deals-dim); }
+    .baseline .tool-tag { color:var(--baseline); background:var(--baseline-dim); }
+    .news .tool-tag     { color:var(--news);     background:var(--news-dim); }
+    .saas .tool-tag     { color:var(--saas);     background:var(--saas-dim); }
+    .spend .tool-tag    { color:var(--spend);    background:var(--spend-dim); }
+
+    .tool-name { font-family:Georgia,serif;font-size:17px;font-weight:700;letter-spacing:-.2px;color:var(--text);line-height:1.25; }
+    .tool-desc { font-size:13px;color:var(--text-2);line-height:1.65;flex:1; }
+
+    .tool-footer { display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border-sub);margin-top:auto; }
+    .tool-link { display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;letter-spacing:.03em; }
+    .tool-link svg { transition:transform .15s; }
+    .tool-card:hover .tool-link svg { transform:translateX(3px); }
+
+    .aws .tool-link      { color:var(--aws); }
+    .azure .tool-link    { color:var(--azure); }
+    .microsoft .tool-link { color:var(--microsoft); }
+    .gcp .tool-link      { color:var(--gcp); }
+    .grid .tool-link     { color:var(--grid); }
+    .capacity .tool-link { color:var(--capacity); }
+    .playbook .tool-link { color:var(--playbook); }
+    .deals .tool-link    { color:var(--deals); }
+    .baseline .tool-link { color:var(--baseline); }
+    .news .tool-link     { color:var(--news); }
+    .saas .tool-link     { color:var(--saas); }
+    .spend .tool-link    { color:var(--spend); }
+    .news-stamp { font-size:11px;color:var(--text-3);font-variant-numeric:tabular-nums;letter-spacing:.02em; }
+    .news-stamp strong { color:var(--news);font-weight:600; }
+
+    .tool-config-link { font-size:11px;color:var(--text-3);display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:5px;border:1px solid var(--border-sub); }
+    .tool-config-link, .tool-link { white-space:nowrap; flex-shrink:0; }
+    .tool-config-link:hover { color:var(--text-2);border-color:var(--border); }
+
+    /* COMING SOON CARDS */
+    .tool-card.soon { opacity:.55;cursor:default;pointer-events:none; }
+    .soon-badge { font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:3px;background:var(--border);color:var(--text-3);margin-left:auto; }
+
+    /* PHASE SUB-HEADERS */
+    .phase-header { display:flex;align-items:center;gap:10px;margin:20px 0 10px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase; }
+    .phase-pill { padding:3px 10px;border-radius:4px;font-weight:700; }
+    .phase-control   { color:#34d399;background:rgba(52,211,153,.1); }
+    .phase-optimize  { color:#22d3ee;background:rgba(34,211,238,.1); }
+    .phase-transform { color:#a78bfa;background:rgba(167,139,250,.1); }
+    .phase-line { flex:1;height:1px;background:var(--border-sub); }
+
+    /* FOOTER */
+    .site-footer { border-top:1px solid var(--border);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px; }
+    .site-footer p { font-size:12px;color:var(--text-3);font-style:italic; }
+    .footer-wordmark { font-family:Georgia,serif;font-size:13px;font-weight:700;color:var(--text-3);letter-spacing:-.2px; }
+
+    @media(max-width:640px) { .site-header { padding:0 20px; } .site-footer { padding:20px; } }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="header-brand"><span class="brand-pill">Proxima</span>
-      <div><div class="header-title">Engagement Sizing</div><div class="header-sub">Five offerings, from rapid cash release to structural margin and governance change</div></div></div>
-  </header>
-  <div class="container">
-    <div class="hero">
-      <div class="sku-badge">Opportunity sizing</div>
-      <h1>Packaging the opportunities into five Proxima offerings</h1>
-      <p>Each offering can be positioned standalone or sequenced. Answer a few questions to size the opportunity, the Proxima team and the client engineering effort. Answers carry across tools on this device.</p>
-    </div>
-    <div class="offer-grid" id="grid"></div>
-    <p class="note-line" style="margin-top:28px">Looking for the baseline? <a href="https://brianchernauskas.github.io/cloud-baseline-planner/">Cloud Baseline Renewal Roadmap</a>. Commercial ranges are drawn from the Proxima hyperscaler negotiation planners. Planning heuristics only.</p>
+
+<header class="site-header">
+  <div class="wordmark">Proxima<span>.</span></div>
+  <div class="header-right">
+    <div class="tool-count-pill" id="tool-count"></div>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle theme</button>
   </div>
-  <script src="engine.js?v=20261001f"></script>
-  <script>
-    document.getElementById('grid').innerHTML = PX.OFFERINGS.map(function (o, i) {
-      return '<div class="offer-card"><span class="offer-tag">Offering ' + (i + 1) + ' · ' + PX.esc(o.months) + '</span>' +
-        '<h3><a class="offer-link" href="' + o.slug + '/">' + PX.esc(o.name) + '</a></h3><p>' + PX.esc(o.blurb) + '</p>' +
-        '<span class="offer-fit">Fit: ' + PX.esc(o.fit) + '</span>' +
-        '<div class="offer-foot"><a class="offer-open" href="' + o.slug + '/">Open tool →</a>' +
-        '<a class="hdr-link" href="' + o.slug + '/?config">⚙ Configure</a></div></div>';
-    }).join('');
-  </script>
+</header>
+
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Internal Intelligence Tools</p>
+    <h1>Contract leverage,<br>quantified.</h1>
+    <p>Purpose-built tools for Proxima advisors — negotiation planners, engagement sizing, and market intelligence for cloud and infrastructure deals.</p>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num" id="stat-tools">7</div>
+      <div class="hero-stat-label">Tools live</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">3</div>
+      <div class="hero-stat-label">Cloud providers</div>
+    </div>
+  </div>
+</section>
+
+<section class="tools-section">
+
+  <!-- NEGOTIATION PLANNERS -->
+  <div class="tool-group">
+    <div class="group-header">
+      <span class="group-label">Negotiation Planners / Hyperscaler News and Planner Updates</span>
+      <span class="group-count">5</span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card aws" onclick="window.open('https://tools.briansavesbillions.com/aws-negotiation-planner/','_blank')">
+        <span class="tool-tag">AWS · Cloud</span>
+        <div class="tool-name">AWS Negotiation Planner</div>
+        <p class="tool-desc">Generates a tailored EDP and discount strategy based on spend profile, Marketplace footprint, and leverage signals. Surfaces negotiation tactics, discount ranges, and commitment structure recommendations.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card azure" onclick="window.open('https://tools.briansavesbillions.com/azure-negotiation-planner/','_blank')">
+        <span class="tool-tag">Azure · Cloud</span>
+        <div class="tool-name">Azure Negotiation Planner</div>
+        <p class="tool-desc">Guides EA and MCA-E renewal strategy, surfaces EA pricing level risk (Levels B/C/D removed Nov 2025), and scores leverage across vehicle choice, M365 bundling, and Copilot commitments.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card microsoft" onclick="window.open('https://tools.briansavesbillions.com/microsoft-negotiation-planner/','_blank')">
+        <span class="tool-tag">Microsoft · Enterprise</span>
+        <div class="tool-name">Microsoft Negotiation Planner</div>
+        <p class="tool-desc">One strategy across Azure, Microsoft 365, Copilot, Security, Dynamics, GitHub, and Unified Support. Sets a target for each product line, shows what to trade for what, sizes July 2026 M365 price exposure, and reuses the Azure planner's ACD engine.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card gcp" onclick="window.open('https://tools.briansavesbillions.com/gcp-negotiation-planner/','_blank')">
+        <span class="tool-tag">GCP · Cloud</span>
+        <div class="tool-name">GCP Negotiation Planner</div>
+        <p class="tool-desc">Maps CUD strategy, flags the June 2026 CUD scope change impact on project-level chargebacks, and identifies Google's market-hunger signals to strengthen CASC and PPA negotiations.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card news" onclick="window.open('https://tools.briansavesbillions.com/updates.html','_blank')">
+        <span class="tool-tag">Multi-Cloud · Running Log</span>
+        <div class="tool-name">Hyperscaler News &amp; Planner Updates</div>
+        <p class="tool-desc">Tracks AWS, Azure, GCP, Salesforce, Adobe, and Oracle program changes that shift negotiating position — pricing model changes, new discount vehicles, contract term shifts — alongside a record of what changed inside each planner and why.</p>
+        <div class="news-stamp">Last updated <strong id="news-last-updated">—</strong></div>
+        <div class="tool-footer">
+          <span class="tool-link">Open log <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a class="tool-config-link" id="digest-link" href="https://tools.briansavesbillions.com/digest/" target="_blank" onclick="event.stopPropagation()">📰 Digest</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SAAS & APPLICATION PLANNERS -->
+  <div class="tool-group">
+    <div class="group-header">
+      <span class="group-label">SaaS &amp; Application Negotiation</span>
+      <span class="group-count">2</span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card saas" onclick="window.open('https://tools.briansavesbillions.com/salesforce-negotiation-planner/','_blank')">
+        <span class="tool-tag">Salesforce · SaaS</span>
+        <div class="tool-name">Salesforce Negotiation Planner</div>
+        <p class="tool-desc">Models renewal uplift caps, quantifies shelfware recoverable in the true-down window, and scores leverage against Salesforce's fiscal calendar. Surfaces notice-period exposure and contract terms to secure beyond price.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card saas" onclick="window.open('https://tools.briansavesbillions.com/adobe-negotiation-planner/','_blank')">
+        <span class="tool-tag">Adobe · SaaS</span>
+        <div class="tool-name">Adobe Negotiation Planner</div>
+        <p class="tool-desc">Models VIP, 3-Year Commit, ETLA, and Experience Cloud renewals against Adobe's fiscal calendar and 2026 price increases. Sizes idle and over-specified Creative Cloud seats, and adds an optional M&amp;A module for acquisitions, mergers, and divestitures.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card saas" onclick="window.open('https://tools.briansavesbillions.com/oracle-negotiation-planner/','_blank')">
+        <span class="tool-tag">Oracle · Software &amp; Cloud</span>
+        <div class="tool-name">Oracle Negotiation Planner</div>
+        <p class="tool-desc">Plans Oracle support renewals, new purchases, ULA certification, cloud commitments, and audit settlements against Oracle's May 31 fiscal year. Flags virtualization, database option, and per-employee Java exposure, estimates recoverable support spend, and includes an optional M&amp;A module.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INTELLIGENCE & REFERENCE -->
+  <div class="tool-group">
+    <div class="group-header">
+      <span class="group-label">Intelligence & Reference</span>
+      <span class="group-count">3</span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card deals" onclick="window.open('https://tools.briansavesbillions.com/deal-calibration/','_blank')">
+        <span class="tool-tag">Multi-Cloud · Intelligence</span>
+        <div class="tool-name">Deal Calibration</div>
+        <p class="tool-desc">Log closed Proxima deals by provider, spend tier, and contract type to build an observed discount database. Ranges surface automatically inside the negotiation planners to calibrate recommendations against real outcomes.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card grid" onclick="window.open('https://tools.briansavesbillions.com/grid-headroom-map/','_blank')">
+        <span class="tool-tag">Energy · Infrastructure</span>
+        <div class="tool-name">Grid Headroom Map</div>
+        <p class="tool-desc">Scores U.S. power markets by grid constraint to surface sourcing leverage in cloud and data-center infrastructure deals. Identifies markets where capacity pressure creates negotiating advantage.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card capacity" onclick="window.open('https://tools.briansavesbillions.com/datacenter-capacity-map/','_blank')">
+        <span class="tool-tag">Infrastructure · Capacity</span>
+        <div class="tool-name">Data Center Capacity Map</div>
+        <p class="tool-desc">Global and regional view of hyperscaler and neocloud data-center footprint — regions live, availability zones, announced expansion, and where grid constraint turns into buyer leverage. Every figure carries its source and a confidence tier.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open map <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card playbook" onclick="window.open('https://tools.briansavesbillions.com/cloud-negotiation-playbook/','_blank')">
+        <span class="tool-tag">Multi-Cloud · Playbook</span>
+        <div class="tool-name">Cloud Negotiations Playbook</div>
+        <p class="tool-desc">A structured negotiation reference covering AWS, Azure, and GCP deal mechanics — tactics, timing, leverage points, and counter-moves for enterprise cloud contract renewals.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open playbook <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+      <div class="tool-card playbook" onclick="window.open('https://tools.briansavesbillions.com/finops-playbook/','_blank')">
+        <span class="tool-tag">Multi-Cloud · Playbook</span>
+        <div class="tool-name">FinOps Playbook</div>
+        <p class="tool-desc">A FinOps reference built on the FinOps Foundation framework — Inform, Optimize, Operate phases, maturity, allocation, showback and chargeback, commitment management, usage optimization, governance, and AI spend — tied back to renewal preparation.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open playbook <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DIAGNOSTICS -->
+  <div class="tool-group">
+    <div class="group-header">
+      <span class="group-label">Diagnostics</span>
+      <span class="group-count">1</span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card spend" onclick="window.open('https://tools.briansavesbillions.com/it-spend-diagnostic/','_blank')">
+        <span class="tool-tag">All IT Spend · Triage</span>
+        <div class="tool-name">IT Spend Diagnostic</div>
+        <p class="tool-desc">Loads two years of supplier spend — cloud, software, telecom, hardware, services — and identifies where negotiable money actually sits. Merges supplier name variants, reconciles inconsistent categories, and surfaces concentration, growth, sprawl, and consolidation candidates. Routes each priority supplier to the playbook that covers it. Parses locally; nothing is uploaded or stored.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open diagnostic <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ENGAGEMENT SIZING -->
+  <div class="tool-group">
+    <div class="group-header">
+      <span class="group-label">Engagement Sizing</span>
+      <span class="group-count">8</span>
+    </div>
+
+    <!-- CONTROL -->
+    <div class="phase-header">
+      <span class="phase-pill phase-control">Control — Diagnostic</span>
+      <div class="phase-line"></div>
+      <span style="font-size:10px;color:var(--text-3)">SKU 1 · Baseline</span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card baseline" onclick="window.open('https://tools.briansavesbillions.com/cloud-baseline-planner/','_blank')">
+        <span class="tool-tag">SKU 1 · 4–6 wks</span>
+        <div class="tool-name">Cloud Baseline Renewal Roadmap</div>
+        <p class="tool-desc">Establishes a spend baseline across the infrastructure landscape. Outputs a cleansed spend cube, top supplier deep dive, savings opportunity (A1), and supplier prioritization matrix.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open planner <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a class="tool-config-link" href="https://tools.briansavesbillions.com/cloud-baseline-planner/config.html" target="_blank" onclick="event.stopPropagation()">⚙ Configure</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- OFFERINGS -->
+    <div class="phase-header" style="margin-top:28px">
+      <span class="phase-pill phase-optimize">Offerings — Opportunity Sizing</span>
+      <div class="phase-line"></div>
+      <span style="font-size:10px;color:var(--text-3)"><a href="https://tools.briansavesbillions.com/" target="_blank" style="color:inherit">All offerings</a></span>
+    </div>
+    <div class="tool-grid">
+
+      <div class="tool-card baseline" onclick="window.open('https://tools.briansavesbillions.com/rapid-cost-optimization/','_blank')">
+        <span class="tool-tag">Offering 1 · 2–3 months</span>
+        <div class="tool-name">Rapid Cost Optimization</div>
+        <p class="tool-desc">Quick-release savings for any cloud client: one-time forecast, deal negotiation, unused-resource and licensing cleanup, non-prod rightsizing, quick storage wins. Rapid payback, high ROI.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a class="tool-config-link" href="https://tools.briansavesbillions.com/rapid-cost-optimization/?config" target="_blank" onclick="event.stopPropagation()">⚙ Configure</a>
+        </div>
+      </div>
+
+      <div class="tool-card baseline" onclick="window.open('https://tools.briansavesbillions.com/technical-optimization/','_blank')">
+        <span class="tool-tag">Offering 2 · 3–4 months</span>
+        <div class="tool-name">Technical Optimization</div>
+        <p class="tool-desc">Engineering-led, durable run-rate savings: compute, Kubernetes and storage optimization, AI/data platform and networking tuning, cost-aware design. Delivered with client engineering.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a class="tool-config-link" href="https://tools.briansavesbillions.com/technical-optimization/?config" target="_blank" onclick="event.stopPropagation()">⚙ Configure</a>
+        </div>
+      </div>
+
+      <div class="tool-card baseline" onclick="window.open('https://tools.briansavesbillions.com/margin-transformation/','_blank')">
+        <span class="tool-tag">Offering 3 · 3–4 months</span>
+        <div class="tool-name">Margin Transformation</div>
+        <p class="tool-desc">For SaaS clients: unit and product-level cost models, customer profitability, COGS vs R&amp;D treatment, and linking cloud spend to pricing and margin.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a class="tool-config-link" href="https://tools.briansavesbillions.com/margin-transformation/?config" target="_blank" onclick="event.stopPropagation()">⚙ Configure</a>
+        </div>
+      </div>
+
+      <div class="tool-card baseline" onclick="window.open('https://tools.briansavesbillions.com/spend-governance/','_blank')">
+        <span class="tool-tag">Offering 4 · 6–12 months</span>
+        <div class="tool-name">Spend Governance</div>
+        <p class="tool-desc">For clients with poor FinOps control: tagging and allocation, iterative forecasting, budget accountability and KPIs. Locks in savings and prevents cost creep.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a class="tool-config-link" href="https://tools.briansavesbillions.com/spend-governance/?config" target="_blank" onclick="event.stopPropagation()">⚙ Configure</a>
+        </div>
+      </div>
+
+      <div class="tool-card baseline" onclick="window.open('https://tools.briansavesbillions.com/commercial-migration/','_blank')">
+        <span class="tool-tag">Offering 5 · 3–6 months</span>
+        <div class="tool-name">Commercial Migration</div>
+        <p class="tool-desc">For clients with migration plans: enterprise deal and PPA renegotiation, commitment and licensing optimization, alternative provider evaluation, cost-aware design.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <a class="tool-config-link" href="https://tools.briansavesbillions.com/commercial-migration/?config" target="_blank" onclick="event.stopPropagation()">⚙ Configure</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<footer class="site-footer">
+  <p>Intended for Proxima use only — contact Brian Chernauskas with questions &nbsp;·&nbsp; <a href="privacy.html" style="text-decoration:underline">Privacy</a></p>
+  <div class="footer-wordmark">Proxima.</div>
+</footer>
+
+<script>
+
+  // Bump this whenever a new entry is added to updates.html
+  const NEWS_LAST_UPDATED = '2026-10-05';
+  (function () {
+    const [y, m, d] = NEWS_LAST_UPDATED.split('-').map(Number);
+    document.getElementById('news-last-updated').textContent =
+      new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  })();
+
+  // Digest link always resolves to whichever issue in issues.json has the newest date
+  fetch('https://tools.briansavesbillions.com/digest/issues.json')
+    .then(r => r.json())
+    .then(issues => {
+      const latest = issues.reduce((a, b) => a.date > b.date ? a : b);
+      document.getElementById('digest-link').href =
+        `https://tools.briansavesbillions.com/digest/${latest.slug}.html`;
+    })
+    .catch(() => {}); // falls back to the archive link already in the href
+
+  const count = document.querySelectorAll('.tool-card').length;
+  document.getElementById('tool-count').textContent = count + ' tools';
+  document.getElementById('stat-tools').textContent = count;
+
+  // Group counts are derived, not hand-maintained — they drifted out of sync once already.
+  document.querySelectorAll('.tool-group').forEach(g => {
+    const pill = g.querySelector('.group-count');
+    if (pill) pill.textContent = g.querySelectorAll('.tool-card').length;
+  });
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  }
+</script>
 </body>
 </html>

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxima — Hyperscaler News & Planner Updates</title>
+  <style>
+    :root {
+      --bg:#F0F4F9; --surface:#FFFFFF; --card:#FFFFFF; --card-hover:#F7F9FC;
+      --border:#D1DCE8; --border-sub:#E4EBF3; --text:#0F1724; --text-2:#4A5A6E; --text-3:#9AABB8;
+      --proxima:#818CF8; --proxima-dim:rgba(129,140,248,.12);
+      --aws:#F59E0B;   --aws-dim:rgba(245,158,11,.1);
+      --azure:#3B82F6; --azure-dim:rgba(59,130,246,.1);
+      --gcp:#34D399;   --gcp-dim:rgba(52,211,153,.1);
+      --multi:#A78BFA; --multi-dim:rgba(167,139,250,.1);
+      --tool:#22D3EE;  --tool-dim:rgba(34,211,238,.1);
+      --salesforce:#0284C7; --salesforce-dim:rgba(2,132,199,.1);
+      --adobe:#EF4444; --adobe-dim:rgba(239,68,68,.1);
+      --oracle:#C74634; --oracle-dim:rgba(199,70,52,.1);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:#080D16; --surface:#0F1724; --card:#111B2B; --card-hover:#152235;
+        --border:#1E2D42; --border-sub:#162030; --text:#E8EFF8; --text-2:#7D8FA3; --text-3:#3E5068;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg:#080D16; --surface:#0F1724; --card:#111B2B; --card-hover:#152235;
+      --border:#1E2D42; --border-sub:#162030; --text:#E8EFF8; --text-2:#7D8FA3; --text-3:#3E5068;
+    }
+    :root[data-theme="light"] {
+      --bg:#F0F4F9; --surface:#FFFFFF; --card:#FFFFFF; --card-hover:#F7F9FC;
+      --border:#D1DCE8; --border-sub:#E4EBF3; --text:#0F1724; --text-2:#4A5A6E; --text-3:#9AABB8;
+    }
+
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,-apple-system,sans-serif; font-size:15px; line-height:1.6; min-height:100vh; }
+    a { color:inherit; text-decoration:none; }
+
+    /* AUTH GATE */
+
+    /* HEADER */
+    .site-header { border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:54px; }
+    .wordmark { font-family:Georgia,serif;font-size:19px;font-weight:700;letter-spacing:-.4px; }
+    .wordmark span { color:var(--proxima); }
+    .header-right { display:flex;align-items:center;gap:14px; }
+    .back-link { font-size:12px;color:var(--text-2);display:inline-flex;align-items:center;gap:5px; }
+    .back-link:hover { color:var(--text); }
+    .theme-toggle { background:none;border:1px solid var(--border);color:var(--text-2);cursor:pointer;padding:5px 12px;font-size:11px;letter-spacing:.06em;font-family:inherit;border-radius:4px; }
+    .theme-toggle:hover { border-color:var(--text-2);color:var(--text); }
+
+    /* HERO */
+    .hero { padding:44px 40px 30px;border-bottom:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between;gap:36px;flex-wrap:wrap; }
+    .hero-eyebrow { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--proxima);margin-bottom:12px; }
+    .hero h1 { font-family:Georgia,serif;font-size:clamp(24px,3vw,34px);font-weight:700;line-height:1.15;letter-spacing:-.5px;margin-bottom:10px;text-wrap:balance; }
+    .hero p { font-size:14px;color:var(--text-2);max-width:560px; }
+    .last-updated { text-align:right;flex-shrink:0; }
+    .last-updated-label { font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);font-family:'Courier New',monospace; }
+    .last-updated-date { font-family:Georgia,serif;font-size:22px;font-weight:700;margin-top:4px; }
+    @media(max-width:640px) { .hero { padding:30px 20px 22px; } .last-updated { text-align:left; } }
+
+    /* FILTERS */
+    .filter-bar { padding:20px 40px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center; }
+    .search-wrap { position:relative;margin-left:auto; }
+    .search-input { background:var(--card);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;padding:7px 30px 7px 32px;border-radius:20px;width:230px;outline:none; }
+    .search-input:focus { border-color:var(--proxima);width:280px; }
+    .search-input::placeholder { color:var(--text-3); }
+    .search-icon { position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none; }
+    .search-clear { position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-3);cursor:pointer;font-size:15px;line-height:1;padding:0;display:none; }
+    .search-clear.show { display:block; }
+    .search-clear:hover { color:var(--text); }
+    @media(max-width:720px) { .search-wrap { margin-left:0;width:100%; } .search-input, .search-input:focus { width:100%; } }
+    .filter-btn { background:var(--card);border:1px solid var(--border);color:var(--text-2);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;letter-spacing:.02em; }
+    .filter-btn:hover { color:var(--text);border-color:var(--text-3); }
+    .filter-btn.active { background:var(--proxima);border-color:var(--proxima);color:#fff; }
+    @media(max-width:640px) { .filter-bar { padding:16px 20px 0; } }
+
+    /* TIMELINE */
+    .feed { padding:26px 40px 80px;max-width:940px; }
+    @media(max-width:640px) { .feed { padding:20px 20px 60px; } }
+
+    .month-label { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-sub); }
+    .month-label:first-child { margin-top:0; }
+
+    .entry { background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:10px;position:relative;overflow:hidden; }
+    .entry::before { content:'';position:absolute;top:0;left:0;bottom:0;width:3px; }
+    .entry.aws::before   { background:var(--aws); }
+    .entry.azure::before { background:var(--azure); }
+    .entry.gcp::before   { background:var(--gcp); }
+    .entry.multi::before { background:var(--multi); }
+    .entry.tool::before  { background:var(--tool); }
+    .entry.salesforce::before { background:var(--salesforce); }
+    .entry.adobe::before { background:var(--adobe); }
+    .entry.oracle::before { background:var(--oracle); }
+
+    .entry-top { display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px; }
+    .entry-tag { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:3px; }
+    .aws .entry-tag   { color:var(--aws);background:var(--aws-dim); }
+    .azure .entry-tag { color:var(--azure);background:var(--azure-dim); }
+    .gcp .entry-tag   { color:var(--gcp);background:var(--gcp-dim); }
+    .multi .entry-tag { color:var(--multi);background:var(--multi-dim); }
+    .tool .entry-tag  { color:var(--tool);background:var(--tool-dim); }
+    .salesforce .entry-tag { color:var(--salesforce);background:var(--salesforce-dim); }
+    .adobe .entry-tag { color:var(--adobe);background:var(--adobe-dim); }
+    .oracle .entry-tag { color:var(--oracle);background:var(--oracle-dim); }
+    .entry-kind { font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);border:1px solid var(--border-sub);padding:2px 7px;border-radius:3px; }
+    .entry-date { font-size:11px;color:var(--text-3);margin-left:auto;font-variant-numeric:tabular-nums; }
+
+    .entry-title { font-family:Georgia,serif;font-size:16px;font-weight:700;letter-spacing:-.2px;line-height:1.3;margin-bottom:6px; }
+    .entry-body { font-size:13.5px;color:var(--text-2);line-height:1.7; }
+    .entry-impact { margin-top:10px;padding-top:10px;border-top:1px solid var(--border-sub);font-size:12.5px;color:var(--text-2); }
+    .entry-impact strong { color:var(--text); }
+    .entry-link { display:inline-block;margin-top:10px;font-size:12px;font-weight:600;color:var(--proxima); }
+    .entry-link:hover { text-decoration:underline; }
+
+    .empty { color:var(--text-3);font-size:13px;font-style:italic;padding:30px 0; }
+
+    .result-count { font-size:11.5px;color:var(--text-3);margin-bottom:14px;font-variant-numeric:tabular-nums; }
+    .load-more-wrap { display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:22px; }
+    .load-more { background:var(--card);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:10px 24px;border-radius:20px;cursor:pointer; }
+    .load-more:hover { border-color:var(--proxima);color:var(--proxima); }
+    .load-more-note { font-size:11px;color:var(--text-3); }
+    .mark-hint { font-size:11.5px;color:var(--text-3);font-style:italic;text-align:center;margin-top:22px;padding-top:14px;border-top:1px solid var(--border-sub); }
+    mark { background:var(--proxima-dim);color:inherit;border-radius:2px;padding:0 1px; }
+
+    /* FOOTER */
+    .site-footer { border-top:1px solid var(--border);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px; }
+    .site-footer p { font-size:12px;color:var(--text-3);font-style:italic; }
+    .footer-wordmark { font-family:Georgia,serif;font-size:13px;font-weight:700;color:var(--text-3); }
+    @media(max-width:640px) { .site-header { padding:0 20px; } .site-footer { padding:20px; } }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark">Proxima<span>.</span></div>
+  <div class="header-right">
+    <a class="back-link" href="https://tools.briansavesbillions.com/">← All tools</a>
+    <a class="back-link" href="digest/">Monthly digest</a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle theme</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div>
+    <p class="hero-eyebrow">Running Log</p>
+    <h1>Hyperscaler news &amp;<br>planner updates.</h1>
+    <p>Program changes across AWS, Azure, GCP, Salesforce, and Adobe that affect negotiating position — paired with a record of what changed inside the Proxima planners and why.</p>
+  </div>
+  <div class="last-updated">
+    <div class="last-updated-label">Last updated</div>
+    <div class="last-updated-date" id="last-updated-date">—</div>
+  </div>
+</section>
+
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all"      onclick="setFilter(this)">All</button>
+  <button class="filter-btn"        data-filter="industry" onclick="setFilter(this)">Industry news</button>
+  <button class="filter-btn"        data-filter="update"   onclick="setFilter(this)">Planner updates</button>
+  <button class="filter-btn"        data-filter="aws"      onclick="setFilter(this)">AWS</button>
+  <button class="filter-btn"        data-filter="azure"    onclick="setFilter(this)">Azure</button>
+  <button class="filter-btn"        data-filter="gcp"      onclick="setFilter(this)">GCP</button>
+  <button class="filter-btn"        data-filter="salesforce" onclick="setFilter(this)">Salesforce</button>
+  <button class="filter-btn"        data-filter="adobe"    onclick="setFilter(this)">Adobe</button>
+  <button class="filter-btn"        data-filter="oracle"   onclick="setFilter(this)">Oracle</button>
+  <div class="search-wrap">
+    <svg class="search-icon" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 9.5L12.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <input id="search-input" class="search-input" type="search" placeholder="Search all history…" oninput="setSearch(this.value)" autocomplete="off">
+    <button class="search-clear" id="search-clear" onclick="clearSearch()" aria-label="Clear search">&times;</button>
+  </div>
+</div>
+
+<section class="feed" id="feed"></section>
+
+<footer class="site-footer">
+  <p>Intended for Proxima use only — contact Brian Chernauskas with questions &nbsp;·&nbsp; <a href="privacy.html" style="text-decoration:underline">Privacy</a></p>
+  <div class="footer-wordmark">Proxima.</div>
+</footer>
+
+<script>
+/* ============================================================
+   UPDATE LOG
+   Newest entry first. To add an entry, copy the block below.
+
+   date    : 'YYYY-MM-DD'
+   kind    : 'industry'  (hyperscaler / market change)
+           | 'update'    (change made to a Proxima tool)
+   cloud   : 'aws' | 'azure' | 'gcp' | 'salesforce' | 'adobe' | 'oracle' | 'multi' | 'tool'
+   title   : short headline
+   body    : what happened
+   impact  : (optional) what it means for negotiations
+   link    : (optional) { label, url }
+   ============================================================ */
+const ENTRIES = [
+
+  {
+    date: '2026-10-05',
+    kind: 'update',
+    cloud: 'aws',
+    title: 'AWS Planner — new alert for the October 7 Capacity Block repricing',
+    body: 'The AWS Planner now carries a second GPU alert, shown when a client has accelerated-compute or AI/ML workloads, noting that AWS reset EC2 Capacity Block rates again effective October 7, 2026, roughly 15% above the July levels, and that AWS says these prices are updated regularly with supply and demand. It tells the advisor to size commitments against current rates and to ask for a fixed rate card on named GPU families.',
+    impact: 'Stops the July figure from being quoted as the current baseline. Two increases in four months is now a pattern, so price protection is the ask, not a stretch goal.'
+  },
+
+  {
+    date: '2026-10-05',
+    kind: 'industry',
+    cloud: 'aws',
+    title: 'AWS resets EC2 Capacity Block rates again, effective October 7',
+    body: 'AWS\'s Capacity Blocks pricing page now lists new per-accelerator hourly rates effective October 7, 2026: P6-B300 $16.146, P6-B200 $14.208, P5en $7.895, P5e $6.866, P5 $5.970, P4de $2.546 and P4d $1.696 (US regions). Against the July 1 rates already in this log (P6-B300 $14.04, P5 $5.191) that is about 15% higher. The page does not state a percentage, says reservation prices are updated regularly based on supply and demand, and lists the next update as October 2026. On-Demand and Savings Plans rates are not part of this change.',
+    impact: 'The third GPU repricing this year, counting the two increases noted in July. Any commitment modelled on July rates is already stale. Ask for a fixed rate card on named GPU families for the term, and treat Capacity Blocks as a variable-price product when sizing a PPA, not a stable input. The percentage is our calculation from two AWS price points, not an AWS statement.',
+    link: { label: 'AWS Capacity Blocks pricing', url: 'https://aws.amazon.com/ec2/capacityblocks/pricing/' }
+  },
+
+  {
+    date: '2026-10-01',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'Microsoft adds a 5% uplift to monthly-billed annual CSP software subscriptions',
+    body: 'Microsoft announced on August 12 that from October 1, 2026 a 5% cost of capital uplift applies to CSP software subscriptions (SQL Server, Windows Server, Client Access Licenses, System Center) with annual-term commitments billed monthly. Existing subscriptions see it at renewal on or after October 1. Microsoft says annual billing and month-to-month subscriptions are unchanged, and describes the change as aligning pricing treatment across sales channels.',
+    impact: 'Paying monthly on a one-year CSP software term now costs 5% more than paying annually up front. For clients renewing server licences through a partner, ask for the annual-billing price and check whether the partner will absorb or pass through the uplift. This does not affect Azure consumption or EA pricing.',
+    link: { label: 'Partner Center announcements', url: 'https://learn.microsoft.com/en-us/partner-center/announcements/2026-august' }
+  },
+
+  {
+    date: '2026-09-29',
+    kind: 'update',
+    cloud: 'azure',
+    title: 'Azure Planner — new tactic to price the Copilot usage layer alongside the seat',
+    body: 'When a client is planning Copilot adoption, the Azure Planner now adds a tactic explaining that Cowork, Code, Autopilot, long-running agents and frontier models are billed through Copilot Credits on top of the seat licence, following Microsoft\'s September 25 relaunch. It prompts the advisor to get the credit rate card in writing, ask about prepaid or MACC-drawn credits, and set spending policies from day one.',
+    impact: 'Keeps a Copilot seat deal from being signed without a price for the usage that now sits on top of it.'
+  },
+
+  {
+    date: '2026-09-29',
+    kind: 'update',
+    cloud: 'gcp',
+    title: 'GCP Planner — Gemini Enterprise renewal tactic for the Code Assist removal',
+    body: 'For clients with Vertex AI or AI expansion plans, the GCP Planner now adds a tactic noting that new and renewing Gemini Enterprise Standard and Plus subscriptions no longer include Gemini Code Assist as of September 17, 2026. It tells the advisor to inventory Code Assist use before renewal and negotiate it back into the Gemini Enterprise or EA price.',
+    impact: 'Surfaces a quiet entitlement loss before the renewal, not after developers lose access.'
+  },
+
+  {
+    date: '2026-09-29',
+    kind: 'update',
+    cloud: 'adobe',
+    title: 'Adobe Planner — Topaz Labs row updated to closed',
+    body: 'The Topaz Labs row in the Corporate &amp; Pricing Context block now shows the September 23, 2026 close, with Adobe\'s statement that Topaz stays standalone and its capabilities go to Firefly and Photoshop first. The implication now asks the advisor to get in writing whether Topaz features inside Creative Cloud draw on generative credits or a new add-on. The M&amp;A module note and the context verifiedOn date (September 29, 2026) were updated to match.',
+    impact: 'Removes the last pending acquisition flag from the planner and replaces it with a live renewal question.'
+  },
+
+  {
+    date: '2026-09-25',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'Microsoft relaunches Copilot with seat licences plus usage billing for agents',
+    body: 'Microsoft announced a redesigned Copilot combining Home (Chat and Cowork with Office), Code (building apps and workflows in natural language) and Autopilot (a persistent cloud-hosted agent). The user subscription licence covers Copilot Chat and Copilot in Word, Excel, PowerPoint, Outlook and Teams, plus model selection. Cowork, Code, Autopilot, long-running agentic capabilities and frontier models run on usage-based billing through Copilot Credits. Microsoft also announced "FinOps for AI" admin controls: spending policies by API, approval workflows for credit requests, and model availability set by user group. No credit rates were published, and the announcement does not change the existing Microsoft 365 Copilot seat price. Home and Code roll out through the Frontier program in the coming weeks; Autopilot enters private preview at the end of the month.',
+    impact: 'The Copilot bill is now a seat plus a meter, and the meter is where the agent features live. In any Copilot negotiation, ask for the Copilot Credit rate card in writing, whether credits can be prepaid at a discount or drawn down against MACC, and who controls the spending limit. Do not let seat pricing be agreed while the usage layer is left to list. This follows the November 2 CSP default for Copilot Business, so the same pattern now runs across channels.',
+    link: { label: 'Official Microsoft Blog', url: 'https://blogs.microsoft.com/blog/2026/09/25/introducing-the-new-copilot-with-home-code-and-autopilot/' }
+  },
+
+  {
+    date: '2026-09-23',
+    kind: 'industry',
+    cloud: 'adobe',
+    title: 'Adobe closes the Topaz Labs acquisition',
+    body: 'Adobe completed its acquisition of Topaz Labs, the AI image and video enhancement company, on September 23, 2026. The deal was announced June 25. Adobe says Topaz stays a standalone brand and its apps and models remain available on their own, while its capabilities come to Firefly and Photoshop first and more Creative Cloud workflows later. Topaz CEO Eric Yang joins Adobe\'s Digital Video and Audio team. Adobe did not say whether the integrated features will need a separate subscription or consume generative credits.',
+    impact: 'Clients who buy Topaz separately should keep that renewal short and separate from any ETLA or VIP deal. Ask Adobe in writing how Topaz features inside Creative Cloud will be metered before agreeing to credit allowances in a renewal. That question matters most in Adobe\'s current Q4 (September to November), when most enterprise renewals are negotiated.',
+    link: { label: 'Adobe Blog', url: 'https://blog.adobe.com/en/publish/2026/09/23/adobe-completes-acquisition-of-topaz-labs' }
+  },
+
+  {
+    date: '2026-09-23',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'Microsoft CSP promotions on M365 E5, E7 and Copilot end September 30 as growth margins take over',
+    body: 'Microsoft confirmed that CSP license-based growth margins become available for transactions on October 1, 2026, with eligibility checks opening to partners on September 23. Microsoft 365 E5, Microsoft 365 E7 and Copilot promotions end on September 30 with the transition. Growth margins are paid to the partner, with eligible SKUs and minimum seat requirements in Partner Center. Separately, on September 24 Microsoft let eligible nonprofits stack CSP Copilot promotions of 15–40% on top of the existing 15% nonprofit offer through December 31, 2026.',
+    impact: 'For clients buying through CSP, a promotion that became a customer price cut on September 30 turns into a partner margin on October 1. Whether any of it reaches the customer is now a negotiation with the partner, not a Microsoft price. Ask CSP partners to disclose whether a deal qualifies for growth margins and how much of it is passed through. This does not change EA pricing.',
+    link: { label: 'Partner Center announcements', url: 'https://learn.microsoft.com/en-us/partner-center/announcements/2026-september' }
+  },
+
+  {
+    date: '2026-09-18',
+    kind: 'industry',
+    cloud: 'salesforce',
+    title: 'Analyst channel checks point to a harder Salesforce push toward the top edition',
+    body: 'BNP Paribas analyst Stefan Slowinski, reporting channel checks after Dreamforce and Investor Day, said roughly 5% of customers have moved to the $550 per user per month top tier and that the sales team plans to push upgrades more aggressively. One partner cited a financial-services customer whose renewal went from roughly $3–5 million to $14 million after a broader Agentforce deployment. Partners also reported continued confusion about pricing. This is reported by Benzinga from an analyst note, not a Salesforce document; the renewal example is a single, unverified anecdote.',
+    impact: 'Expect renewals in Salesforce\'s Q3 and Q4 (August to January) to lead with a move to Max. Price the upgrade against actual Flex Credit and Agentforce use, not bundled value, and keep a Core or Advanced quote on the table as the baseline. Treat the $14 million example as an illustration of the pitch, not a benchmark.',
+    link: { label: 'Benzinga via Yahoo Finance', url: 'https://finance.yahoo.com/markets/stocks/articles/agentforce-triggers-renewal-surge-sparking-102117886.html' }
+  },
+
+  {
+    date: '2026-09-17',
+    kind: 'industry',
+    cloud: 'gcp',
+    title: 'Gemini Enterprise Standard and Plus renewals no longer include Gemini Code Assist',
+    body: 'Google Cloud release notes say that new or renewing Gemini Enterprise Standard and Plus subscriptions bought online no longer include access to Gemini Code Assist features. Existing subscriptions keep access for their current term. Customers who want Code Assist are told to contact Google Cloud sales. Earlier in September, Google opened the Gemini Enterprise pay-as-you-go edition and overage controls to all projects on invoiced billing accounts.',
+    impact: 'An entitlement disappears at renewal without a price change, which is effectively a price increase for teams that used it. Check Code Assist usage before any Gemini Enterprise renewal and negotiate it back into the seat or EA price instead of accepting a new line at list.',
+    link: { label: 'Gemini Enterprise release notes', url: 'https://docs.cloud.google.com/gemini/enterprise/docs/release-notes' }
+  },
+
+  {
+    date: '2026-09-01',
+    kind: 'industry',
+    cloud: 'aws',
+    title: 'AWS Marketplace private offers can now auto-renew, including with a price change',
+    body: 'AWS Marketplace added auto-renewal for direct private offers with contract pricing. Sellers set the renewal terms when creating the offer: no price change, a fixed price change, or a price change within a defined range. Buyers choose auto-renewal when accepting and can change the setting later; either side can decline before the deadline. AWS sends both parties a comparison of current and upcoming terms before renewal, and buyers can map purchase orders to each renewal. The announcement does not address EDP commitment treatment.',
+    impact: 'Read the renewal terms on every private offer before accepting. A price change "within a defined range" is a pre-agreed uplift, so negotiate the range down or to zero at signing, when leverage is highest. Diarise the decline deadline for any Marketplace software that counts toward EDP drawdown, so a renewal is a choice and not a default.',
+    link: { label: 'AWS What\'s New', url: 'https://aws.amazon.com/about-aws/whats-new/2026/09/aws-marketplace-auto-renewals-for-private-offers/' }
+  },
+
+  {
+    date: '2026-09-21',
+    kind: 'industry',
+    cloud: 'salesforce',
+    title: 'Salesforce says outcome-based AI pricing is coming, but has no prices yet',
+    body: 'Following Dreamforce, Salesforce executives described three pricing approaches now running side by side: per-seat licences, Flex Credits, and outcome-based fees. Bill Patterson, EVP of CRM Applications, discussed pricing AI service agents by cases resolved at an investor webinar, and Deputy CFO Mike Spencer called the current mix an "anxiety-filled architecture". Consumption revenue is expected to become a material share in three to five years. No outcome-based prices or terms have been published. Existing contract vehicles remain annual commitments, the Agentic Enterprise License Agreement (AELA), and Salesforce Commit. This is reported by The Register from the investor webinar, not from a Salesforce pricing document.',
+    impact: 'Expect account teams to float outcome-based or bundled AI pricing at renewal before any rate card exists. Treat it as a proposal to be priced, not a published term. Ask for the per-outcome definition (what counts as a resolution), a cap, and a fallback to seat or Flex Credit pricing if the outcome metric is disputed. Tie any AI commitment to the Core/Advanced/Max bundle math already in the planner so the same Flex Credits are not paid for twice.',
+    link: { label: 'The Register', url: 'https://www.theregister.com/software/2026/09/21/salesforce-wants-to-charge-for-ai-outcomes-but-first-it-needs-to-figure-out-how/5297402' }
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'New Microsoft 365 Copilot Business licences default to pay-as-you-go usage billing from November 2',
+    body: 'Microsoft told CSP partners that from November 2, 2026, new Microsoft 365 Copilot Business purchases through CSP, standalone and in bundles, will include usage-based billing by default, with pay-as-you-go as the default billing configuration. It is aimed at eligible usage-based experiences such as Copilot Cowork, Work IQ APIs, and GitHub Copilot Harness, and the announcement refers to a preset monthly limit. Separately, Microsoft opened a "flex spend plan" test product in the CSP sandbox on September 1: a single agreement covering multiple eligible products, billed monthly rather than prepaid, with auto-renewal. Microsoft says it is a test construct, not a production offer. Both come from the Partner Center announcements page.',
+    impact: 'The seat licence is no longer the whole Copilot bill: an Azure subscription is set up with the licence and usage can accrue on top of it. This applies to new CSP purchases of Copilot Business, so it does not directly change an EA. It does show Microsoft moving Copilot toward metered billing. For any client adding Copilot Business through a partner, ask for the monthly limit, who can raise it, and how usage is reported before signing. Microsoft has not published the limit amount in this announcement.',
+    link: { label: 'Partner Center announcements', url: 'https://learn.microsoft.com/en-us/partner-center/announcements/2026-september' }
+  },
+
+  {
+    date: '2026-09-15',
+    kind: 'industry',
+    cloud: 'aws',
+    title: 'AWS Direct Connect adds flat-rate pricing with no data transfer out charges',
+    body: 'AWS introduced flat-rate pricing for 10 Gbps and 100 Gbps Dedicated Connections. A single fixed monthly price covers data transfer out within one of five geographic tiers, from same-metro to global. A port-pair option puts two connections on different devices or locations under one price, with the second at no extra cost. It is available at all Direct Connect locations in commercial Regions (China excluded), needs no upfront commitment, and customers can switch billing mode per connection at any time.',
+    impact: 'Hybrid and data-heavy clients whose Direct Connect bill is mostly per-GB transfer out can now compare that against a fixed fee. It is a pay-as-you-go option with no commitment, so it does not count toward an EDP by itself and is worth testing against actual monthly egress volume. Where a client is close to breaking even, the flat rate also removes a variable from EDP forecasting. Tier prices were not verified here; pull them from the pricing page before quoting anything.',
+    link: { label: 'AWS What\'s New', url: 'https://aws.amazon.com/about-aws/whats-new/2026/09/aws-direct-connect-announces-flat-rate-pricing/' }
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'update',
+    cloud: 'salesforce',
+    title: 'Salesforce Planner — top-tier discount bands recalibrated',
+    body: 'A Proxima-observed enterprise outcome of 79–81% off list for a 12,000-user Sales and Service Cloud Unlimited estate was well above what the planner could show: its $10M+ ceiling was 62% even with every favorable factor. The base bands are now 33–45% for $2.5M–$5M ACV, 45–58% for $5M–$10M, and 55–68% for $10M+, and the $10M+ ceiling can reach 82% with competitive pressure, a three-year term, and fiscal Q4 timing. Bands under $2.5M are unchanged.',
+    impact: 'Large Unlimited estates should anchor well above 60% off list. A strong $10M+ scenario now shows about 62–81%, which brackets the observed deal. The $2.5M–$10M bands are interpolated rather than directly observed, so log more deals in Deal Calibration to firm them up.',
+    link: { label: 'Open Salesforce Planner', url: 'https://tools.briansavesbillions.com/salesforce-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'update',
+    cloud: 'oracle',
+    title: 'Oracle Negotiation Planner — new tool',
+    body: 'A seventh planner covers Oracle support renewals, new license and subscription purchases, ULA certification or renewal, OCI and multicloud commitments, Java SE subscriptions, and audit settlements. It scores leverage against Oracle\'s May 31 fiscal year and treats compliance exposure (audit status, VMware soft partitioning, unlicensed database options, and Java under the per-employee metric) as part of leverage. It models a support increase target, a discount off list for new purchases, recoverable support spend within Oracle\'s repricing rules, and Java list-price exposure by headcount band. An optional M&A module covers entity scope, ULA coverage, support contract consolidation, and divestiture transfer rights. A dated context table covers Q1 FY27 results, the March 2026 layoffs, the co-CEO structure, the end of free JDK 21 updates, the Database 19c support extension, and Support Rewards. Oracle deals can now be logged in Deal Calibration using the shared SaaS spend bands.',
+    impact: 'Oracle negotiations are mostly about support, which compounds every year, and about compliance claims that Oracle settles through purchases. Free JDK 21 updates ended in September 2026, so Java exposure is the most time-sensitive item for most clients right now.',
+    link: { label: 'Open Oracle Planner', url: 'https://tools.briansavesbillions.com/oracle-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'Deal Calibration — Microsoft provider, logged by product line',
+    body: 'Microsoft deals can now be logged in Deal Calibration against total annual Microsoft spend, using the same bands the Microsoft planner asks for, and against a product line: Microsoft 365 suites, Copilot, Security, Dynamics 365, Power Platform, GitHub, Unified Support, server licensing, Visual Studio, or the whole estate blended. Azure deals stay under the Azure provider. The Microsoft planner now shows logged deals next to the target for each matching line, plus a whole-estate figure when blended deals exist.',
+    impact: 'A Copilot discount and a Unified Support discount are not comparable numbers, so pooling them would make any single Microsoft average misleading. Logging by line lets the planner\'s non-Azure ranges start calibrating against real outcomes. Sample output still excludes all logged deals.'
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'All planners — Export Strategy no longer drops the strategy header',
+    body: 'Printed and PDF exports were losing the top of the strategy: the title, profile line, leverage score, target discount, and recommended vehicle. That header was white text on a dark background, and the background only printed when "Background graphics" was switched on — and in the Azure, GCP, and Microsoft planners it pointed at a colour that was never defined, so it never printed. The header now prints as dark text on white in all six planners, whatever the print settings. Exports also skip the on-screen fade-in, and tactic, concession, and risk cards no longer split across pages. In the Microsoft planner, the wide estate tables now fit the page instead of cutting off their right-hand columns.'
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'update',
+    cloud: 'azure',
+    title: 'Azure Planner — early-renewal advice corrected now that the July 2026 M365 increase is live',
+    body: 'The planner had been advising EA customers to renew early or extend their term, to carry locked pricing past the July 1, 2026 Microsoft 365 increase. That advice expired when the increase took effect. A new input asks when the current EA term began. Terms that began earlier are now told to hold their pre-increase pricing to term end, and to add genuinely needed seats at anniversary true-ups. Terms that began on or after July 1 are told an early renewal gains nothing on price. The related tactic, alert, risk, question, and concession were all rewritten to match.',
+    impact: 'Microsoft applies the new pricing at the next renewal after July 1, 2026, so an early renewal now brings the increase forward rather than avoiding it. Expect account teams to present early renewals or agreement "modernisation" as routine. For a pre-increase EA it is a price increase in disguise. Whether a term extension preserves current pricing is not confirmed, so get Microsoft\'s answer in writing before relying on one.',
+    link: { label: 'Open Azure Planner', url: 'https://tools.briansavesbillions.com/azure-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'update',
+    cloud: 'azure',
+    title: 'New tool — Microsoft Negotiation Planner, covering the whole Microsoft estate',
+    body: 'A sixth planner puts Azure, Microsoft 365, Copilot, Security, Dynamics 365, Power Platform, GitHub, Unified Support, and server licensing into one negotiation. It sets a target range for each product line and rates how hard Microsoft is pushing growth on it, so the advisor can see what to trade for what. It also sizes the July 2026 Microsoft 365 list increase for the seat count and suite, and compares EA, MCA-E, and CSP price protection. The Azure line reuses the Azure planner\'s ACD model and Proxima deal data. Every strategy flags the dated 2026 events that apply: Levels B–D removed, the end of the Copilot volume discount ladder (June 30), E7 availability, and seeded AI Builder credits ending November 1.',
+    impact: 'The July 1, 2026 increase has now taken effect. For an EA whose term began earlier, it lands at renewal, so renewing early brings the increase forward rather than avoiding it. The new planner advises holding the term and truing up needed seats at locked pricing. Non-Azure ranges are planning ranges until Proxima deal data builds up for those lines.',
+    link: { label: 'Open Microsoft Planner', url: 'https://tools.briansavesbillions.com/microsoft-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'update',
+    cloud: 'salesforce',
+    title: 'Salesforce Planner — added Core/Advanced/Max edition pricing and a migration-pitch alert',
+    body: 'The planner\'s published list-price table now includes Core ($195), Advanced ($395), and Max ($550) per user/month alongside the existing Professional, Enterprise, and Unlimited rows, and every strategy now carries a note explaining what changed and why it matters at this renewal.',
+    impact: 'Existing Enterprise and Unlimited customers keep their legacy pricing for now, but the new editions give account teams a ready "simplification" pitch to bring to any renewal from here forward. The alert tells the advisor to price that pitch against actual Agentforce, Slack, and analytics add-on spend before treating it as a saving.',
+    link: { label: 'Open Salesforce Planner', url: 'https://tools.briansavesbillions.com/salesforce-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-09-03',
+    kind: 'industry',
+    cloud: 'salesforce',
+    title: 'Salesforce replaces Enterprise and Unlimited with Core, Advanced, and Max editions',
+    body: 'Salesforce consolidated Enterprise, Unlimited, and the Agentforce 1 Edition into three new editions for Agentforce Sales, Service, and Industries: Core at $195/user/month (500,000 Flex Credits), Advanced at $395 (1 million Flex Credits), and Max at $550 (2.75 million Flex Credits) — matching the former Agentforce 1 list price. Every edition now bundles Agentforce, Slack, Tableau Next-based analytics, and a Premier Success Plan into the seat price rather than selling them as separate add-ons. Existing Agentforce 1 Edition customers can upgrade to Max at no extra cost with up to $500 in added value; Agentforce Industries pricing follows later this fall. Salesforce says current Enterprise/Unlimited customers keep their existing pricing.',
+    impact: 'This is a repackaging, not just a price change — what used to be Enterprise plus a separately priced Agentforce add-on is now sold as one bundled number. Expect Salesforce account teams to pitch a Core/Advanced/Max migration at any renewal from here forward as a simplification. The bundle can be a genuine saving for an account that would buy the Agentforce/Slack/analytics components anyway, or a disguised uplift for one that would not — model actual add-on spend against the bundled price before agreeing, and do not let "simplification" substitute for that math.',
+    link: { label: 'Salesforce Newsroom', url: 'https://www.salesforce.com/news/stories/salesforce-simplifies-editions-2026/' }
+  },
+
+  {
+    date: '2026-09-16',
+    kind: 'update',
+    cloud: 'adobe',
+    title: 'New tool — Adobe Negotiation Planner, with an optional M&A module',
+    body: 'A fifth planner covers Adobe renewals across VIP, VIP 3-Year Commit, ETLA, and Experience Cloud agreements. It scores leverage against Adobe\'s fiscal calendar (year ends the Friday nearest November 30), models the renewal increase and discount off list, and sizes recoverable spend from idle licenses, over-specified Creative Cloud Pro seats, and unused Experience Cloud capacity. Switching on the M&A module adds transaction-specific guidance for acquisitions, mergers, being acquired, and divestitures — license transfer, assignment and change-of-control rights, consolidating parallel agreements, carve-out transition rights, and pre-close clean-team cautions. Adobe deals can now be logged in Deal Calibration.',
+    impact: 'Adobe\'s 2026 moves change renewal math: Acrobat Standard for business pricing rose April 1, the June 1 VIP Marketplace pricelist raised most Creative Cloud and Acrobat SKUs and removed the Level 2 volume discount, Semrush closed April 28 and was folded into CX Enterprise, Topaz Labs is pending, and Anil Chakravarthy becomes CEO on December 1 — making Adobe\'s September–November Q4 the last quarter under current leadership. Each appears in the planner as a dated, sourced event.',
+    link: { label: 'Open Adobe Planner', url: 'https://tools.briansavesbillions.com/adobe-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-09-14',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'All planners — Fill Sample Data button on every input screen',
+    body: 'Every input screen in the AWS, Azure, GCP, and Salesforce planners now has a Fill Sample Data button that populates just that screen with the same example client used by View Sample Output. A presenter can walk through the tool screen by screen, showing each question, without typing anything.',
+    impact: 'Built for live demos. Any strategy generated after using the fill buttons is marked as sample output — banner on screen, watermark in the PDF — even if some fields were changed afterwards, so a demo can never be mistaken for a client analysis. Real Proxima deal data is excluded from sample output. View Sample Output now fills the form as well, so clicking Edit Inputs from a sample shows the example values instead of blank fields.'
+  },
+
+  {
+    date: '2026-09-14',
+    kind: 'update',
+    cloud: 'multi',
+    title: 'All planners — pricing schedule freeze and MFN price-down terms added',
+    body: 'Two contract terms now appear in the concessions list of the AWS, Azure, GCP, and Salesforce planners. Pricing Schedule Freeze pins any reference to the vendor\'s published pricing pages to a dated snapshot. Price-Down (MFN) Trigger passes any published list price reduction through to the customer within 30 days, with negotiated discounts still stacked on top.',
+    impact: 'Order forms frequently reference a live pricing page by URL rather than printing the rates, which lets a vendor change effective pricing mid-term without an amendment. Salesforce\'s ~6% list increase in August 2025 is exactly that scenario. The MFN term matters most where prices genuinely fall — AWS and GCP routinely cut rates, and AI product pricing is still moving — while the freeze matters everywhere.'
+  },
+
+  {
+    date: '2026-09-14',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'All planners — sample output available without filling in the form',
+    body: 'Each planner now has a View Sample Output button on its first step that renders a complete strategy from a fixed example client: a mid-market SaaS company spending $10M–$25M a year with the provider ($1M–$2.5M ACV for Salesforce), on a 3-year term with renewal 6–12 months out. The profile is kept consistent across all four planners.',
+    impact: 'Useful for showing a prospect or new team member what the tools produce before asking for their data. Sample output is marked on screen with a banner and title suffix, and in the PDF export with a watermark on every page and a letterhead tag. Real Proxima deal calibration data is deliberately excluded from sample output so logged client outcomes never appear in a demo.'
+  },
+
+  {
+    date: '2026-09-14',
+    kind: 'update',
+    cloud: 'azure',
+    title: 'Azure Planner — added regional AI Foundry pricing alert',
+    body: 'The planner now flags that Azure AI Foundry model deployments outside the default global region carry a price premium, whenever AI/ML use is selected. It appears as an informational alert alongside the existing Copilot and Azure OpenAI content.',
+    impact: 'A client sizing a MACC or EA commitment with AI workloads pinned to the EU, APAC, or another compliance region now gets a prompt to size that spend off regional rates rather than the global rate card, before the commitment is set.',
+    link: { label: 'Open Azure Planner', url: 'https://tools.briansavesbillions.com/azure-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-09-11',
+    kind: 'update',
+    cloud: 'gcp',
+    title: 'GCP Planner — added Gemini Enterprise Flexible Savings Plans guidance',
+    body: 'The planner now surfaces Gemini Enterprise Flexible Savings Plans (FSPs) as a tactic alongside the existing Vertex AI content, plus a matching diligence question. It appears wherever Vertex AI use or AI-expansion plans are already flagged, so it does not require a new input.',
+    impact: 'Clients adopting Gemini Enterprise seats or agent workloads now get a concrete ask: route that spend through an FSP tied to the EA rather than paying list, and get spend caps and anomaly alerts confirmed before go-live.',
+    link: { label: 'Open GCP Planner', url: 'https://tools.briansavesbillions.com/gcp-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-08-26',
+    kind: 'industry',
+    cloud: 'gcp',
+    title: 'Gemini Enterprise gets its own commitment vehicle: Flexible Savings Plans',
+    body: 'Google introduced Flexible Savings Plans (FSPs) for Gemini Enterprise — a spend-based commitment separate from Vertex AI CUDs, discounting token costs 10% on a 1-year term and 20% on a 3-year term, with no minimum or maximum spend and month-to-month adjustment as usage grows. FSPs draw down against an existing Google Cloud EA. The same update added pay-as-you-go pricing, per-project spend caps, and anomaly alerts for Gemini Enterprise and agent workloads (Antigravity, Android Studio AI), with a "deferred execution" discount of up to 50% for off-peak agent workloads coming soon.',
+    impact: 'This is a second, distinct AI commitment lever alongside Vertex AI CUDs — model Gemini Enterprise seat and agent-workload spend into EA sizing rather than treating it as an unplanned pay-as-you-go add-on. Push for the FSP rate to be documented in the EA itself, and confirm spend caps and anomaly alerts are configured before rollout so an agent workload can&rsquo;t run past a fixed monthly commitment unnoticed.',
+    link: { label: 'Google Cloud Blog', url: 'https://cloud.google.com/blog/products/ai-machine-learning/flexible-billing-and-cost-controls-for-agents-on-google-cloud' }
+  },
+
+  {
+    date: '2026-09-01',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'Azure AI Foundry adds a regional pricing premium for model deployments',
+    body: 'Effective September 1, 2026, Microsoft Foundry updated pricing for model deployments outside the default global region. Global pricing is unchanged, but the EU Data Zone now prices 9% above Global, other regional deployments outside the US run 7–16% above Global, and a new APAC Data Zone launches at 20% above Global. Microsoft frames the premium as the cost of delivering AI within a specific geography at high availability — data residency, compliance, and latency requirements.',
+    impact: 'Any client sizing a MACC or EA commitment around Azure OpenAI/Foundry consumption in the EU, APAC, or another compliance-driven region needs to model that premium explicitly rather than assume global list rates — a regionally concentrated AI estate runs meaningfully hotter than a US-anchored one at the same token volume. Worth raising proactively if a renewal is treating AI spend as a single blended line.',
+    link: { label: 'Microsoft Tech Community', url: 'https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/microsoft-foundry-model-deployment-pricing-update/4535385' }
+  },
+
+  {
+    date: '2026-06-22',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'Azure Maps Gen1 pricing tier retires Sept 15 — up to a 9x cost increase for stragglers',
+    body: 'Microsoft retires the Azure Maps Gen1 (Standard S0/S1) pricing tier on September 15, 2026. Any account still on Gen1 auto-migrates to Gen2, no action required — but Gen2 prices some transaction types far higher: geocoding moves from $0.50 to $4.50 per 1,000 transactions, an 800% increase. A 100,000-transaction/month application goes from roughly $600 to $5,400 a year with no functionality change.',
+    impact: 'A narrow line item on its own, but it is another instance of a pattern worth watching across all three providers: a "simplified" pricing-tier consolidation that lands as an order-of-magnitude increase on specific meters, announced months ahead but easy to miss past the "no action required" framing. Worth a one-time Azure Maps usage check for any client with geospatial workloads before the auto-migration date.',
+    link: { label: 'Microsoft Q&A', url: 'https://learn.microsoft.com/en-us/answers/questions/1377213/retirement-announcement-azure-maps-gen1-price-tier' }
+  },
+
+  {
+    date: '2026-08-20',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'Salesforce Planner — swap rights added to the negotiation model',
+    body: 'The planner now recommends negotiating swap rights: the contractual right to exchange licenses for a different product, edition, or user type mid-term without reopening the agreement. It appears as a ranked tactic, a must-have contract term, and a diligence question, with a companion tactic covering the three clauses that commonly render the right unusable.',
+    impact: 'A Salesforce agreement locks which licenses you hold, not only how many. When the business shifts toward service, an edition proves over-specified, or a cloud fails to land, the original mix keeps billing and the replacement is bought on top. Swap rights are also the specific answer to wanting a multi-year term for the pricing without freezing the product mix for three years — so the tactic is ranked high when the mix is uncertain and the term is long, and suppressed entirely for a single-product one-year deal where it would be noise.',
+    link: { label: 'Open Salesforce Planner', url: 'https://tools.briansavesbillions.com/salesforce-negotiation-planner/' }
+  },
+
+
+
+  {
+    date: '2026-08-18',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'Planner updates shipped from the August scan',
+    body: 'Six tool changes went in across the three cloud planners. AWS: PPA terminology adopted tool-wide plus a new Accelerated Compute (GPU) usage input. Azure: an EA-vs-MCA-E price protection section, and an EA anniversary input that drives an early-renewal window. GCP: Vertex AI added as a fourth layer of the discount stack, plus guidance for multiprice direct-discount billing on spend-based CUDs.',
+    impact: 'Each change is wired through the leverage or discount model, tactics, alerts, concession asks, and diligence questions rather than sitting as standalone copy. One correction worth noting: the GCP recommendation called for retiring legacy credit-reconciliation math, but the planners never modelled CUD savings that way. The real gap was missing guidance, including a warning that any internal savings report or chargeback split still built on credit reconciliation is measuring something that no longer exists.'
+  },
+
+  {
+    date: '2026-08-18',
+    kind: 'industry',
+    cloud: 'aws',
+    title: 'AWS rebrands EDP to Private Pricing Agreement (PPA)',
+    body: 'AWS now refers to all negotiated enterprise discount contracts as Private Pricing Agreements. The commercial mechanics are unchanged — the same 5–25% discount tiers, with the top tier still requiring a 5-year term and $50M+ annual commitment.',
+    impact: 'Purely a naming change, but expect PPA in contract paperwork and in account team conversations from here. Client-facing material that still says EDP will read as dated.',
+    link: { label: 'Source', url: 'https://redresscompliance.com/aws-edp-negotiation-enterprise-playbook-2026.html' }
+  },
+
+  {
+    date: '2026-08-18',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'EA auto-renewal proposes an inflated commitment off trailing consumption',
+    body: 'Microsoft EA auto-renewal triggers 30–90 days before expiration, and the proposed new Azure Monetary Commitment is built from trailing-12-month consumption. Practitioners report this commonly lands 15–30% above the historical average.',
+    impact: 'Renewal is also the only point in a 3-year EA term where committed quantities can be reduced, so an auto-renewal that passes unchallenged locks in an inflated commit for the full next term. Diarise the notice window and size the commitment independently before Microsoft proposes a number.',
+    link: { label: 'Source', url: 'https://redresscompliance.com/microsoft-enterprise-agreement-guide' }
+  },
+
+  {
+    date: '2026-08-18',
+    kind: 'industry',
+    cloud: 'gcp',
+    title: 'Vertex AI is the least-scrutinised line item in Google Cloud deals',
+    body: 'Vertex AI consumption counts toward CUD and PPA commitments, but analysis of recent Google Cloud negotiations shows AI meters growing faster than any other while receiving the least negotiation attention. Inside a CUD, Vertex AI reportedly runs 18–32% below published rates; Provisioned Throughput inside a CUD runs 38–52% below standalone on-demand.',
+    impact: 'Flexibility and burn-down terms for AI consumption are increasingly written into side letters rather than the base agreement, so standard CUD terms should not be assumed to apply. Ask for them explicitly. Discount figures come from advisory commentary, not Google documentation — confirm before quoting.',
+    link: { label: 'Source', url: 'https://redresscompliance.com/google-cloud-vertex-ai-gemini-negotiation' }
+  },
+
+  {
+    date: '2026-08-18',
+    kind: 'industry',
+    cloud: 'multi',
+    title: 'Gartner treats AI pricing as its own negotiation category',
+    body: 'Gartner published “Negotiate AI and Generative AI Pricing to Avoid Skyrocketing Costs” this period, formalising what practitioners had been reporting informally.',
+    impact: 'Copilot, Vertex AI, and Bedrock consumption should be scoped and negotiated as a distinct line item rather than absorbed into general cloud spend assumptions. Renewals this quarter need an AI-bundling position that did not exist a year ago.',
+    link: { label: 'Gartner', url: 'https://www.gartner.com/en/documents/7522053' }
+  },
+
+  {
+    date: '2026-08-18',
+    kind: 'industry',
+    cloud: 'multi',
+    title: 'Rightsize before committing — post-signature cleanup cannot recover it',
+    body: 'A theme repeated across AWS, Azure, and GCP negotiation guidance this period: entering any commitment vehicle with unoptimised spend locks the waste in at a committed rate. A structured optimisation pass before sizing typically recovers 20–40% that a later cleanup cannot touch.',
+    impact: 'This reorders the engagement sequence. Optimisation is not a follow-on workstream after a renewal — done afterwards, most of its value is already contractually spent. The 20–40% figure is advisory-sourced and directional.',
+    link: { label: 'Source', url: 'https://redresscompliance.com/aws-edp-negotiation-enterprise-playbook-2026.html' }
+  },
+
+  {
+    date: '2026-07-01',
+    kind: 'industry',
+    cloud: 'aws',
+    title: 'EC2 GPU Capacity Block prices up ~20%',
+    body: 'Effective July 1, 2026, AWS raised EC2 GPU Capacity Block pricing roughly 20% across the P6-B300, P6-B200, P5, P5e, P5en, and P4de instance families. P6-B300 now bills at $14.04 per accelerator-hour and P5 (H100) at $5.191/hr in US regions. This is the second GPU increase this year. All other EC2 pricing is unchanged.',
+    impact: 'Material for any client sizing a PPA commitment around AI/ML training or inference. A commitment modelled on pre-July GPU rates will understate consumption, and the increase lands entirely on the workload category growing fastest in most estates.',
+    link: { label: 'Source', url: 'https://aiweekly.co/alerts/aws-raises-ec2-gpu-capacity-block-prices-20-from-july-1' }
+  },
+
+  {
+    date: '2026-07-01',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'EA 3-year price lock does not carry over to MCA-E or CSP',
+    body: 'EA customers whose term began before the July 2026 Microsoft 365 price increase are shielded from it for the life of that term, and new seats are added at the locked price. MCA-E and CSP annual subscriptions carry no equivalent protection.',
+    impact: 'This is the single largest hidden cost of migrating off EA, and Microsoft is actively pushing MACC customers toward MCA-E. Clients with an EA anniversary falling before their next scheduled renewal should evaluate an early renewal or term extension to lock pre-increase pricing before auto-renewal removes the option.',
+    link: { label: 'Directions on Microsoft', url: 'https://www.directionsonmicrosoft.com/want-to-sign-an-azure-consumption-agreement-soon-mca-may-be-your-only-option/' }
+  },
+
+  {
+    date: '2026-07-01',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'Copilot now bundled by default into M365 Business Standard and Premium',
+    body: 'From July 1, 2026, every Microsoft 365 Business Standard and Business Premium subscription includes Copilot under new SKU names. Separately, the Microsoft 365 E7 “Frontier Suite” — E5 plus Copilot, Agent 365, and Entra Suite at $99/user/month — became purchasable May 1, 2026.',
+    impact: 'Both change how AI spend enters EA and MCA-E renewal math. Copilot arriving by default means it is no longer a discrete line to accept or decline, so the negotiation shifts to what the bundled price should be rather than whether to buy it at all.',
+    link: { label: 'Source', url: 'https://www.velosio.com/blog/m365-copilot-pricing-reset-2026/' }
+  },
+
+  {
+    date: '2026-08-14',
+    kind: 'update',
+    cloud: 'gcp',
+    title: 'GCP Planner — fixed error that blocked strategy generation entirely',
+    body: 'The GCP planner\'s discount stack section referenced a variable scoped to a different function, throwing a ReferenceError every time "Generate My Strategy" was clicked. No output was produced for any user. The value is now passed in as a parameter. The AWS and Azure planners used the same value inline within a single function and were never affected.',
+    impact: 'If anyone reported the GCP tool appearing to do nothing when they submitted their inputs, this was the cause. Verified fixed against the live site — strategy generation now returns the full report. Worth re-running any GCP scenario that was attempted and abandoned.',
+    link: { label: 'Open GCP Planner', url: 'https://tools.briansavesbillions.com/gcp-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-08-14',
+    kind: 'update',
+    cloud: 'multi',
+    title: 'Input audit across all four planners — 28 dead fields removed or wired',
+    body: 'Audited every collected input against whether the strategy engine actually reads it. Across AWS, Azure, GCP, and Salesforce, 28 fields were being collected and never used — including "primary negotiation goal" and "number of regions", which were required fields in every planner and changed nothing. Fields that were genuinely irrelevant were removed; fields that mattered but had never been connected were wired into the logic.',
+    impact: 'Salesforce dropped from 4 steps and roughly 29 inputs to 3 steps and 18. The cloud planners each shed 4 inputs. Newly wired: AWS MAP participation, current discount posture, spend concentration and workload profile; Azure and GCP tenure and consumption trajectory; GCP Spot VM usage and public-sector compliance. Every remaining input now moves a number in the output.'
+  },
+
+  {
+    date: '2026-08-14',
+    kind: 'update',
+    cloud: 'multi',
+    title: 'Fixed tactic list silently truncating recommendations',
+    body: 'All three cloud planners capped the tactics list at ten entries by slicing it in authoring order. Any tactic added to the end of the function over time was discarded before display, regardless of how important it was, while lower-value tactics defined earlier survived. The list now sorts by impact before capping, and the cap was raised to twelve.',
+    impact: 'In a busy scenario the planners were generating fifteen or more applicable tactics and showing whichever ten happened to be defined first. High-impact recommendations were being dropped in exactly the situations where the most was at stake.'
+  },
+
+  {
+    date: '2026-08-14',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'Fixed Export Strategy producing a blank page on the Salesforce planner',
+    body: 'The print stylesheet hid step panels by hard-coded id, a list inherited from the AWS planner where the strategy sits on step five. When the Salesforce planner was simplified to three input steps, its output moved to step four — which the stylesheet was still hiding, so Export Strategy printed an empty page. Print rules now target the active panel rather than specific ids.',
+    impact: 'Applied the same change to all four planners so renumbering steps can no longer break export. Also corrected the Salesforce print letterhead, which still carried the AWS navy it was copied from.'
+  },
+
+  {
+    date: '2026-08-14',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'Salesforce Negotiation Planner launched',
+    body: 'First non-cloud negotiation planner is live. Salesforce renewals move through uplift rather than consumption discounts, so the tool models three outputs instead of one: a target cap on renewal uplift, a dollar estimate of shelfware recoverable in the true-down window, and a discount-off-list band scaled by ACV. Leverage is scored against Salesforce\'s fiscal calendar, which ends January 31.',
+    impact: 'Two mechanics drive most of the value. Renewal is typically the only moment a Salesforce agreement permits reducing seat counts, so unused licenses carried through it are carried for the full next term. And an uncapped uplift compounds across every year and every subsequent renewal, which makes the cap worth more than an equivalent one-time discount. The planner flags notice-window exposure as a hard alert, since a missed date converts a negotiation into an automatic renewal at Salesforce\'s number.',
+    link: { label: 'Open Salesforce Planner', url: 'https://tools.briansavesbillions.com/salesforce-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-08-14',
+    kind: 'update',
+    cloud: 'aws',
+    title: 'AWS Planner — reseller channel discounts added for sub-$5M spend',
+    body: 'The AWS Negotiation Planner now surfaces the reseller channel as a distinct discount layer for clients spending under $5M annually. APN channel partners hold their own volume agreements with AWS and can pass through margin as an incremental 5–15% discount that AWS will not offer on a direct deal of that size.',
+    impact: 'Appears in three places: a ranked tactic, a green opportunity alert, and a line in the discount factors table. Above $5M the entry suppresses itself, since direct EDP terms generally outpace channel pricing at that level.',
+    link: { label: 'Open AWS Planner', url: 'https://tools.briansavesbillions.com/aws-negotiation-planner/' }
+  },
+
+  {
+    date: '2026-08-12',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'Cloud Baseline Renewal Roadmap (SKU 1) launched',
+    body: 'First engagement sizing planner is live. Takes client profile, contract status, and data readiness as inputs, then returns a recommended team composition by role (VP through Associate Consultant), an engagement duration range, and a projected savings range that shifts by provider.',
+    impact: 'All sizing assumptions are editable on the companion Configure page and persist locally, so you can rerun a scenario against your own resourcing model rather than the defaults.',
+    link: { label: 'Open Baseline Planner', url: 'https://tools.briansavesbillions.com/cloud-baseline-planner/' }
+  },
+
+  {
+    date: '2026-08-12',
+    kind: 'update',
+    cloud: 'tool',
+    title: 'Tools hub reorganized around the SKU model',
+    body: 'The hub now groups tools into Negotiation Planners, Engagement Sizing, and Intelligence &amp; Reference. Engagement Sizing is further split by delivery phase — Control, Optimize, and Transform — with all SKUs visible, live or otherwise, so the full offering shape is legible at a glance.',
+    impact: 'SKUs without a planner yet appear dimmed rather than hidden, which keeps the roadmap visible when walking a client or an internal team through the catalog.'
+  },
+
+  {
+    date: '2025-12-01',
+    kind: 'industry',
+    cloud: 'aws',
+    title: 'AWS launches Database Savings Plans',
+    body: 'AWS introduced Database Savings Plans covering Aurora Serverless, DocumentDB, Neptune, Keyspaces, and Timestream, offering 12–35% discounts on 1-year no-upfront terms.',
+    impact: 'These are almost never included in an initial EDP proposal. Raise them proactively as a separate workstream and push to have them bundled into the EDP credit package — it adds material value at no additional commitment.'
+  },
+
+  {
+    date: '2025-11-01',
+    kind: 'industry',
+    cloud: 'azure',
+    title: 'Microsoft removes EA pricing Levels B, C, and D',
+    body: 'Microsoft collapsed the Enterprise Agreement pricing level structure, eliminating Levels B, C, and D. Customers who had earned their way into a higher level through volume no longer hold that structural advantage.',
+    impact: 'Clients renewing an EA should model the pricing impact before entering discussions — the loss of level-based pricing can quietly erode an otherwise flat renewal. It also strengthens the case for evaluating MCA-E as the go-forward vehicle.'
+  },
+
+  {
+    date: '2025-06-01',
+    kind: 'industry',
+    cloud: 'gcp',
+    title: 'Google announces CUD scope change effective June 2026',
+    body: 'Google is changing how Committed Use Discounts apply across projects, altering the way CUD benefit flows to project-level cost attribution.',
+    impact: 'Clients running chargeback or showback models off project-level GCP costs will see their internal allocation shift even if total spend is unchanged. Flag this during CASC and PPA discussions so the finance impact is not discovered post-signature.'
+  }
+
+];
+/* ============================================================ */
+
+const KIND_LABEL  = { industry:'Industry', update:'Planner update' };
+const CLOUD_LABEL = { aws:'AWS', azure:'Azure', gcp:'GCP', salesforce:'Salesforce', adobe:'Adobe', oracle:'Oracle', multi:'Multi-Cloud', tool:'Proxima Tools' };
+
+function fmtDate(iso) {
+  const [y,m,d] = iso.split('-').map(Number);
+  return new Date(y, m-1, d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function fmtMonth(iso) {
+  const [y,m] = iso.split('-').map(Number);
+  return new Date(y, m-1, 1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+}
+
+const PAGE_SIZE = 25;
+
+let activeFilter = 'all';
+let searchTerm   = '';
+let shownCount   = PAGE_SIZE;
+
+function matchesFilter(e) {
+  if (activeFilter === 'all') return true;
+  if (activeFilter === 'industry' || activeFilter === 'update') return e.kind === activeFilter;
+  return e.cloud === activeFilter;
+}
+
+// Search runs against the full archive, not just the loaded page
+function matchesSearch(e) {
+  if (!searchTerm) return true;
+  const hay = [e.title, e.body, e.impact || '', CLOUD_LABEL[e.cloud] || '', KIND_LABEL[e.kind] || '', fmtDate(e.date)]
+    .join(' ').toLowerCase();
+  return searchTerm.toLowerCase().split(/\s+/).filter(Boolean).every(t => hay.includes(t));
+}
+
+function escapeHTML(s) {
+  return s.replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+}
+
+function highlight(html) {
+  if (!searchTerm) return html;
+  const terms = searchTerm.trim().split(/\s+/).filter(Boolean).map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  if (!terms.length) return html;
+  // Only touch text outside of tags and entities so markup stays intact
+  return html.replace(/>([^<]+)</g, (m, text) =>
+    '>' + text.replace(new RegExp('(?<!&[a-z]{0,8})(' + terms.join('|') + ')', 'gi'), '<mark>$1</mark>') + '<'
+  );
+}
+
+function render() {
+  const sorted   = [...ENTRIES].sort((a, b) => b.date.localeCompare(a.date));
+  const filtered = sorted.filter(e => matchesFilter(e) && matchesSearch(e));
+  const page     = filtered.slice(0, shownCount);
+  const feed     = document.getElementById('feed');
+
+  if (!filtered.length) {
+    feed.innerHTML = searchTerm
+      ? `<p class="empty">No entries match “${escapeHTML(searchTerm)}”. Try a different term or clear the filters.</p>`
+      : '<p class="empty">No entries match this filter yet.</p>';
+    return;
+  }
+
+  const countLine = filtered.length > PAGE_SIZE
+    ? `<div class="result-count">Showing ${page.length} of ${filtered.length} entries</div>`
+    : `<div class="result-count">${filtered.length} ${filtered.length === 1 ? 'entry' : 'entries'}</div>`;
+
+  let html = '', lastMonth = '';
+  for (const e of page) {
+    const month = fmtMonth(e.date);
+    if (month !== lastMonth) { html += `<div class="month-label">${month}</div>`; lastMonth = month; }
+    html += `<article class="entry ${e.cloud}">
+      <div class="entry-top">
+        <span class="entry-tag">${CLOUD_LABEL[e.cloud] || e.cloud}</span>
+        <span class="entry-kind">${KIND_LABEL[e.kind] || e.kind}</span>
+        <span class="entry-date">${fmtDate(e.date)}</span>
+      </div>
+      <h2 class="entry-title">${e.title}</h2>
+      <p class="entry-body">${e.body}</p>
+      ${e.impact ? `<div class="entry-impact"><strong>Why it matters:</strong> ${e.impact}</div>` : ''}
+      ${e.link ? `<a class="entry-link" href="${e.link.url}" target="_blank">${e.link.label} →</a>` : ''}
+    </article>`;
+  }
+
+  const remaining = filtered.length - page.length;
+  if (remaining > 0) {
+    html += `<div class="load-more-wrap">
+      <button class="load-more" onclick="loadMore()">Load ${Math.min(remaining, PAGE_SIZE)} older ${remaining === 1 ? 'entry' : 'entries'}</button>
+      <span class="load-more-note">${remaining} older ${remaining === 1 ? 'entry' : 'entries'} in the archive</span>
+    </div>`;
+  } else if (filtered.length > PAGE_SIZE) {
+    html += '<p class="mark-hint">End of archive — all entries loaded.</p>';
+  }
+
+  feed.innerHTML = countLine + highlight(html);
+}
+
+function loadMore() {
+  shownCount += PAGE_SIZE;
+  render();
+}
+
+function setFilter(btn) {
+  activeFilter = btn.dataset.filter;
+  shownCount = PAGE_SIZE;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+  render();
+}
+
+function setSearch(val) {
+  searchTerm = val.trim();
+  shownCount = PAGE_SIZE;
+  document.getElementById('search-clear').classList.toggle('show', !!searchTerm);
+  render();
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  setSearch('');
+}
+
+// Latest date drives the "last updated" stamp
+const latest = [...ENTRIES].sort((a,b) => b.date.localeCompare(a.date))[0];
+document.getElementById('last-updated-date').textContent = latest ? fmtDate(latest.date) : '—';
+
+render();
+
+/* AUTH */
+
+function toggleTheme() {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+</script>
+</body>
+</html>

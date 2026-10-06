@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Negotiation Research Digest — August 2026</title>
+  <link rel="stylesheet" href="digest.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark">Proxima<span>.</span></div>
+  <div class="header-right">
+    <a class="back-link" href="index.html">← All issues</a>
+    <a class="back-link" href="../updates.html">Running log</a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle theme</button>
+  </div>
+</header>
+
+<div class="masthead">
+  <p class="masthead-eyebrow">Proxima Internal — Research Digest</p>
+  <h1>Cloud Negotiation<br>Research Digest</h1>
+  <p class="issue-date">Issue 02 · August 18, 2026</p>
+  <p class="standfirst">Where the three hyperscalers moved this period, what practitioners are reporting, and what it changes about how we advise a renewal.</p>
+</div>
+
+<div class="issue">
+
+  <!-- WHAT'S NEW -->
+  <section class="section">
+    <div class="section-head">
+      <h2>What's New</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">5 items</span>
+    </div>
+    <ul class="item-list">
+
+      <li class="item aws">
+        <span class="item-tag">AWS</span>
+        <h3>EDP formally rebranded to "Private Pricing Agreement" (PPA)</h3>
+        <p>AWS now refers to all negotiated enterprise discount contracts as PPAs. The commercial mechanics are unchanged — 5–25% discount tiers, top tier requiring 5-year terms and $50M+ annual commit — but expect the new term in contracts and AWS rep conversations going forward. — <a class="src-link" href="https://redresscompliance.com/aws-edp-negotiation-enterprise-playbook-2026.html" target="_blank" rel="noopener">Redress →</a></p>
+      </li>
+
+      <li class="item aws">
+        <span class="item-tag">AWS</span>
+        <h3>EC2 GPU Capacity Block prices up ~20%, effective July 1</h3>
+        <p>The second GPU price increase this year — covering P6-B300, P6-B200, P5/P5e/P5en, and P4de instance families. P6-B300 now bills at $14.04/accelerator-hour; P5 (H100) at $5.191/hr in US regions. All other EC2 pricing unchanged. Material for any client with AI/ML training or inference workloads sizing a PPA commitment. — <a class="src-link" href="https://aiweekly.co/alerts/aws-raises-ec2-gpu-capacity-block-prices-20-from-july-1" target="_blank" rel="noopener">AI Weekly →</a></p>
+      </li>
+
+      <li class="item azure">
+        <span class="item-tag">Azure</span>
+        <h3>EA's 3-year price lock doesn't carry over to MCA-E or CSP</h3>
+        <p>EA customers whose contracts started before the July 2026 Microsoft 365 price increase are shielded from it for the life of their term — new seats are added at the locked price. MCA-E and CSP annual subscriptions have no equivalent protection. As Microsoft pushes MACC customers off EA toward MCA-E, this is the single biggest hidden cost of migrating without negotiating a bridge. — <a class="src-link" href="https://www.directionsonmicrosoft.com/want-to-sign-an-azure-consumption-agreement-soon-mca-may-be-your-only-option/" target="_blank" rel="noopener">Directions on Microsoft →</a></p>
+      </li>
+
+      <li class="item azure">
+        <span class="item-tag">Azure</span>
+        <h3>Copilot now bundled by default into M365 Business Standard/Premium</h3>
+        <p>Effective July 1, 2026, every Business Standard and Business Premium subscription includes Copilot under new SKU names. Separately, the new Microsoft 365 E7 "Frontier Suite" ($99/user/month — E5 + Copilot + Agent 365 + Entra Suite) became purchasable May 1, 2026. Both reshape how AI spend gets folded into EA/MCA-E renewal math. — <a class="src-link" href="https://www.velosio.com/blog/m365-copilot-pricing-reset-2026/" target="_blank" rel="noopener">Velosio →</a></p>
+      </li>
+
+      <li class="item gcp">
+        <span class="item-tag">GCP</span>
+        <h3>Vertex AI is the least-scrutinized line item in Google Cloud deals</h3>
+        <p>Vertex AI consumption counts toward CUD and PPA commitments, but analysis of recent Google Cloud negotiations shows AI line items growing faster than any other meter while receiving the least negotiation attention. Inside a CUD, Vertex AI typically runs 18–32% below published rates; Provisioned Throughput inside a CUD runs 38–52% below standalone on-demand. — <a class="src-link" href="https://redresscompliance.com/google-cloud-vertex-ai-gemini-negotiation" target="_blank" rel="noopener">Redress →</a></p>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- AWS -->
+  <section class="section">
+    <div class="section-head">
+      <h2>AWS</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider aws">
+      <p>Beyond the PPA rename and the GPU price hike, ProsperOps has brought <strong>AWS Database Savings Plans</strong> (the fourth Savings Plan type, GA since December 2025) into its Autonomous Discount Management platform in Early Access — 12–35% discounts on 1-year no-upfront, immutable commitments covering Aurora Serverless, DocumentDB, Neptune, Keyspaces, and Timestream. They remain largely absent from client PPA negotiations, which keeps this a live opportunity to flag proactively.</p>
+      <p>On negotiation mechanics: start renewal conversations 90–120 days out, and push for the commitment to be measured against <strong>discounted</strong> spend rather than gross spend — a distinction that materially changes effective commit sizing. A 3-year term still earns 5–8 percentage points more than annual at the same spend level, and bundling AWS Support into the PPA saves an additional 12–18%.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://www.prosperops.com/blog/key-announcements-at-finops-x-2026/" target="_blank" rel="noopener">ProsperOps — FinOps X 2026 Announcements</a> ·
+        <a href="https://thenegotiationexperts.com/blog/aws-edp-negotiation-guide/" target="_blank" rel="noopener">The Negotiation Experts — EDP Guide</a> ·
+        <a href="https://vendorbenchmark.com/blog/aws-pricing-negotiation-guide" target="_blank" rel="noopener">VendorBenchmark — AWS Pricing Negotiation Guide</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AZURE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Azure</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider azure">
+      <p>The EA-to-MCA-E migration from last issue has sharpened into a specific, quantifiable risk: <strong>losing the 3-year price lock</strong> that shields EA customers from mid-term Microsoft 365 price increases. Clients with an EA anniversary between now and their next renewal should be advised to negotiate an early renewal or term extension that locks in pre-increase pricing before the auto-renewal process kicks in.</p>
+      <p>That auto-renewal is itself a trap: it triggers 30–90 days before expiration, and Microsoft proposes a new Azure Monetary Commitment (AMC) based on trailing-12-month consumption — often inflating the commit 15–30% above historical average. Renewal is also the <em>only</em> point in the 3-year EA term where committed quantities can be reduced, which raises the stakes of getting the renewal conversation right the first time. Layer onto this the Copilot-in-Business-Standard/Premium default and the new E7 Frontier Suite, and every EA/MCA-E renewal this quarter needs an AI-bundling line item that didn't exist a year ago.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://www.directionsonmicrosoft.com/want-to-sign-an-azure-consumption-agreement-soon-mca-may-be-your-only-option/" target="_blank" rel="noopener">Directions on Microsoft — MCA-E</a> ·
+        <a href="https://xentegra.com/resources/your-microsoft-ea-is-about-to-cost-you-more-heres-what-to-do-before-it-does/" target="_blank" rel="noopener">Xentegra — EA Price Increases</a> ·
+        <a href="https://redresscompliance.com/microsoft-enterprise-agreement-guide" target="_blank" rel="noopener">Redress — Microsoft EA Buyer Guide 2026</a> ·
+        <a href="https://www.velosio.com/blog/m365-copilot-pricing-reset-2026/" target="_blank" rel="noopener">Velosio — M365 Copilot Pricing Reset</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GCP -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Google Cloud</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider gcp">
+      <p>CUD mechanics are now settled following the multiprice billing migration and the June 16 sharing-default change flagged last issue — savings show up directly in billing data, and new billing accounts share CUDs across projects by default. The bigger opportunity for this quarter is <strong>Vertex AI</strong>: PPA-level aggregate discounts run 12–25% of Google Cloud spend, but Vertex AI and Gemini consumption specifically is under-modeled in most client renewal prep despite counting toward the same commitment.</p>
+      <p>Where Vertex AI sits inside a CUD, expect 18–32% off published rates; Provisioned Throughput commitments inside a CUD run 38–52% below standalone on-demand. Flexibility and burn-down terms for AI consumption are increasingly locked into side letters rather than the base PPA — worth asking for explicitly rather than assuming standard CUD terms apply.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://redresscompliance.com/google-cloud-vertex-ai-gemini-negotiation" target="_blank" rel="noopener">Redress — Vertex AI & Gemini Negotiation</a> ·
+        <a href="https://redresscompliance.com/google-cloud-ppa-negotiation" target="_blank" rel="noopener">Redress — Google Cloud PPA Negotiation 2026</a> ·
+        <a href="https://www.usage.ai/blogs/gcp/monthly-updates/gcp-june-2026/" target="_blank" rel="noopener">usage.ai — GCP June 2026 Updates</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRACTITIONER PULSE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Community &amp; Practitioner Pulse</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">5 items</span>
+    </div>
+    <ul class="item-list">
+
+      <li class="item">
+        <span class="item-tag">Industry</span>
+        <h3>FinOps' remit keeps expanding — now into M&amp;A due diligence</h3>
+        <p>Beyond leading provider negotiations, FinOps teams are increasingly pulled into multi-year investment decisions and technology due diligence for M&amp;A. Practitioners are expected to bring deal-structuring expertise — what similar enterprises with similar run rates are getting, and how to build the case internally. — <a class="src-link" href="https://www.finout.io/blog/state-of-finops-2026-report-key-trends-insights-and-what-comes-next" target="_blank" rel="noopener">State of FinOps 2026 →</a></p>
+      </li>
+
+      <li class="item">
+        <span class="item-tag">Timing</span>
+        <h3>Rightsize before you commit, not after</h3>
+        <p>The most commonly ignored piece of advice across AWS, Azure, and GCP negotiation guides alike: entering a commitment (EDP/PPA, MACC, CUD) with unoptimized spend — orphaned volumes, oversized instances, shelfware — locks in the waste. A structured optimization pass before sizing the commitment typically recovers 20–40% that a post-signature cleanup can't touch. — <a class="src-link" href="https://redresscompliance.com/aws-edp-negotiation-enterprise-playbook-2026.html" target="_blank" rel="noopener">Redress →</a></p>
+      </li>
+
+      <li class="item">
+        <span class="item-tag">Practice</span>
+        <h3>Commitments need continuous monitoring, not set-and-forget</h3>
+        <p>Spot.io's guidance this period emphasizes that static RI/CUD/Savings Plan purchases decay in value as usage drifts — real-time utilization tracking against active commitments is what actually protects the discount over the full term, not the initial sizing exercise alone. — <a class="src-link" href="https://spot.io/blog/how-to-get-more-value-from-your-cloud-commitments/" target="_blank" rel="noopener">Spot.io →</a></p>
+      </li>
+
+      <li class="item">
+        <span class="item-tag">AI Pricing</span>
+        <h3>Analysts now treat AI pricing as its own negotiation category</h3>
+        <p>Gartner published "Negotiate AI and Generative AI Pricing to Avoid Skyrocketing Costs" this period — a signal that Copilot, Vertex AI, and Bedrock consumption should be scoped and negotiated as a distinct line item rather than folded into general cloud spend assumptions. — <a class="src-link" href="https://www.gartner.com/en/documents/7522053" target="_blank" rel="noopener">Gartner →</a></p>
+      </li>
+
+      <li class="item">
+        <span class="item-tag">Framing</span>
+        <h3>CFOs' top 2026 concerns give us an outreach hook</h3>
+        <p>Gross margin pressure and forecast accuracy are tied as the top CFO concern for 2026 (44% each), with pricing alignment close behind (40%). Useful framing for client conversations: cloud renewal timing is a forecast-accuracy problem as much as a cost problem. — <a class="src-link" href="https://redresscompliance.com/finops-enterprise-framework-implementation-guide-2026.html" target="_blank" rel="noopener">Redress — FinOps Enterprise Framework 2026 →</a></p>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- TOOL UPDATES -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Recommended Tool Updates</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">Status as of Aug 18, 2026</span>
+    </div>
+    <div class="backlog-wrap">
+      <table class="backlog">
+        <thead>
+          <tr><th>Tool</th><th>Recommendation</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AWS</td>
+            <td>Relabel EDP as "PPA (formerly EDP)" throughout tool copy — terminology has shifted industry-wide.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>AWS</td>
+            <td>Add an EC2 GPU Capacity Block pricing note/toggle for clients with AI/ML training or inference workloads, reflecting the July 20% increase.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>Azure</td>
+            <td>Add an EA-vs-MCA-E price-lock comparison module — surfaces the loss of price protection as the top risk of migrating off EA. Highest-value addition this quarter.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>Azure</td>
+            <td>Add an early-renewal prompt/calculator for clients whose EA anniversary falls before their next scheduled renewal, to lock in pre-increase pricing.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>GCP</td>
+            <td>Update CUD savings calculations to reflect multiprice direct-discount billing (retire the legacy credit-reconciliation math).</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>GCP</td>
+            <td>Add a Vertex AI CUD-discount line (18–32% standard, 38–52% for Provisioned Throughput) — AI spend is under-negotiated and currently absent from the savings model.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px;font-size:12.5px;color:var(--text-3);font-style:italic;">All six recommendations shipped August 18, 2026. AWS: PPA terminology adopted tool-wide plus a new Accelerated Compute (GPU) Usage input. Azure: a new EA-vs-MCA-E price protection section and an EA anniversary input driving an early-renewal window. GCP: Vertex AI added as Layer 4 of the discount stack, and multiprice direct-discount billing guidance for spend-based CUDs. Each is wired through the leverage or discount model, tactics, alerts, concession asks, and diligence questions. Recommendations from Issue 01 (July 2026) all shipped and were verified against planner source on August 14, 2026.</p>
+    <p style="margin-top:10px;font-size:12.5px;color:var(--text-3);font-style:italic;">Note on the GCP multiprice item: the planners never modelled CUD savings via credit reconciliation, so there was no legacy math to retire. The gap was missing guidance, which is what shipped — including a warning that internal savings reports and chargeback splits still built on credit reconciliation are measuring something that no longer exists.</p>
+  </section>
+
+  <!-- SOURCING NOTE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Sourcing Note</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="callout">
+      <strong>Several figures in this issue come from secondary commentary rather than provider documentation.</strong> The Vertex AI CUD discount ranges, the 20–40% rightsizing recovery estimate, and the 44%/40% CFO sentiment figures all originate with advisory firms, practitioner blogs, and analyst summaries rather than vendor-published rate cards. They are directionally consistent with what we see in market, but confirm against AWS, Microsoft, and Google primary documentation before citing any of them to a client.
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>Proxima internal use only — research conducted August 18, 2026</p>
+  <div class="footer-links">
+    <a href="https://tools.briansavesbillions.com/aws-negotiation-planner/" target="_blank" rel="noopener">AWS Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/azure-negotiation-planner/" target="_blank" rel="noopener">Azure Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/gcp-negotiation-planner/" target="_blank" rel="noopener">GCP Planner</a>
+  </div>
+  <div class="footer-wordmark">Proxima.</div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grid-Headroom Map</title>
+<style>
+  :root{
+    --grid:#d4d4d4; --hdr:#f3f3f3; --hdrtx:#5c5c5c; --sel:#217346;
+    --navy:#1f3864; --blue:#2e5496; --lblue:#d9e1f2; --grey:#f7f7f7;
+    --yellow:#fff2cc; --link:#0563c1;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#222;background:#e6e6e6;height:100%}
+  body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+  /* title bar */
+  .titlebar{background:var(--sel);color:#fff;padding:6px 14px;font-size:13px;display:flex;align-items:center;gap:10px;flex:0 0 auto}
+  .titlebar .x{font-weight:bold}
+  .titlebar .doc{opacity:.9}
+  .titlebar a{color:#d8f0e2;margin-left:auto;font-size:12px;text-decoration:none}
+  .titlebar a:hover{text-decoration:underline}
+
+  /* formula bar */
+  .formulabar{display:flex;align-items:center;background:#fff;border-bottom:1px solid #cfcfcf;flex:0 0 auto}
+  .namebox{width:150px;padding:5px 8px;border-right:1px solid #cfcfcf;color:#333;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fx{padding:5px 8px;color:#888;border-right:1px solid #cfcfcf;font-style:italic}
+  .fcontent{padding:5px 10px;color:#333;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+
+  /* grid area */
+  .gridwrap{flex:1 1 auto;overflow:auto;background:#fff}
+  table.sheet{border-collapse:collapse;table-layout:fixed}
+  table.sheet th,table.sheet td{border:1px solid var(--grid);padding:4px 7px;vertical-align:top;overflow:hidden}
+  /* column-letter + row-number headers */
+  .colhdr th{position:sticky;top:0;z-index:5;background:var(--hdr);color:var(--hdrtx);text-align:center;font-weight:normal;height:20px}
+  td.rownum,th.corner{position:sticky;left:0;z-index:4;background:var(--hdr);color:var(--hdrtx);text-align:center;width:38px;min-width:38px;font-weight:normal}
+  th.corner{z-index:6}
+  .colhdr th.first{left:0;z-index:7}
+
+  /* content header row (the styled table header inside the sheet) */
+  tr.thead td{background:var(--blue);color:#fff;font-weight:bold;text-align:center;position:sticky;top:20px;z-index:3}
+  tr.title td{background:var(--navy);color:#fff;font-weight:bold;font-size:15px}
+  tr.section td{background:var(--lblue);color:var(--navy);font-weight:bold}
+  .zebra{background:var(--grey)}
+  .num{text-align:center}
+  .idx{text-align:center;font-weight:bold}
+  .lev-High{color:#b00020;font-weight:bold}
+  .lev-Moderate{color:#b45f06;font-weight:bold}
+  .lev-Some{color:#666}
+  .lev-Low{color:#137333}
+  .wt{background:var(--yellow);text-align:center;font-weight:bold;width:70px}
+  input.wtin{width:52px;border:1px solid #d0b000;background:var(--yellow);text-align:center;font:inherit;padding:2px}
+  a.src{color:var(--link);text-decoration:none}
+  a.src:hover{text-decoration:underline}
+  .small{color:#666;font-size:11px;font-style:italic}
+  .note{font-size:11px;color:#555}
+
+  /* sheet tabs */
+  .tabs{display:flex;align-items:stretch;background:#e6e6e6;border-top:1px solid #cfcfcf;flex:0 0 auto;padding-left:8px;overflow-x:auto}
+  .tab{padding:7px 16px;font-size:12px;color:#444;background:#e6e6e6;border-right:1px solid #cfcfcf;cursor:pointer;white-space:nowrap;border-top:2px solid transparent}
+  .tab:hover{background:#f0f0f0}
+  .tab.active{background:#fff;color:var(--sel);font-weight:bold;border-top:2px solid var(--sel);margin-top:-1px}
+  .cell-selected{outline:2px solid var(--sel);outline-offset:-2px}
+</style>
+</head>
+<body>
+  <div class="titlebar">
+    <span class="x">Grid-Headroom Map</span>
+    <span class="doc">— cloud &amp; data-center sourcing leverage tool</span>
+    <a href="Grid_Headroom_Map.xlsx" download>&#8681; Download .xlsx</a>
+  </div>
+
+  <div class="formulabar">
+    <div class="namebox" id="namebox">A1</div>
+    <div class="fx">fx</div>
+    <div class="fcontent" id="fcontent">Select a cell</div>
+  </div>
+
+  <div class="gridwrap">
+    <div id="sheet"></div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+<script>
+const WEIGHTS = {A:0.25,B:0.25,C:0.20,D:0.15,E:0.15};
+
+const SCORECARD = [
+ ["PJM — Dominion / N. Virginia","ISO/RTO","AWS, Microsoft, Google, Meta (world's #1 DC cluster)",5,5,4,4,5,
+  "70 GW in queue; only ~25 GW have firm connection dates through 2031. Summer peak 23.9 GW (2025), +45% winter vs 2019.",
+  "Most constrained U.S. market. Treat any Northern Virginia delivery date as at-risk; demand milestone penalties or negotiate a backup region."],
+ ["ERCOT — Texas","ISO/RTO","Oracle/OpenAI (Stargate-Abilene), Meta, others",4,5,3,3,4,
+  "Large-load queue ~238.6 GW (Mar 2026), 77.5% data centers; only ~9 GW Approval-to-Energize; request-to-operating funnel ~1.6%.",
+  "Fastest generation interconnection in the U.S., but SB6 curtailment rules + a wildly speculative queue mean firm, non-curtailable capacity is scarce. Price the curtailment risk."],
+ ["APS — Arizona (Phoenix)","Non-ISO (WECC)","Microsoft, Google, Meta, QTS (Mesa/Goodyear)",5,4,4,4,3,
+  "2026 peak ~9.06 GW = ~90% of planned summer capacity; data centers ~630 MW (~7%). Peak load projected +40% by 2031.",
+  "Running near planned capacity with data-center rate cases open. No public queue — pull APS IRP & large-load tariff. Strong buyer leverage on schedule."],
+ ["SRP — Arizona (Phoenix)","Non-ISO (public power)","Meta, Google, EdgeCore (Mesa/Queen Creek)",5,3,4,4,3,
+  "2026 peak ~9.07 GW, near planned capacity; data-center peak ~441 MW (5.1% of load, 2025).",
+  "Same near-capacity summer picture as APS but lighter current DC saturation. Non-ISO — use SRP's resource plan; delivery-timing leverage is real."],
+ ["PJM — rest of footprint","ISO/RTO","Meta, Google, AWS (Ohio/AEP, Indiana)",3,3,4,4,3,
+  "PJM-wide summer peak growth 5.4%/yr over 10 yrs; capacity auction prices have spiked on tightening reserves.",
+  "Less acute than Dominion but the whole RTO is tightening and interconnection is slow. Watch capacity-price pass-throughs in any colo/power clause."],
+ ["MISO — Midwest","ISO/RTO","Meta (Iowa), Google, Microsoft",3,3,4,4,3,
+  "Queue was frozen in 2023 during reform, reopened 2024 with a wave of applications; large backlog.",
+  "Reform-era friction and a re-inflating queue. Confirm the specific study cycle a provider's site sits in."],
+ ["CAISO — California","ISO/RTO","Google, Microsoft, AWS (limited new build)",3,3,3,4,3,
+  "Very large generation queue (West/CAISO 500+ GW) but slow studies and high siting friction.",
+  "Ample generation interest but chronic interconnection delay. Leverage is on timeline, not scarcity of supply."],
+ ["SPP — Central","ISO/RTO","Limited hyperscale (growing)",3,2,3,3,2,
+  "Signed record interconnection-agreement capacity in 2025; relatively more headroom.",
+  "One of the more deliverable markets — weaker scarcity leverage, but consider as an alternate region."],
+ ["Non-ISO West (ex-AZ)","Non-ISO (WECC)","Microsoft, Google, Meta (NV, UT, NM)",2,2,2,4,2,
+  "Largest active generation queue of any region (~567 GW, LBNL end-2024) but DC load pressure concentrated in hubs.",
+  "Bilateral, opaque, but generally more headroom outside the hotspots. Weaker scarcity leverage."],
+];
+
+const SCORING = [
+ ["A. Load-vs-Capacity tightness",0.25,"How close current peak demand sits to planned/available capacity. Higher = less spare headroom."],
+ ["B. Queue deliverability gap",0.25,"Gap between large-load requests and what can actually be energized / has firm connection dates."],
+ ["C. Generation adequacy",0.20,"Whether new generation is keeping pace with load growth. Higher = bigger shortfall."],
+ ["D. Interconnection friction",0.15,"Regional study times (~5 yr avg) and withdrawal rates (~86% of capacity never completes)."],
+ ["E. Regulatory / curtailment risk",0.15,"Moratoria, curtailment rules (e.g. Texas SB6), locational-price premiums, tariff/rate uncertainty."],
+];
+
+const SOURCES = [
+ ["National (LBNL)","Total active capacity in interconnection queues","~2,060 GW","End 2025","LBNL Queued Up 2026","https://emp.lbl.gov/queues"],
+ ["National (LBNL)","Queued capacity historically reaching commercial operation","~14% (86% withdrawn)","2000–2023","LBNL Queued Up","https://emp.lbl.gov/queues"],
+ ["National (LBNL)","Typical time in queue for completed projects","~5 years (was ~2 yrs in 2008)","2022","LBNL Queued Up","https://emp.lbl.gov/queues"],
+ ["Non-ISO West","Active generation interconnection queue (largest region)","~567 GW","End 2024","LBNL Queued Up 2026","https://emp.lbl.gov/queues"],
+ ["ERCOT","Active generation interconnection queue","~408 GW","2025","LBNL Queued Up 2026","https://emp.lbl.gov/queues"],
+ ["ERCOT","Large-load interconnection queue","~238.6 GW (77.5% data centers)","Mar 2026","ERCOT Large Load Update","https://www.ercot.com/files/docs/2026/03/12/March-TAC-Report.pdf"],
+ ["ERCOT","Large-load queue growth vs end-2024","~4x (from 63 GW)","2024→2026","Latitude Media","https://www.latitudemedia.com/news/ercots-large-load-queue-has-nearly-quadrupled-in-a-single-year/"],
+ ["ERCOT","Large load with Approval-to-Energize","~9.0 GW (peak observed ~3.9 GW)","Q1 2026","ERCOT Large Load Update","https://www.ercot.com/files/docs/2026/04/01/ERCOT_LargeLoad_Update_April2026_B-C_-Hearing.pdf"],
+ ["ERCOT","SB6 large-load financial + curtailment rules","Enacted","Jun 2025","RTO Insider","https://www.rtoinsider.com/122182-ercot-add-new-interconnection-rules-large-loads/"],
+ ["PJM — Dominion","Queue vs firm-dated capacity","70 GW queued / ~25 GW firm through 2031","2026","KilowattLogic / Dominion","https://kilowattlogic.com/news/virginia-dominion-data-center-70gw-pipeline-rate-impact-2026"],
+ ["PJM — Dominion","Summer peak load","23,905 MW (+23% vs 2019)","2025","PJM load forecast","https://www.utilitydive.com/news/pjm-load-forecast-data-center-dominion-virginia/735056/"],
+ ["PJM — Dominion","Winter peak load","25,413 MW (+45% vs 2019-20)","2025–26","PJM load forecast","https://www.utilitydive.com/news/pjm-interconnection-load-forecast-data-centers/809717/"],
+ ["PJM — system","Forecast summer peak growth","5.4%/yr over 10 yrs (revised from 6.3%)","2026","PowerMag","https://www.powermag.com/pjm-dials-back-near-term-load-outlook-but-maintains-steep-long-term-growth-trajectory/"],
+ ["APS — Arizona","2026 summer peak vs planned capacity","~9,063 MW (~90% of planned)","Jul 2026","KJZZ","https://www.kjzz.org/business/2026-07-29/aps-srp-saw-peak-demand-records-as-both-neared-planned-power-capacity-for-the-summer"],
+ ["APS — Arizona","Data-center share of record peak","~630 MW (~7%), +200 MW vs 2025","Jul 2026","KJZZ","https://www.kjzz.org/business/2026-07-29/data-centers-drive-half-of-aps-peak-demand-growth-this-year-compared-to-2025"],
+ ["APS — Arizona","Projected peak growth","+40% by 2031 (mostly data centers)","2026","APS","https://www.aps.com/en/About/Our-Company/Newsroom/Articles/Powering_Arizonas_Remarkable_Growth"],
+ ["SRP — Arizona","2026 summer peak","~9,072 MW (near planned capacity)","Jul 2026","KJZZ","https://www.kjzz.org/business/2026-07-29/aps-srp-saw-peak-demand-records-as-both-neared-planned-power-capacity-for-the-summer"],
+ ["SRP — Arizona","Data-center peak demand","~441 MW (5.1% of 8,542 MW peak)","2025","SRP data-center facts","https://www.srpnet.com/about/data-center-facts"],
+ ["Arizona (statewide)","Gov. Hobbs plan: new power potentially needed","up to ~29,000 MW","Apr 2026","AZ Corporation Commission","https://www.azcc.gov/news/home/2026/04/20/acc-large-load-data-center-workshop-highlights"],
+];
+
+const README = [
+ ["title","Grid-Headroom Map — Data-Center / Cloud Sourcing Leverage Tool"],
+ ["section","What this is"],
+ ["p","A tool that scores the U.S. power markets where hyperscalers build, by how power-constrained each is. Power delivery — not land, fiber, or GPUs — is now the binding constraint on data-center capacity. Where the grid is tight, a provider siting your workload there carries real schedule and cost risk. That risk is your negotiating leverage: push for delivery-date penalties and price concessions, or steer the deal to a headroom-rich region."],
+ ["section","How to read the Scorecard"],
+ ["p","Each market gets a Constraint Index from 1 (ample headroom) to 5 (severely constrained) — a weighted blend of five 1–5 sub-scores. A HIGH index = MORE buyer leverage on timeline & price. Edit the yellow weights on the Scoring Model tab and every score recalculates live."],
+ ["section","How the sub-scores were seeded"],
+ ["p","The five sub-scores are expert-judgment ratings anchored to the cited figures on the Source Data tab (ERCOT large-load queue, PJM/Dominion firm-date gap, APS/SRP capacity utilization, LBNL national completion & wait-time stats). A defensible first pass, not gospel — refine as you pull deeper local data."],
+ ["section","The honest caveats"],
+ ["p","1) Queue MW massively overstates real demand — ERCOT's request-to-operating funnel is ~1.6%, so withdrawal rate matters as much as raw depth. 2) This map flags timeline/siting RISK, not a vendor's confidential internal constraint. 3) Use it to generate the questions you ask in negotiation, not as a claim you assert. 4) Figures are point-in-time; queue data is revised constantly."],
+ ["section","Sources"],
+ ["p","Berkeley Lab (LBNL) Queued Up 2026 edition; ERCOT Large Load Interconnection updates; PJM load forecast & Dominion documentation; Arizona Corporation Commission, APS, SRP, and Gov. Hobbs' 2026 energy plan. Full links on the Source Data tab."],
+];
+
+// ---------- helpers ----------
+function colLetter(n){let s="";n++;while(n>0){let m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=(n-m-1)/26;}return s;}
+function idxColor(v){ // 1 green -> 3 yellow -> 5 red
+  const t=Math.max(0,Math.min(1,(v-1)/4));
+  let r,g,b;
+  if(t<0.5){const k=t/0.5;r=Math.round(99+(255-99)*k);g=Math.round(190+(214-190)*k);b=Math.round(123+(102-123)*k);}
+  else{const k=(t-0.5)/0.5;r=Math.round(255+(230-255)*k);g=Math.round(214+(124-214)*k);b=Math.round(102+(102-102)*k);}
+  return `rgb(${r},${g},${b})`;
+}
+function levClass(l){return "lev-"+l.split(" ")[0];}
+
+let currentWeights={...WEIGHTS};
+
+function computeIdx(r){
+  return r[3]*currentWeights.A + r[4]*currentWeights.B + r[5]*currentWeights.C + r[6]*currentWeights.D + r[7]*currentWeights.E;
+}
+function leverage(v){
+  if(v>=4) return "High – push timeline penalties & price";
+  if(v>=3.2) return "Moderate – probe delivery risk";
+  if(v>=2.5) return "Some – secondary lever";
+  return "Low – limited timeline leverage";
+}
+
+// ---------- renderers ----------
+function wrapTable(rowsHtml, colWidths){
+  let cg="<colgroup><col style='width:38px'>";
+  colWidths.forEach(w=>cg+=`<col style='width:${w}px'>`);
+  cg+="</colgroup>";
+  let hdr="<tr class='colhdr'><th class='corner first'></th>";
+  colWidths.forEach((w,i)=>hdr+=`<th>${colLetter(i)}</th>`);
+  hdr+="</tr>";
+  return `<table class='sheet'>${cg}${hdr}${rowsHtml}</table>`;
+}
+let rowN=0;
+function rn(){rowN++;return `<td class='rownum'>${rowN}</td>`;}
+
+function renderScorecard(){
+  rowN=0;
+  const widths=[210,120,210,70,70,70,70,70,90,150,330,360];
+  const heads=["Market / Region","Grid operator","Hyperscaler footprint","A Load-vs-Cap","B Queue gap","C Gen adequacy","D Intercon. friction","E Reg/curtail","Constraint Index","Buyer leverage","Key hard data point (sourced)","Sourcing takeaway"];
+  let rows="";
+  rows+=`<tr class='title'>${rn()}<td colspan='12'>Headroom Scorecard — higher Constraint Index = more power-constrained = more buyer leverage</td></tr>`;
+  rows+=`<tr class='thead'>${rn()}`+heads.map(h=>`<td>${h}</td>`).join("")+`</tr>`;
+  const sorted=[...SCORECARD].map(r=>({r,idx:computeIdx(r)})).sort((a,b)=>b.idx-a.idx);
+  sorted.forEach((o,i)=>{
+    const r=o.r, v=o.idx, lev=leverage(v), z=i%2?"zebra":"";
+    rows+=`<tr>${rn()}`+
+      `<td class='${z}' style='font-weight:bold'>${r[0]}</td>`+
+      `<td class='${z}'>${r[1]}</td>`+
+      `<td class='${z}'>${r[2]}</td>`+
+      `<td class='num ${z}'>${r[3]}</td><td class='num ${z}'>${r[4]}</td><td class='num ${z}'>${r[5]}</td><td class='num ${z}'>${r[6]}</td><td class='num ${z}'>${r[7]}</td>`+
+      `<td class='idx' style='background:${idxColor(v)}'>${v.toFixed(2)}</td>`+
+      `<td class='${z} ${levClass(lev)}'>${lev}</td>`+
+      `<td class='${z} note'>${r[8]}</td>`+
+      `<td class='${z} note'>${r[9]}</td>`+
+      `</tr>`;
+  });
+  rows+=`<tr>${rn()}<td colspan='12' class='small'>Sub-scores 1–5: 1 = ample headroom · 5 = severely constrained. Constraint Index is the weighted blend (edit weights on the Scoring Model tab).</td></tr>`;
+  document.getElementById("sheet").innerHTML=wrapTable(rows,widths);
+  attachCellHandlers();
+}
+
+function renderScoring(){
+  rowN=0;
+  const widths=[300,90,560];
+  let rows="";
+  rows+=`<tr class='title'>${rn()}<td colspan='3'>Scoring Model — Weights (edit the yellow cells; the Scorecard recalculates)</td></tr>`;
+  rows+=`<tr class='thead'>${rn()}<td>Sub-score</td><td>Weight</td><td>What it measures</td></tr>`;
+  const keys=["A","B","C","D","E"];
+  SCORING.forEach((s,i)=>{
+    const z=i%2?"zebra":"";
+    rows+=`<tr>${rn()}<td class='${z}'>${s[0]}</td>`+
+      `<td class='wt'><input class='wtin' type='number' step='0.05' min='0' max='1' data-k='${keys[i]}' value='${currentWeights[keys[i]].toFixed(2)}'></td>`+
+      `<td class='${z} note'>${s[2]}</td></tr>`;
+  });
+  rows+=`<tr>${rn()}<td style='font-weight:bold'>Total</td><td class='num' id='wtotal' style='font-weight:bold'></td><td class='small'>Must equal 100%. Weights are yours to adjust to match your sourcing priorities.</td></tr>`;
+  document.getElementById("sheet").innerHTML=wrapTable(rows,widths);
+  updateTotal();
+  document.querySelectorAll("input.wtin").forEach(inp=>{
+    inp.addEventListener("input",e=>{
+      const k=e.target.getAttribute("data-k");
+      let val=parseFloat(e.target.value); if(isNaN(val))val=0;
+      currentWeights[k]=val; updateTotal();
+    });
+  });
+  attachCellHandlers();
+}
+function updateTotal(){
+  const t=Object.values(currentWeights).reduce((a,b)=>a+b,0);
+  const el=document.getElementById("wtotal");
+  if(el){el.textContent=(t*100).toFixed(0)+"%"; el.style.color=Math.abs(t-1)<0.001?"#137333":"#b00020";}
+}
+
+function renderSources(){
+  rowN=0;
+  const widths=[210,320,220,110,220,60];
+  const heads=["Market / topic","Metric","Value","As of","Source","Link"];
+  let rows="";
+  rows+=`<tr class='title'>${rn()}<td colspan='6'>Source Data — every figure the sub-scores are anchored to</td></tr>`;
+  rows+=`<tr class='thead'>${rn()}`+heads.map(h=>`<td>${h}</td>`).join("")+`</tr>`;
+  SOURCES.forEach((s,i)=>{
+    const z=i%2?"zebra":"";
+    rows+=`<tr>${rn()}<td class='${z}'>${s[0]}</td><td class='${z}'>${s[1]}</td><td class='${z}'>${s[2]}</td><td class='${z} num'>${s[3]}</td><td class='${z}'>${s[4]}</td><td class='${z}'><a class='src' href='${s[5]}' target='_blank' rel='noopener'>open&#8599;</a></td></tr>`;
+  });
+  rows+=`<tr>${rn()}<td colspan='6' class='small'>Regional queue figures come from different LBNL/interconnection vintages and definitions — treat as directional. Verify before citing in a live negotiation.</td></tr>`;
+  document.getElementById("sheet").innerHTML=wrapTable(rows,widths);
+  attachCellHandlers();
+}
+
+function renderReadme(){
+  rowN=0;
+  const widths=[900];
+  let rows="";
+  README.forEach(item=>{
+    if(item[0]==="title") rows+=`<tr class='title'>${rn()}<td>${item[1]}</td></tr>`;
+    else if(item[0]==="section") rows+=`<tr class='section'>${rn()}<td>${item[1]}</td></tr>`;
+    else rows+=`<tr>${rn()}<td style='white-space:normal;line-height:1.5;padding:8px 10px'>${item[1]}</td></tr>`;
+  });
+  document.getElementById("sheet").innerHTML=wrapTable(rows,widths);
+  attachCellHandlers();
+}
+
+// cell selection -> name box + formula bar
+function attachCellHandlers(){
+  const tbl=document.querySelector("table.sheet");
+  if(!tbl) return;
+  tbl.querySelectorAll("td:not(.rownum)").forEach(td=>{
+    td.addEventListener("click",()=>{
+      document.querySelectorAll(".cell-selected").forEach(e=>e.classList.remove("cell-selected"));
+      td.classList.add("cell-selected");
+      const tr=td.parentElement;
+      const rownumCell=tr.querySelector(".rownum");
+      const rowIndex=rownumCell?rownumCell.textContent:"";
+      const cells=[...tr.children].filter(c=>!c.classList.contains("rownum"));
+      const col=colLetter(cells.indexOf(td));
+      document.getElementById("namebox").textContent=col+rowIndex;
+      const inp=td.querySelector("input");
+      document.getElementById("fcontent").textContent=inp?inp.value:td.textContent.trim();
+    });
+  });
+}
+
+const SHEETS=[
+ ["Headroom Scorecard",renderScorecard],
+ ["Scoring Model",renderScoring],
+ ["Source Data",renderSources],
+ ["Read Me & Method",renderReadme],
+];
+function buildTabs(){
+  const bar=document.getElementById("tabs");
+  SHEETS.forEach((s,i)=>{
+    const d=document.createElement("div");
+    d.className="tab"+(i===0?" active":"");
+    d.textContent=s[0];
+    d.onclick=()=>{
+      document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+      d.classList.add("active");
+      s[1]();
+      document.getElementById("namebox").textContent="A1";
+      document.getElementById("fcontent").textContent="Select a cell";
+    };
+    bar.appendChild(d);
+  });
+}
+buildTabs();
+renderScorecard();
+</script>
+</body>
+</html>

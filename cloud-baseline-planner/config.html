@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planner Parameters | Proxima</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+      --border: #2e3248; --text: #e8eaf0; --muted: #8b90a8;
+      --accent: #6c63ff; --accent-soft: rgba(108,99,255,0.12);
+      --green: #34d399; --green-soft: rgba(52,211,153,0.12);
+      --amber: #fbbf24; --amber-soft: rgba(251,191,36,0.12);
+      --red: #f87171; --red-soft: rgba(248,113,113,0.12);
+      --aws: #ff9900; --azure: #0078d4; --gcp: #1a73e8;
+      --radius: 10px;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
+    @media (prefers-color-scheme: light) {
+      :root { --bg:#f4f5f9; --surface:#fff; --surface2:#f0f1f7; --border:#dde0ee; --text:#1a1d27; --muted:#6b7099; }
+    }
+    :root[data-theme="dark"]  { --bg:#0f1117; --surface:#1a1d27; --surface2:#22263a; --border:#2e3248; --text:#e8eaf0; --muted:#8b90a8; }
+    :root[data-theme="light"] { --bg:#f4f5f9; --surface:#fff; --surface2:#f0f1f7; --border:#dde0ee; --text:#1a1d27; --muted:#6b7099; }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; }
+
+    /* AUTH */
+
+    /* HEADER */
+    header { background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:58px; }
+    .header-left { display:flex;align-items:center;gap:12px; }
+    .brand-pill { font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:3px 8px;text-decoration:none; }
+    .header-title { font-size:14px;font-weight:600; }
+    .header-sub { font-size:12px;color:var(--muted); }
+    .header-right { display:flex;gap:10px;align-items:center; }
+    .hdr-btn { font-size:13px;font-weight:600;padding:7px 16px;border-radius:7px;cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:6px; }
+    .hdr-btn-ghost { background:none;color:var(--muted);border:1px solid var(--border); }
+    .hdr-btn-ghost:hover { border-color:var(--accent);color:var(--accent); }
+    .hdr-btn-primary { background:var(--accent);color:#fff; }
+    .hdr-btn-primary:hover { opacity:.9; }
+
+    /* LAYOUT */
+    .container { max-width:860px;margin:0 auto;padding:40px 24px 80px; }
+
+    /* HERO */
+    .hero { margin-bottom:36px; }
+    .sku-badge { display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:5px;padding:3px 10px;margin-bottom:12px; }
+    .hero h1 { font-size:24px;font-weight:700;margin-bottom:8px; }
+    .hero p { color:var(--muted);font-size:14px;max-width:580px; }
+
+    /* SECTION */
+    .param-section { margin-bottom:28px; }
+    .section-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:14px; }
+    .section-title { font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted); }
+    .section-note { font-size:12px;color:var(--muted); }
+
+    /* PARAM TABLE */
+    .param-table { width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden; }
+    .param-table th { text-align:left;padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface2);border-bottom:1px solid var(--border); }
+    .param-table td { padding:8px 14px;border-bottom:1px solid var(--border); }
+    .param-table tr:last-child td { border-bottom:none; }
+    .param-table .row-label { font-size:13px;font-weight:600;white-space:nowrap; }
+    .param-table .row-sub { font-size:11px;color:var(--muted); }
+
+    /* INPUTS */
+    .num-input { width:62px;padding:6px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px;font-weight:600;text-align:center;outline:none; }
+    .num-input:focus { border-color:var(--accent); }
+    .range-pair { display:flex;align-items:center;gap:6px; }
+    .range-sep { font-size:12px;color:var(--muted); }
+
+    /* PROVIDER SAVINGS */
+    .provider-row { display:flex;align-items:center;gap:14px;padding:12px 14px;border-bottom:1px solid var(--border); }
+    .provider-row:last-child { border-bottom:none; }
+    .provider-label { font-size:13px;font-weight:700;width:80px; }
+
+    /* TOAST */
+    #toast { position:fixed;bottom:28px;right:28px;background:var(--green);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;opacity:0;transition:opacity .3s;pointer-events:none; }
+    #toast.show { opacity:1; }
+
+    /* ACTIONS */
+    .actions { display:flex;gap:12px;margin-top:32px;flex-wrap:wrap; }
+    .btn { padding:11px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .15s; }
+    .btn-primary { background:var(--accent);color:#fff; }
+    .btn-primary:hover { opacity:.9; }
+    .btn-secondary { background:var(--surface);color:var(--text);border:1px solid var(--border); }
+    .btn-secondary:hover { border-color:var(--accent); }
+    .btn-danger { background:var(--red-soft);color:var(--red);border:1px solid transparent; }
+    .btn-danger:hover { border-color:var(--red); }
+    .btn-go { background:var(--green);color:#fff; }
+    .btn-go:hover { opacity:.9; }
+
+    /* STATUS PILL */
+    .status-bar { display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:28px; }
+    .status-bar.custom { background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber)33; }
+    .status-bar.default { background:var(--surface2);color:var(--muted);border:1px solid var(--border); }
+    .status-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+
+    .modifier-grid { display:grid;grid-template-columns:1fr 1fr;gap:14px; }
+    @media(max-width:600px) { .modifier-grid { grid-template-columns:1fr; } }
+    .mod-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px; }
+    .mod-card-title { font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px; }
+    .mod-row { display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:13px; }
+    .mod-row:last-child { margin-bottom:0; }
+    .mod-label { color:var(--text); }
+    .mod-sub { font-size:11px;color:var(--muted); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-left">
+      <a href="https://tools.briansavesbillions.com/" class="brand-pill">Proxima</a>
+      <div>
+        <div class="header-title">Planner Parameters</div>
+        <div class="header-sub">Cloud Baseline Renewal Roadmap · SKU 1</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="https://tools.briansavesbillions.com/cloud-baseline-planner/" class="hdr-btn hdr-btn-ghost">← Open Planner</a>
+      <button class="hdr-btn hdr-btn-primary" onclick="saveParams()">Save Parameters</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="hero">
+      <div class="sku-badge">Parameter Config</div>
+      <h1>Engagement Sizing Parameters</h1>
+      <p>Adjust the assumptions that drive team composition, duration estimates, and savings ranges in the Cloud Baseline Renewal Planner. Changes apply immediately on save.</p>
+    </div>
+
+    <div id="status-bar" class="status-bar default">
+      <div class="status-dot" style="background:var(--muted)"></div>
+      <span>Using default parameters</span>
+    </div>
+
+    <!-- DURATION TABLE -->
+    <div class="param-section">
+      <div class="section-header">
+        <div class="section-title">Engagement Duration (weeks)</div>
+        <div class="section-note">Base range before modifiers are applied</div>
+      </div>
+      <table class="param-table">
+        <thead>
+          <tr>
+            <th>Spend Tier</th>
+            <th>Low (weeks)</th>
+            <th>High (weeks)</th>
+          </tr>
+        </thead>
+        <tbody id="duration-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- TEAM TABLE -->
+    <div class="param-section">
+      <div class="section-header">
+        <div class="section-title">Base Team Composition</div>
+        <div class="section-note">Headcount per role before provider-count modifiers</div>
+      </div>
+      <table class="param-table">
+        <thead>
+          <tr>
+            <th>Spend Tier</th>
+            <th>VP</th>
+            <th>PCon</th>
+            <th>SCon</th>
+            <th>Con</th>
+            <th>ACon</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="team-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- PROVIDER MODIFIERS -->
+    <div class="param-section">
+      <div class="section-header">
+        <div class="section-title">Provider Count Modifiers</div>
+        <div class="section-note">Additional headcount added per provider threshold</div>
+      </div>
+      <div class="modifier-grid">
+        <div class="mod-card">
+          <div class="mod-card-title">2+ Providers</div>
+          <div class="mod-row">
+            <div><div class="mod-label">Senior Consultant</div><div class="mod-sub">+SC per extra provider workstream</div></div>
+            <input type="number" class="num-input" id="pmod-2-sc" min="0" max="5" oninput="refreshTotals()" />
+          </div>
+          <div class="mod-row">
+            <div><div class="mod-label">Associate Consultant</div><div class="mod-sub">+AC for data & analysis support</div></div>
+            <input type="number" class="num-input" id="pmod-2-ac" min="0" max="5" oninput="refreshTotals()" />
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-card-title">3+ Providers</div>
+          <div class="mod-row">
+            <div><div class="mod-label">Principal Consultant (min)</div><div class="mod-sub">Enforce PC ≥ this value</div></div>
+            <input type="number" class="num-input" id="pmod-3-pc" min="0" max="3" oninput="refreshTotals()" />
+          </div>
+          <div class="mod-row">
+            <div><div class="mod-label">Senior Consultant</div><div class="mod-sub">+SC for governance workstream</div></div>
+            <input type="number" class="num-input" id="pmod-3-sc" min="0" max="5" oninput="refreshTotals()" />
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-card-title">4+ Providers</div>
+          <div class="mod-row">
+            <div><div class="mod-label">Senior Consultant</div></div>
+            <input type="number" class="num-input" id="pmod-4-sc" min="0" max="5" oninput="refreshTotals()" />
+          </div>
+          <div class="mod-row">
+            <div><div class="mod-label">Associate Consultant</div></div>
+            <input type="number" class="num-input" id="pmod-4-ac" min="0" max="5" oninput="refreshTotals()" />
+          </div>
+        </div>
+        <div class="mod-card">
+          <div class="mod-card-title">Duration: Provider Count</div>
+          <div class="mod-row">
+            <div><div class="mod-label">2+ providers</div><div class="mod-sub">Added to low / high</div></div>
+            <div class="range-pair">
+              <input type="number" class="num-input" id="pdur-2-lo" min="0" max="8" style="width:50px" />
+              <span class="range-sep">–</span>
+              <input type="number" class="num-input" id="pdur-2-hi" min="0" max="8" style="width:50px" />
+            </div>
+          </div>
+          <div class="mod-row">
+            <div><div class="mod-label">3+ providers</div><div class="mod-sub">Added to low / high</div></div>
+            <div class="range-pair">
+              <input type="number" class="num-input" id="pdur-3-lo" min="0" max="8" style="width:50px" />
+              <span class="range-sep">–</span>
+              <input type="number" class="num-input" id="pdur-3-hi" min="0" max="8" style="width:50px" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DATA READINESS MODIFIERS -->
+    <div class="param-section">
+      <div class="section-header">
+        <div class="section-title">Data Readiness — Duration Impact (weeks)</div>
+        <div class="section-note">Added to the low/high range when data gaps exist</div>
+      </div>
+      <table class="param-table">
+        <thead>
+          <tr>
+            <th>Data Source</th>
+            <th>Partial — +Low</th>
+            <th>Partial — +High</th>
+            <th>Missing — +Low</th>
+            <th>Missing — +High</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="row-label">AP / Invoice Data</div><div class="row-sub">12–24 month spend history</div></td>
+            <td><input type="number" class="num-input" id="dr-ap-p-lo" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-ap-p-hi" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-ap-n-lo" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-ap-n-hi" min="0" max="6" /></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Contract Repository</div><div class="row-sub">Current agreements & amendments</div></td>
+            <td><input type="number" class="num-input" id="dr-con-p-lo" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-con-p-hi" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-con-n-lo" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-con-n-hi" min="0" max="6" /></td>
+          </tr>
+          <tr>
+            <td><div class="row-label">Stakeholder Access</div><div class="row-sub">IT, Finance, Procurement</div></td>
+            <td><input type="number" class="num-input" id="dr-sh-p-lo" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-sh-p-hi" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-sh-n-lo" min="0" max="6" /></td>
+            <td><input type="number" class="num-input" id="dr-sh-n-hi" min="0" max="6" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SAVINGS RANGES -->
+    <div class="param-section">
+      <div class="section-header">
+        <div class="section-title">Savings Ranges by Provider (%)</div>
+        <div class="section-note">Base range before negotiation & commitment modifiers</div>
+      </div>
+      <table class="param-table">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Low %</th>
+            <th>High %</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span style="color:var(--aws);font-weight:700">AWS</span></td>
+            <td><input type="number" class="num-input" id="sav-aws-lo" min="0" max="30" /></td>
+            <td><input type="number" class="num-input" id="sav-aws-hi" min="0" max="30" /></td>
+            <td style="font-size:12px;color:var(--muted)">EDP + RI/Savings Plans leverage</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--azure);font-weight:700">Azure</span></td>
+            <td><input type="number" class="num-input" id="sav-azure-lo" min="0" max="30" /></td>
+            <td><input type="number" class="num-input" id="sav-azure-hi" min="0" max="30" /></td>
+            <td style="font-size:12px;color:var(--muted)">EA/MCA renewal + MACC</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--gcp);font-weight:700">GCP</span></td>
+            <td><input type="number" class="num-input" id="sav-gcp-lo" min="0" max="30" /></td>
+            <td><input type="number" class="num-input" id="sav-gcp-hi" min="0" max="30" /></td>
+            <td style="font-size:12px;color:var(--muted)">CUD + CUDS negotiation</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--muted);font-weight:700">Other</span></td>
+            <td><input type="number" class="num-input" id="sav-other-lo" min="0" max="30" /></td>
+            <td><input type="number" class="num-input" id="sav-other-hi" min="0" max="30" /></td>
+            <td style="font-size:12px;color:var(--muted)">Oracle, IBM, etc.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" onclick="saveParams()">Save Parameters</button>
+      <button class="btn btn-danger" onclick="resetParams()">Reset to Defaults</button>
+      <a href="https://tools.briansavesbillions.com/cloud-baseline-planner/" class="btn btn-go">Open Planner →</a>
+    </div>
+  </div>
+
+  <div id="toast">Parameters saved</div>
+
+  <script>
+    // ─── DEFAULTS ────────────────────────────────────────────────────────────
+    const SPEND_TIERS = [
+      { key:'under5m',   label:'Under $5M',     sub:'Smallest spend tier' },
+      { key:'5-25m',     label:'$5M – $25M',    sub:'Standard baseline' },
+      { key:'25-100m',   label:'$25M – $100M',  sub:'Mid-market' },
+      { key:'100-250m',  label:'$100M – $250M', sub:'Enterprise' },
+      { key:'250mplus',  label:'$250M+',         sub:'Strategic account' },
+    ];
+
+    const DEFAULTS = {
+      duration: {
+        'under5m':  [3,4], '5-25m': [4,6], '25-100m': [5,8],
+        '100-250m': [6,10], '250mplus': [7,12]
+      },
+      team: {
+        'under5m':  {vp:0,pc:0,sc:1,c:0,ac:1},
+        '5-25m':    {vp:0,pc:0,sc:1,c:1,ac:1},
+        '25-100m':  {vp:0,pc:1,sc:1,c:1,ac:0},
+        '100-250m': {vp:0,pc:1,sc:2,c:1,ac:0},
+        '250mplus': {vp:1,pc:1,sc:2,c:2,ac:1},
+      },
+      providerMods: {
+        p2: {sc:1,ac:1}, p3: {pcMin:1,sc:1}, p4: {sc:1,ac:1},
+        dur2: {lo:1,hi:2}, dur3: {lo:1,hi:2}
+      },
+      dataMods: {
+        ap:  {p:{lo:0,hi:1},n:{lo:1,hi:2}},
+        con: {p:{lo:0,hi:1},n:{lo:1,hi:2}},
+        sh:  {p:{lo:0,hi:1},n:{lo:1,hi:1}},
+      },
+      savings: {
+        aws:{lo:3,hi:8}, azure:{lo:4,hi:12}, gcp:{lo:3,hi:7}, other:{lo:2,hi:5}
+      }
+    };
+
+    // ─── BUILD TABLES ────────────────────────────────────────────────────────
+    function buildTables() {
+      // Duration table
+      document.getElementById('duration-tbody').innerHTML = SPEND_TIERS.map(t => `
+        <tr>
+          <td><div class="row-label">${t.label}</div><div class="row-sub">${t.sub}</div></td>
+          <td><input type="number" class="num-input" id="dur-${t.key}-lo" min="1" max="52" /></td>
+          <td><input type="number" class="num-input" id="dur-${t.key}-hi" min="1" max="52" /></td>
+        </tr>`).join('');
+
+      // Team table
+      document.getElementById('team-tbody').innerHTML = SPEND_TIERS.map(t => `
+        <tr>
+          <td><div class="row-label">${t.label}</div><div class="row-sub">${t.sub}</div></td>
+          <td><input type="number" class="num-input" id="tm-${t.key}-vp" min="0" max="5" oninput="refreshTotals()" /></td>
+          <td><input type="number" class="num-input" id="tm-${t.key}-pc" min="0" max="10" oninput="refreshTotals()" /></td>
+          <td><input type="number" class="num-input" id="tm-${t.key}-sc" min="0" max="10" oninput="refreshTotals()" /></td>
+          <td><input type="number" class="num-input" id="tm-${t.key}-c"  min="0" max="10" oninput="refreshTotals()" /></td>
+          <td><input type="number" class="num-input" id="tm-${t.key}-ac" min="0" max="10" oninput="refreshTotals()" /></td>
+          <td id="tm-${t.key}-total" style="font-weight:700;font-size:15px;color:var(--accent)"></td>
+        </tr>`).join('');
+    }
+
+    function refreshTotals() {
+      SPEND_TIERS.forEach(t => {
+        const roles = ['vp','pc','sc','c','ac'];
+        const total = roles.reduce((s,r) => {
+          const el = document.getElementById(`tm-${t.key}-${r}`);
+          return s + (parseInt(el?.value)||0);
+        },0);
+        const el = document.getElementById(`tm-${t.key}-total`);
+        if (el) el.textContent = total || '—';
+      });
+    }
+
+    // ─── LOAD / SAVE ─────────────────────────────────────────────────────────
+    function getStored() {
+      try { return JSON.parse(localStorage.getItem('proxima-baseline-config')) || null; }
+      catch { return null; }
+    }
+
+    function populateFields(cfg) {
+      // Duration
+      SPEND_TIERS.forEach(t => {
+        document.getElementById(`dur-${t.key}-lo`).value = cfg.duration[t.key][0];
+        document.getElementById(`dur-${t.key}-hi`).value = cfg.duration[t.key][1];
+      });
+      // Team
+      SPEND_TIERS.forEach(t => {
+        ['vp','pc','sc','c','ac'].forEach(r => {
+          document.getElementById(`tm-${t.key}-${r}`).value = cfg.team[t.key][r];
+        });
+      });
+      // Provider mods
+      document.getElementById('pmod-2-sc').value = cfg.providerMods.p2.sc;
+      document.getElementById('pmod-2-ac').value = cfg.providerMods.p2.ac;
+      document.getElementById('pmod-3-pc').value = cfg.providerMods.p3.pcMin;
+      document.getElementById('pmod-3-sc').value = cfg.providerMods.p3.sc;
+      document.getElementById('pmod-4-sc').value = cfg.providerMods.p4.sc;
+      document.getElementById('pmod-4-ac').value = cfg.providerMods.p4.ac;
+      document.getElementById('pdur-2-lo').value = cfg.providerMods.dur2.lo;
+      document.getElementById('pdur-2-hi').value = cfg.providerMods.dur2.hi;
+      document.getElementById('pdur-3-lo').value = cfg.providerMods.dur3.lo;
+      document.getElementById('pdur-3-hi').value = cfg.providerMods.dur3.hi;
+      // Data mods
+      [['ap','ap'],['con','con'],['sh','sh']].forEach(([id,key]) => {
+        document.getElementById(`dr-${id}-p-lo`).value = cfg.dataMods[key].p.lo;
+        document.getElementById(`dr-${id}-p-hi`).value = cfg.dataMods[key].p.hi;
+        document.getElementById(`dr-${id}-n-lo`).value = cfg.dataMods[key].n.lo;
+        document.getElementById(`dr-${id}-n-hi`).value = cfg.dataMods[key].n.hi;
+      });
+      // Savings
+      ['aws','azure','gcp','other'].forEach(p => {
+        document.getElementById(`sav-${p}-lo`).value = cfg.savings[p].lo;
+        document.getElementById(`sav-${p}-hi`).value = cfg.savings[p].hi;
+      });
+      refreshTotals();
+    }
+
+    function readFields() {
+      const n = id => parseInt(document.getElementById(id).value) || 0;
+      return {
+        duration: Object.fromEntries(SPEND_TIERS.map(t => [t.key, [n(`dur-${t.key}-lo`), n(`dur-${t.key}-hi`)]])),
+        team: Object.fromEntries(SPEND_TIERS.map(t => [t.key, {
+          vp:n(`tm-${t.key}-vp`), pc:n(`tm-${t.key}-pc`), sc:n(`tm-${t.key}-sc`),
+          c:n(`tm-${t.key}-c`), ac:n(`tm-${t.key}-ac`)
+        }])),
+        providerMods: {
+          p2: {sc:n('pmod-2-sc'), ac:n('pmod-2-ac')},
+          p3: {pcMin:n('pmod-3-pc'), sc:n('pmod-3-sc')},
+          p4: {sc:n('pmod-4-sc'), ac:n('pmod-4-ac')},
+          dur2: {lo:n('pdur-2-lo'), hi:n('pdur-2-hi')},
+          dur3: {lo:n('pdur-3-lo'), hi:n('pdur-3-hi')},
+        },
+        dataMods: {
+          ap:  {p:{lo:n('dr-ap-p-lo'),  hi:n('dr-ap-p-hi')},  n:{lo:n('dr-ap-n-lo'),  hi:n('dr-ap-n-hi')}},
+          con: {p:{lo:n('dr-con-p-lo'), hi:n('dr-con-p-hi')}, n:{lo:n('dr-con-n-lo'), hi:n('dr-con-n-hi')}},
+          sh:  {p:{lo:n('dr-sh-p-lo'),  hi:n('dr-sh-p-hi')},  n:{lo:n('dr-sh-n-lo'),  hi:n('dr-sh-n-hi')}},
+        },
+        savings: Object.fromEntries(['aws','azure','gcp','other'].map(p => [p, {
+          lo:n(`sav-${p}-lo`), hi:n(`sav-${p}-hi`)
+        }]))
+      };
+    }
+
+    function saveParams() {
+      const cfg = readFields();
+      localStorage.setItem('proxima-baseline-config', JSON.stringify(cfg));
+      updateStatusBar(true);
+      showToast('Parameters saved — planner updated');
+    }
+
+    function resetParams() {
+      if (!confirm('Reset all parameters to factory defaults?')) return;
+      localStorage.removeItem('proxima-baseline-config');
+      populateFields(DEFAULTS);
+      updateStatusBar(false);
+      showToast('Reset to defaults');
+    }
+
+    function updateStatusBar(isCustom) {
+      const bar = document.getElementById('status-bar');
+      if (isCustom) {
+        bar.className = 'status-bar custom';
+        bar.innerHTML = '<div class="status-dot" style="background:var(--amber)"></div><span>Custom parameters active — planner is using your values</span>';
+      } else {
+        bar.className = 'status-bar default';
+        bar.innerHTML = '<div class="status-dot" style="background:var(--muted)"></div><span>Using default parameters</span>';
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────
+    buildTables();
+    const stored = getStored();
+    populateFields(stored || DEFAULTS);
+    updateStatusBar(!!stored);
+  </script>
+</body>
+</html>

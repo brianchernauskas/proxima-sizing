@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Negotiation Research Digest — September 2026</title>
+  <link rel="stylesheet" href="digest.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark">Proxima<span>.</span></div>
+  <div class="header-right">
+    <a class="back-link" href="index.html">← All issues</a>
+    <a class="back-link" href="../updates.html">Running log</a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle theme</button>
+  </div>
+</header>
+
+<div class="masthead">
+  <p class="masthead-eyebrow">Proxima Internal — Research Digest</p>
+  <h1>Cloud Negotiation<br>Research Digest</h1>
+  <p class="issue-date">Issue 03 · September 14, 2026</p>
+  <p class="standfirst">Where the three hyperscalers moved this period, what practitioners are reporting, and what it changes about how we advise a renewal.</p>
+</div>
+
+<div class="issue">
+
+  <!-- WHAT'S NEW -->
+  <section class="section">
+    <div class="section-head">
+      <h2>What's New</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">3 items</span>
+    </div>
+    <ul class="item-list">
+
+      <li class="item gcp">
+        <span class="item-tag">GCP</span>
+        <h3>Gemini Enterprise gets its own commitment vehicle: Flexible Savings Plans</h3>
+        <p>Separate from Vertex AI CUDs, Google introduced Flexible Savings Plans (FSPs) for Gemini Enterprise — 10% off token costs on a 1-year term, 20% on a 3-year term, no minimum or maximum spend, drawn down against an existing Google Cloud EA. The same update shipped pay-as-you-go pricing, per-project spend caps, and anomaly alerts for agent workloads, with a "deferred execution" discount of up to 50% for off-peak work coming soon. — <a class="src-link" href="https://cloud.google.com/blog/products/ai-machine-learning/flexible-billing-and-cost-controls-for-agents-on-google-cloud" target="_blank" rel="noopener">Google Cloud Blog →</a></p>
+      </li>
+
+      <li class="item azure">
+        <span class="item-tag">Azure</span>
+        <h3>Azure AI Foundry adds a regional pricing premium, effective Sept 1</h3>
+        <p>Global pricing for Foundry model deployments is unchanged, but the EU Data Zone now prices 9% above Global, other regional deployments outside the US run 7–16% above Global, and a new APAC Data Zone launches at 20% above Global. Microsoft frames it as the cost of delivering AI within a specific geography at high availability. — <a class="src-link" href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/microsoft-foundry-model-deployment-pricing-update/4535385" target="_blank" rel="noopener">Microsoft Tech Community →</a></p>
+      </li>
+
+      <li class="item azure">
+        <span class="item-tag">Azure</span>
+        <h3>Azure Maps Gen1 tier retires Sept 15 — up to a 9x increase for stragglers</h3>
+        <p>Any account still on the Gen1 (Standard S0/S1) tier auto-migrates to Gen2 on September 15 with no action required — but Gen2 prices some transaction types far higher: geocoding moves from $0.50 to $4.50 per 1,000 transactions, an 800% increase, with no functionality change. — <a class="src-link" href="https://learn.microsoft.com/en-us/answers/questions/1377213/retirement-announcement-azure-maps-gen1-price-tier" target="_blank" rel="noopener">Microsoft Q&amp;A →</a></p>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- AWS -->
+  <section class="section">
+    <div class="section-head">
+      <h2>AWS</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider aws">
+      <p>Quiet period. Nothing surfaced this cycle that changes discount ranges, thresholds, or negotiation mechanics beyond what Issue 02 already covered — the PPA rebrand and the July GPU price hike remain the operative facts for any AWS renewal in flight.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <span style="color:var(--text-3);">No new primary-sourced AWS items this period</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- AZURE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Azure</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider azure">
+      <p>Two distinct pricing moves this period, both effective in the first half of September. The AI Foundry regional premium is the one with real commitment-sizing consequences: any client running Azure OpenAI or Foundry model deployments pinned to the EU or APAC for compliance or latency reasons is now paying 7–20% above the global rate card on that specific consumption, and a MACC or EA sized off the global rate will understate it.</p>
+      <p>The Azure Maps retirement is narrower in scope but useful as a pattern to keep watching for: a "no action required" auto-migration notice that quietly lands as an 800% increase on one transaction type. It is the same shape as the EA-to-MCA-E price-lock gap flagged last issue — a change framed as administrative that is, in practice, a material cost event for whoever doesn't read past the headline.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/microsoft-foundry-model-deployment-pricing-update/4535385" target="_blank" rel="noopener">Microsoft Tech Community — Foundry Pricing Update</a> ·
+        <a href="https://learn.microsoft.com/en-us/answers/questions/1377213/retirement-announcement-azure-maps-gen1-price-tier" target="_blank" rel="noopener">Microsoft Q&amp;A — Azure Maps Gen1 Retirement</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GCP -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Google Cloud</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="provider gcp">
+      <p>Following last issue's finding that Vertex AI was the least-scrutinized line item in Google Cloud deals, Google has now given AI consumption a second, distinct commitment lever: Gemini Enterprise Flexible Savings Plans. Unlike a Vertex AI CUD, an FSP has no minimum or maximum and adjusts month to month — which makes it a natural fit for seat- and agent-workload-driven spend that doesn't behave like steady infrastructure consumption.</p>
+      <p>The governance features shipped alongside it — per-project spend caps, anomaly alerts, hard overage controls — are worth as much attention as the discount rate itself. They are the mechanism that keeps an agent workload from running past a fixed monthly commitment, and they should be confirmed as configured before any client goes live on Gemini Enterprise, not treated as a nice-to-have.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://cloud.google.com/blog/products/ai-machine-learning/flexible-billing-and-cost-controls-for-agents-on-google-cloud" target="_blank" rel="noopener">Google Cloud Blog — Flexible Billing for Agents</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRACTITIONER PULSE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Community &amp; Practitioner Pulse</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">2 items</span>
+    </div>
+    <ul class="item-list">
+
+      <li class="item">
+        <span class="item-tag">Governance</span>
+        <h3>Vendors are shipping FinOps guardrails natively into AI commitment vehicles</h3>
+        <p>Gemini Enterprise's spend caps and anomaly alerts, bundled directly into the billing product rather than left to a third-party cost tool, is a shift worth watching across all three providers. If Azure and AWS follow with native spend controls on their own AI commitment vehicles, it changes what "must-have contract terms" means for those renewals — the control may already be in the product, not something to negotiate for separately.</p>
+      </li>
+
+      <li class="item">
+        <span class="item-tag">Pattern</span>
+        <h3>"No action required" is doing a lot of work in pricing-tier retirement notices</h3>
+        <p>Azure Maps Gen1's retirement is this period's example, but the shape recurs: a tier-consolidation announcement framed entirely around zero customer effort, with the actual cost delta — here, up to 9x on one transaction type — disclosed only in the fine print. Worth flagging to any client relying on automated tier migrations to also run a manual price check before the effective date.</p>
+      </li>
+
+    </ul>
+  </section>
+
+  <!-- TOOL UPDATES -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Recommended Tool Updates</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">Status as of Sep 14, 2026</span>
+    </div>
+    <div class="backlog-wrap">
+      <table class="backlog">
+        <thead>
+          <tr><th>Tool</th><th>Recommendation</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GCP</td>
+            <td>Add Gemini Enterprise Flexible Savings Plans as a tactic and diligence question alongside the existing Vertex AI content.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>Azure</td>
+            <td>Add an alert for the AI Foundry regional pricing premium, surfaced whenever AI/ML use is selected, so MACC/EA sizing accounts for regional rather than global rates.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px;font-size:12.5px;color:var(--text-3);font-style:italic;">Both recommendations shipped the same week they were identified. No open recommendations carried into next issue.</p>
+  </section>
+
+  <!-- SOURCING NOTE -->
+  <section class="section">
+    <div class="section-head">
+      <h2>Sourcing Note</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="callout">
+      <strong>A source-quality flag from this period's research, not a figure in this issue:</strong> thenegotiationexperts.com surfaced repeatedly in searches for EDP/MACC/CUD tactics with the same signature already flagged for vendorbenchmark.com — oddly precise statistics (e.g., a specific percentage of reviewed commitments that "created shortfall exposure"), no disclosed sample size or methodology, and a business model built on selling negotiation services. Nothing from that domain was cited in this issue or the running log. Recommend adding it to the do-not-cite list alongside vendorbenchmark.com.
+    </div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <p>Proxima internal use only — research conducted September 14, 2026</p>
+  <div class="footer-links">
+    <a href="https://tools.briansavesbillions.com/aws-negotiation-planner/" target="_blank" rel="noopener">AWS Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/azure-negotiation-planner/" target="_blank" rel="noopener">Azure Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/gcp-negotiation-planner/" target="_blank" rel="noopener">GCP Planner</a>
+  </div>
+  <div class="footer-wordmark">Proxima.</div>
+</footer>
+
+<script>
+function toggleTheme() {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+</script>
+</body>
+</html>

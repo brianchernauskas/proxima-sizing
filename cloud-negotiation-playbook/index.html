@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cloud &amp; Infrastructure Negotiation Playbook</title>
+<style>
+  :root{
+    --ink:#0f1b2d; --ink2:#334155; --muted:#64748b; --line:#e2e8f0;
+    --bg:#f6f8fb; --card:#ffffff;
+    --aws:#ff9900; --aws-d:#c77700;
+    --azure:#0089d6; --azure-d:#005ba1;
+    --gcp:#ea4335; --gcp-d:#b5261a;
+    --accent:#4f46e5; --accent-d:#3730a3;
+    --green:#16a34a; --amber:#d97706; --red:#dc2626;
+    --shadow:0 1px 3px rgba(15,27,45,.08),0 8px 24px rgba(15,27,45,.06);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;font-size:16px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* Layout */
+  .wrap{display:flex;min-height:100vh}
+  nav.side{width:270px;flex:0 0 270px;background:#0f1b2d;color:#cbd5e1;position:sticky;top:0;height:100vh;
+    overflow-y:auto;padding:22px 0}
+  nav.side .brand{padding:0 22px 16px;border-bottom:1px solid #1e293b;margin-bottom:10px}
+  nav.side .brand h1{font-size:16px;margin:0 0 4px;color:#fff;line-height:1.3}
+  nav.side .brand span{font-size:12px;color:#7c8aa5;letter-spacing:.03em}
+  nav.side button{display:block;width:100%;text-align:left;background:none;border:none;color:#cbd5e1;
+    padding:10px 22px;font-size:14px;cursor:pointer;border-left:3px solid transparent;font-family:inherit}
+  nav.side button:hover{background:#16233a;color:#fff}
+  nav.side button.active{background:#16233a;color:#fff;border-left-color:var(--accent)}
+  nav.side .num{display:inline-block;width:22px;color:#5b6b86;font-variant-numeric:tabular-nums}
+  nav.side button.active .num{color:var(--accent)}
+  nav.side .grp{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#5b6b86;padding:16px 22px 6px}
+
+  main{flex:1;min-width:0;max-width:1000px;margin:0 auto;padding:40px 48px 120px}
+  section.page{display:none;animation:fade .25s ease}
+  section.page.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h2.title{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .kicker{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:8px}
+  .lede{font-size:18px;color:var(--ink2);margin:0 0 28px;max-width:70ch}
+  h3{font-size:21px;margin:34px 0 12px;padding-top:6px}
+  h4{font-size:16px;margin:22px 0 8px;color:var(--ink)}
+  p{margin:0 0 14px;max-width:74ch}
+  ul,ol{max-width:74ch;padding-left:22px}
+  li{margin:6px 0}
+  strong{color:var(--ink)}
+  .muted{color:var(--muted)}
+
+  /* Cards & callouts */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:18px 0;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:820px){.g2,.g3{grid-template-columns:1fr}}
+  .coach{border-left:4px solid var(--accent);background:linear-gradient(90deg,#eef2ff,#fff 60%);
+    border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0}
+  .coach .tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-d);display:block;margin-bottom:4px}
+  .analogy{border-left:4px solid var(--amber);background:linear-gradient(90deg,#fffbeb,#fff 60%);border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0}
+  .analogy .tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--amber);display:block;margin-bottom:4px}
+  .warn{border-left:4px solid var(--red);background:linear-gradient(90deg,#fef2f2,#fff 60%);border-radius:0 12px 12px 0;padding:16px 20px;margin:18px 0}
+  .warn .tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:4px}
+  .keyterm{background:#eef2ff;border-radius:6px;padding:1px 6px;font-weight:600;color:var(--accent-d);white-space:nowrap}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#0f1b2d;color:#fff;font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:#f8fafc}
+  td.aws{color:var(--aws-d);font-weight:600}
+  td.azure{color:var(--azure-d);font-weight:600}
+  td.gcp{color:var(--gcp-d);font-weight:600}
+  .scroller{overflow-x:auto}
+
+  /* Provider chips / headers */
+  .provhead{display:flex;align-items:center;gap:12px;margin:0 0 6px}
+  .logo{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px;flex:0 0 40px}
+  .logo.aws{background:var(--aws);color:#111}
+  .logo.azure{background:var(--azure)}
+  .logo.gcp{background:linear-gradient(135deg,#ea4335,#fbbc05 60%,#34a853)}
+  .pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;margin:2px 4px 2px 0}
+  .pill.aws{background:#fff3e0;color:var(--aws-d)}
+  .pill.azure{background:#e3f2fd;color:var(--azure-d)}
+  .pill.gcp{background:#fdecea;color:var(--gcp-d)}
+  .pill.g{background:#dcfce7;color:#166534}
+
+  /* Infographic pieces */
+  .pyramid{display:flex;flex-direction:column;align-items:center;gap:6px;margin:18px 0}
+  .pyramid .row{color:#fff;border-radius:8px;padding:12px 16px;text-align:center;font-weight:600;box-shadow:var(--shadow)}
+  .pyramid .r1{width:55%;background:#7c3aed}
+  .pyramid .r2{width:72%;background:#4f46e5}
+  .pyramid .r3{width:88%;background:#2563eb}
+  .pyramid .r4{width:100%;background:#0f1b2d}
+  .pyramid small{display:block;font-weight:400;opacity:.85;font-size:12px}
+
+  .stack{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+  .stack .lvl{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;box-shadow:var(--shadow)}
+  .stack .pct{flex:0 0 88px;font-weight:800;font-size:20px;color:var(--accent)}
+  .stack .bar{flex:1;height:14px;background:#eef2ff;border-radius:999px;overflow:hidden}
+  .stack .bar i{display:block;height:100%;background:linear-gradient(90deg,#4f46e5,#7c3aed)}
+
+  .timeline{position:relative;margin:22px 0 22px 8px;padding-left:26px;border-left:2px solid var(--line)}
+  .timeline .step{position:relative;margin-bottom:20px}
+  .timeline .step::before{content:"";position:absolute;left:-33px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 0 0 2px var(--accent)}
+  .timeline .step h4{margin:0 0 3px}
+  .timeline .when{font-size:12px;color:var(--accent-d);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+
+  .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}
+  @media(max-width:820px){.statrow{grid-template-columns:1fr 1fr}}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+  .stat .big{font-size:30px;font-weight:800;line-height:1}
+  .stat .lbl{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+  .matrix{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border-radius:12px;overflow:hidden;margin:18px 0;box-shadow:var(--shadow)}
+  .matrix .q{background:#fff;padding:16px}
+  .matrix .q h4{margin:0 0 4px}
+  .matrix .q.hi{background:#f0fdf4}
+  .matrix .q.lo{background:#fef2f2}
+
+  .checklist{list-style:none;padding-left:0;max-width:74ch}
+  .checklist li{padding-left:30px;position:relative;margin:8px 0}
+  .checklist li::before{content:"\2713";position:absolute;left:0;top:0;color:var(--green);font-weight:800;
+    background:#dcfce7;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px}
+
+  .glossary dt{font-weight:700;margin-top:14px;color:var(--ink)}
+  .glossary dd{margin:2px 0 0;color:var(--ink2)}
+  .glossary dl{max-width:78ch}
+
+  .pagenav{display:flex;justify-content:space-between;margin-top:48px;padding-top:20px;border-top:1px solid var(--line);gap:12px}
+  .pagenav button{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 18px;cursor:pointer;
+    font-family:inherit;font-size:14px;color:var(--ink2);box-shadow:var(--shadow);max-width:48%}
+  .pagenav button:hover{border-color:var(--accent);color:var(--accent)}
+  .pagenav button b{display:block;color:var(--ink);font-size:14px}
+  .pagenav button span{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+
+  .toc{columns:2;gap:24px;margin:18px 0}
+  @media(max-width:820px){.toc{columns:1}}
+  .toc a{display:block;padding:9px 0;border-bottom:1px solid var(--line);break-inside:avoid}
+
+  .mobilebar{display:none}
+  @media(max-width:820px){
+    nav.side{display:none}
+    main{padding:20px 18px 100px}
+    .mobilebar{display:block;position:sticky;top:0;background:#0f1b2d;padding:12px 16px;z-index:20;margin:-20px -18px 18px}
+    .mobilebar select{width:100%;padding:10px;border-radius:8px;border:none;font-size:15px}
+  }
+  .fn{font-size:12.5px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="side">
+    <div class="brand">
+      <h1>Cloud &amp; Infrastructure Negotiation Playbook</h1>
+      <span>PRINCIPAL CONSULTANT ONBOARDING • PROXIMA</span>
+    </div>
+    <div class="grp">Foundations</div>
+    <button data-p="0" class="active"><span class="num">00</span>Start Here</button>
+    <button data-p="1"><span class="num">01</span>Cloud 101</button>
+    <div class="grp">The Three Hyperscalers</div>
+    <button data-p="2"><span class="num">02</span>AWS Deep Dive</button>
+    <button data-p="3"><span class="num">03</span>Azure Deep Dive</button>
+    <button data-p="4"><span class="num">04</span>Google Cloud Deep Dive</button>
+    <button data-p="5"><span class="num">05</span>Head-to-Head</button>
+    <div class="grp">The Money</div>
+    <button data-p="6"><span class="num">06</span>Pricing &amp; Commitments</button>
+    <button data-p="7"><span class="num">07</span>The Negotiation Playbook</button>
+    <button data-p="8"><span class="num">08</span>Infrastructure Sourcing</button>
+    <div class="grp">Reference</div>
+    <button data-p="9"><span class="num">09</span>Glossary &amp; Cheat Sheet</button>
+  </nav>
+
+  <main>
+    <div class="mobilebar">
+      <select id="msel"></select>
+    </div>
+
+    <!-- ============ 0 START HERE ============ -->
+    <section class="page show" id="p0">
+      <div class="kicker">Welcome to the desk</div>
+      <h2 class="title">Congratulations, Principal — here's your map of the territory</h2>
+      <p class="lede">You've been dropped into cloud &amp; infrastructure negotiation. This guide is your coach. We'll go from "what even is the cloud" to "how to claw back seven figures from AWS at renewal" — explained plainly, the way a good teacher would, with pictures.</p>
+
+      <div class="coach">
+        <span class="tag">Coach's opening note</span>
+        <p style="margin:0">Here's the good news: you do <strong>not</strong> need to become an engineer. Your job isn't to build systems — it's to understand them well enough to <strong>challenge the bill</strong> and <strong>structure the deal</strong>. Think of yourself as a real-estate agent for computing. You don't pour the concrete; you know the market, the comps, and how to negotiate the lease. This guide teaches you the market.</p>
+      </div>
+
+      <h3>The mental model: what you're actually doing</h3>
+      <p>Every company you'll advise rents computers from one or more of three giant landlords — <strong>Amazon (AWS)</strong>, <strong>Microsoft (Azure)</strong>, and <strong>Google (GCP)</strong>. These are called <span class="keyterm">hyperscalers</span>. Your clients spend anywhere from thousands to hundreds of millions a year with them. Your value is in three moves:</p>
+      <div class="grid g3">
+        <div class="card"><h4>1. Understand the spend</h4><p class="muted" style="margin:0">Know what the services are, why they cost what they cost, and where the waste and leverage hide.</p></div>
+        <div class="card"><h4>2. Structure the commitment</h4><p class="muted" style="margin:0">Match the client's real usage to the right discount vehicles — without over-committing them into a trap.</p></div>
+        <div class="card"><h4>3. Negotiate the contract</h4><p class="muted" style="margin:0">Use timing, competition, and leverage to win discounts, credits, and flexible terms at signing and renewal.</p></div>
+      </div>
+
+      <h3>How to use this guide</h3>
+      <p>Read it in order the first time — each section builds on the last. After that, treat it as a reference. Watch for these three signposts throughout:</p>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">A "do this in the real world" tip — how a principal actually applies the concept.</p></div>
+      <div class="analogy"><span class="tag">Analogy</span><p style="margin:0">A plain-English comparison to something you already understand.</p></div>
+      <div class="warn"><span class="tag">Watch out</span><p style="margin:0">A trap, gotcha, or place clients (and junior consultants) lose money.</p></div>
+
+      <h3>The landscape in one glance (2026)</h3>
+      <div class="statrow">
+        <div class="stat"><div class="big" style="color:var(--aws-d)">28%</div><div class="lbl">AWS market share</div></div>
+        <div class="stat"><div class="big" style="color:var(--azure-d)">21%</div><div class="lbl">Azure market share</div></div>
+        <div class="stat"><div class="big" style="color:var(--gcp-d)">14%</div><div class="lbl">Google Cloud share</div></div>
+        <div class="stat"><div class="big" style="color:var(--accent)">$129B</div><div class="lbl">Q1 2026 spend / quarter</div></div>
+      </div>
+      <p class="fn">The "big three" hold ~63% of a market growing ~35% year-over-year, per Synergy Research. AI infrastructure is now ~19% of all cloud spend (up from 8% in 2023) — which is exactly why the providers are hungry to lock in multi-year commitments right now. That hunger is <em>your</em> leverage.</p>
+
+      <div class="pagenav">
+        <span></span>
+        <button data-goto="1"><span>Next</span><b>01 · Cloud 101 →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 1 CLOUD 101 ============ -->
+    <section class="page" id="p1">
+      <div class="kicker">Foundations</div>
+      <h2 class="title">Cloud 101 — what you're actually buying</h2>
+      <p class="lede">Before you can negotiate the price of something, you have to know what it is. This section gives you the vocabulary that makes you credible in the room.</p>
+
+      <h3>What "the cloud" really means</h3>
+      <div class="analogy">
+        <span class="tag">Analogy: electricity</span>
+        <p style="margin:0">In 1900, if your factory needed power, you built your own generator in the basement — expensive, and you maintained it. Today you plug into the grid and pay for what you use. <strong>Cloud computing is the grid, but for computers.</strong> Instead of buying servers and running a data center, companies "plug in" to Amazon/Microsoft/Google and rent computing by the hour. That's the entire idea.</p>
+      </div>
+      <p>"The cloud" is just <strong>someone else's computers, in someone else's building, that you rent over the internet.</strong> The provider owns the hardware, the power, the cooling, and the security guards. Your client rents slices of it and pays monthly, like a utility bill.</p>
+
+      <h3>The three service models (memorize this pyramid)</h3>
+      <p>Cloud comes in three "how much do they manage for you" levels. This is the single most useful framework in the whole field.</p>
+      <div class="pyramid">
+        <div class="row r1">SaaS — Software as a Service<small>You just use the app. e.g. Gmail, Salesforce, Microsoft 365</small></div>
+        <div class="row r2">PaaS — Platform as a Service<small>You write code; they run it. e.g. databases, app hosting</small></div>
+        <div class="row r3">IaaS — Infrastructure as a Service<small>You rent raw servers, storage, network. e.g. EC2, virtual machines</small></div>
+        <div class="row r4">On-Premises — you own &amp; run everything yourself</div>
+      </div>
+      <div class="analogy">
+        <span class="tag">Analogy: pizza</span>
+        <p style="margin:0"><strong>On-prem</strong> = you make the pizza from scratch in your kitchen. <strong>IaaS</strong> = you buy the dough and toppings, you assemble and bake. <strong>PaaS</strong> = you get a take-and-bake pizza; just pop it in the oven. <strong>SaaS</strong> = pizza delivered, you just eat. The higher you go, the less you manage — and the more you pay per unit for the convenience.</p>
+      </div>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">Most of your negotiations are about <strong>IaaS and PaaS</strong> consumption on the hyperscalers. SaaS (like Microsoft 365 or Salesforce) is a related but separate sourcing conversation — often the same client, different playbook.</p></div>
+
+      <h3>The four building blocks of any cloud bill</h3>
+      <p>No matter the provider, nearly every dollar of infrastructure spend falls into one of four buckets. Learn these and you can read any bill.</p>
+      <div class="grid g2">
+        <div class="card"><h4>🖥 Compute</h4><p style="margin:0">The "thinking" — virtual servers that run software. Usually the biggest line item. Priced per hour by size (CPU + memory).</p></div>
+        <div class="card"><h4>💾 Storage</h4><p style="margin:0">The "memory" — where data lives. Priced per gigabyte per month, with tiers for how fast/often you need it.</p></div>
+        <div class="card"><h4>🌐 Networking</h4><p style="margin:0">Moving data around and out. The sneaky one — <strong>egress</strong> (data leaving the cloud) is where surprise costs hide.</p></div>
+        <div class="card"><h4>🧠 Managed services</h4><p style="margin:0">Databases, analytics, AI, security — higher-level tools the provider runs for you. Higher margin, higher stickiness.</p></div>
+      </div>
+      <div class="warn"><span class="tag">Watch out: egress</span><p style="margin:0"><strong>Getting data <em>into</em> the cloud is free. Getting it <em>out</em> costs money.</strong> This "data gravity" is deliberate — it makes it painful to leave. When a client says "we feel locked in," egress fees are usually part of why. It's also a live negotiation item (providers will waive egress to win migrations).</p></div>
+
+      <h3>Geography: Regions and Availability Zones</h3>
+      <p>Providers split the world into <span class="keyterm">Regions</span> (e.g. "US East," "Europe West") — physical clusters of data centers. Each Region contains multiple <span class="keyterm">Availability Zones (AZs)</span> — separate buildings with independent power, so if one floods, the others keep running. Clients care about Regions for two reasons: <strong>data-residency laws</strong> (EU data must stay in the EU) and <strong>price</strong> (the same server costs different amounts in different Regions).</p>
+
+      <h3>The Shared Responsibility Model</h3>
+      <div class="analogy"><span class="tag">Analogy: renting an apartment</span><p style="margin:0">The landlord secures the building, locks the front door, maintains the plumbing. <strong>You</strong> lock your own apartment and don't leave valuables on the sidewalk. Cloud security works the same: the provider secures the <em>infrastructure</em> ("security <strong>of</strong> the cloud"); the customer secures their <em>data and configuration</em> ("security <strong>in</strong> the cloud"). Most breaches are the tenant's fault, not the landlord's.</p></div>
+
+      <h3>Why companies buy cloud at all</h3>
+      <p>Understanding the "why" helps you understand where they'll flex on price. The pitch is: <strong>no huge upfront hardware purchase</strong> (turn capital expense into operating expense), <strong>scale up or down instantly</strong>, <strong>reach global users fast</strong>, and <strong>offload the grunt work</strong> of running data centers. The catch — and your whole reason to exist — is that "pay for what you use" quietly becomes "pay for everything you forgot to turn off," and list prices are rarely what a large buyer should actually pay.</p>
+
+      <div class="pagenav">
+        <button data-goto="0"><span>Previous</span><b>← 00 · Start Here</b></button>
+        <button data-goto="2"><span>Next</span><b>02 · AWS Deep Dive →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 2 AWS ============ -->
+    <section class="page" id="p2">
+      <div class="provhead"><div class="logo aws">aws</div><div><div class="kicker" style="margin:0">The market leader</div><h2 class="title" style="margin:0">Amazon Web Services (AWS)</h2></div></div>
+      <p class="lede">The biggest, oldest, and most-used cloud. If a client has one cloud, it's most likely this. AWS is the default you'll negotiate against most often.</p>
+
+      <h3>Who they are &amp; how they think</h3>
+      <p>AWS launched in 2006 and effectively invented the market. It has the widest menu of services (200+) and the largest base of engineers who know it. Commercially, AWS is disciplined and data-driven — their sales teams know your usage patterns cold. They rarely give away discounts for nothing; you earn them with <strong>committed spend</strong>.</p>
+
+      <h3>The services you must be able to name-drop</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Service</th><th>What it is (plain English)</th><th>Bucket</th></tr></thead>
+        <tbody>
+          <tr><td class="aws">EC2</td><td>Rent virtual servers by the hour. The workhorse — usually the biggest cost.</td><td>Compute</td></tr>
+          <tr><td class="aws">S3</td><td>Store any file, any size, cheaply. The internet's hard drive.</td><td>Storage</td></tr>
+          <tr><td class="aws">EBS</td><td>Fast disk drives attached to EC2 servers.</td><td>Storage</td></tr>
+          <tr><td class="aws">RDS / Aurora</td><td>Managed databases — they run and back up the database for you.</td><td>Managed</td></tr>
+          <tr><td class="aws">Lambda</td><td>Run code without renting a server — pay per execution ("serverless").</td><td>Compute</td></tr>
+          <tr><td class="aws">VPC</td><td>Your private, walled-off network inside AWS.</td><td>Networking</td></tr>
+          <tr><td class="aws">CloudFront</td><td>Content delivery — caches data near users worldwide.</td><td>Networking</td></tr>
+          <tr><td class="aws">Bedrock / SageMaker</td><td>Build and run AI/ML models. The fast-growing, strategic spend.</td><td>Managed / AI</td></tr>
+        </tbody>
+      </table></div>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">You don't need to know how to configure these. You need to recognize them on a bill and know which bucket they fall in. When a client's spend is 70% EC2, that tells you compute commitments (below) are your biggest lever.</p></div>
+
+      <h3>How AWS pricing works</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Model</th><th>How it works</th><th>Discount vs. list</th><th>Commitment</th></tr></thead>
+        <tbody>
+          <tr><td><strong>On-Demand</strong></td><td>Pay full sticker price by the second. No commitment.</td><td>0% (baseline)</td><td>None</td></tr>
+          <tr><td><strong>Savings Plans</strong></td><td>Commit to $X/hour of compute for 1 or 3 years; applies flexibly across EC2, Fargate, Lambda.</td><td>Up to ~66–72%</td><td>1 or 3 yr</td></tr>
+          <tr><td><strong>Reserved Instances</strong></td><td>Commit to a specific instance type/region for 1–3 yrs. Can also reserve capacity.</td><td>Up to ~72%</td><td>1 or 3 yr</td></tr>
+          <tr><td><strong>Spot Instances</strong></td><td>Bid on spare capacity. Ultra-cheap but can be reclaimed with 2 min notice.</td><td>Up to ~90%</td><td>None (interruptible)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="analogy"><span class="tag">Analogy: airline seats</span><p style="margin:0"><strong>On-Demand</strong> = walk-up fare, book anytime, pay most. <strong>Savings Plans / Reserved</strong> = book months ahead and commit, pay far less. <strong>Spot</strong> = fly standby — dirt cheap, but you might get bumped. Good FinOps is putting each workload on the right "fare."</p></div>
+      <div class="warn"><span class="tag">Watch out (2025+ rule change)</span><p style="margin:0">AWS tightened <strong>cross-account sharing</strong> of Reserved Instances and Savings Plans. Commitments generally must be used within a single account or linked consolidated-billing group now. This affects how you model savings for clients with complex account structures.</p></div>
+
+      <h3>The big one: the Private Pricing Agreement (formerly EDP)</h3>
+      <div class="card">
+        <p style="margin:0 0 10px"><strong>What it is:</strong> The <span class="keyterm">Private Pricing Agreement (PPA)</span> — historically called the <span class="keyterm">Enterprise Discount Program (EDP)</span> — is a custom contract where the client commits to spend a minimum total dollar amount over a term (commonly 1–5 years) in exchange for an <strong>across-the-board discount</strong> on almost all AWS services.</p>
+        <p style="margin:0"><strong>Rough discount ladder (directional, always negotiated):</strong></p>
+      </div>
+      <div class="stack">
+        <div class="lvl"><div class="pct">6–9%</div><div class="bar"><i style="width:20%"></i></div><div>~$1M/yr commitment</div></div>
+        <div class="lvl"><div class="pct">~15%</div><div class="bar"><i style="width:45%"></i></div><div>Larger spend + 3-year term</div></div>
+        <div class="lvl"><div class="pct">20%+</div><div class="bar"><i style="width:75%"></i></div><div>Tens of millions/yr committed</div></div>
+      </div>
+      <p class="fn">Directional ranges per public 2025 negotiation guides. Actual discounts are bespoke and depend on total commitment, term length, growth story, and competitive pressure.</p>
+      <div class="warn"><span class="tag">Watch out: the commitment trap</span><p style="margin:0">The PPA discount applies to a <strong>minimum spend the client must hit</strong>. If they over-commit and under-use, they still owe the shortfall. A big part of your job is <strong>right-sizing the commitment</strong> to real, defensible growth — not the optimistic number AWS's rep proposes.</p></div>
+
+      <h3>Support tiers &amp; the AWS Marketplace</h3>
+      <p>AWS sells support in tiers (Basic → Developer → Business → Enterprise). Enterprise Support runs a percentage of monthly spend and is mandatory under a PPA — a real, negotiable cost. The <strong>AWS Marketplace</strong> lets clients buy third-party software (Datadog, Snowflake, etc.) through their AWS bill; that spend can count toward the PPA commitment, which is a clever lever for helping a client "burn down" their commitment with tools they already buy.</p>
+      <div class="coach"><span class="tag">Coach's note — your AWS leverage checklist</span></div>
+      <ul class="checklist">
+        <li>Right-size the commitment to defensible growth, not the rep's optimism.</li>
+        <li>Push term length as a discount lever — but weigh it against flexibility.</li>
+        <li>Route eligible Marketplace/SaaS spend to help hit the commitment.</li>
+        <li>Layer Savings Plans/RIs <em>under</em> the PPA for stacked savings.</li>
+        <li>Negotiate migration credits, egress waivers, and Enterprise Support fees — not just the headline %.</li>
+      </ul>
+
+      <div class="pagenav">
+        <button data-goto="1"><span>Previous</span><b>← 01 · Cloud 101</b></button>
+        <button data-goto="3"><span>Next</span><b>03 · Azure Deep Dive →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 3 AZURE ============ -->
+    <section class="page" id="p3">
+      <div class="provhead"><div class="logo azure">Az</div><div><div class="kicker" style="margin:0">The enterprise incumbent</div><h2 class="title" style="margin:0">Microsoft Azure</h2></div></div>
+      <p class="lede">The #2 cloud — and the trickiest to negotiate, because Azure is tangled up with everything else Microsoft sells: Windows, Office, Teams, security. That bundle is both their weapon and your opportunity.</p>
+
+      <h3>Who they are &amp; how they think</h3>
+      <p>Microsoft's superpower is that the client is <em>already</em> a Microsoft shop — Windows on every laptop, Office 365 for email, Active Directory for logins. Azure rides that relationship. Microsoft negotiates the <strong>whole estate at once</strong> (Azure + Microsoft 365 + security + licensing), which means levers hide in one product and get pulled in another.</p>
+      <div class="warn"><span class="tag">Watch out: the bundle</span><p style="margin:0">Microsoft loves to blend Azure discounts with M365/E5 licensing incentives so you can't tell what you're really paying for each. Your job is to <strong>unbundle mentally</strong> — price each component against the market so a "great Azure discount" isn't quietly funded by an overpriced licensing renewal.</p></div>
+
+      <h3>Services (and the AWS translation)</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Azure service</th><th>Plain English</th><th>AWS equivalent</th></tr></thead>
+        <tbody>
+          <tr><td class="azure">Virtual Machines (VMs)</td><td>Rent virtual servers by the hour.</td><td>EC2</td></tr>
+          <tr><td class="azure">Blob Storage</td><td>Store any file cheaply.</td><td>S3</td></tr>
+          <tr><td class="azure">Azure SQL / Cosmos DB</td><td>Managed databases.</td><td>RDS / DynamoDB</td></tr>
+          <tr><td class="azure">Azure Functions</td><td>Serverless code, pay per run.</td><td>Lambda</td></tr>
+          <tr><td class="azure">Virtual Network (VNet)</td><td>Private walled-off network.</td><td>VPC</td></tr>
+          <tr><td class="azure">AKS</td><td>Managed Kubernetes (container hosting).</td><td>EKS</td></tr>
+          <tr><td class="azure">Azure OpenAI</td><td>Access to GPT/AI models — a huge strategic draw.</td><td>Bedrock</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The contracts: EA vs MCA-E</h3>
+      <div class="grid g2">
+        <div class="card"><h4>Enterprise Agreement (EA)</h4><p style="margin:0">The classic 3-year volume-licensing contract. Azure is a separate enrollment inside it. Long-standing, familiar, but Microsoft is steering large customers away from it.</p></div>
+        <div class="card"><h4>Microsoft Customer Agreement – Enterprise (MCA-E)</h4><p style="margin:0">The newer, "evergreen" digital contract. Microsoft's strategic direction for Azure. Commitments tracked via <em>Azure Plan</em>. More flexible in some ways, less in others.</p></div>
+      </div>
+      <div class="coach"><span class="tag">Coach's note</span><p style="margin:0">When a client is being pushed from EA to MCA-E, that transition is itself a <strong>negotiation event</strong> — price protections, discount structures, and true-up mechanics all change. Never let a client migrate contract vehicles without modeling the before/after.</p></div>
+
+      <h3>The big one: MACC</h3>
+      <div class="card">
+        <p style="margin:0 0 8px"><strong>What it is:</strong> The <span class="keyterm">MACC</span> (Microsoft Azure Consumption Commitment) is a commitment to spend a fixed total on Azure consumption over a term (usually 3 years). In exchange, you unlock Azure discounts <strong>plus negotiation leverage</strong> across the whole Microsoft estate: credits, co-investment/funding, and better terms on other line items.</p>
+        <p style="margin:0"><strong>A hidden superpower:</strong> many third-party products in the <strong>Azure Marketplace count toward your MACC</strong> — a strong burn-down lever.</p>
+      </div>
+      <div class="stack">
+        <div class="lvl"><div class="pct">5–15%</div><div class="bar"><i style="width:40%"></i></div><div>Typical Azure discount range by commitment size</div></div>
+        <div class="lvl"><div class="pct">Mega</div><div class="bar"><i style="width:90%"></i></div><div>Best discounts now reserved for very large deals (~$45M+ over 3 yrs)</div></div>
+      </div>
+
+      <h3>Two uniquely-Azure levers</h3>
+      <div class="grid g2">
+        <div class="card"><h4>Azure Hybrid Benefit</h4><p style="margin:0">Clients with existing Windows Server / SQL Server licenses (with Software Assurance) can apply them to Azure and slash VM costs — often 40%+. Frequently underused. Free money you can surface.</p></div>
+        <div class="card"><h4>Reserved Instances &amp; Savings Plans</h4><p style="margin:0">Azure has its own 1- and 3-year commitment discounts, layered <em>under</em> the MACC — same stacking logic as AWS.</p></div>
+      </div>
+      <div class="coach"><span class="tag">Coach's note — your Azure leverage checklist</span></div>
+      <ul class="checklist">
+        <li>Unbundle Azure from M365/E5 — price each against the market separately.</li>
+        <li>Surface unused Azure Hybrid Benefit (existing Windows/SQL licenses).</li>
+        <li>Time the deal to Microsoft's fiscal year-end (June 30) for maximum flexibility.</li>
+        <li>Route Azure Marketplace spend toward the MACC to de-risk the commitment.</li>
+        <li>Ask for co-investment/funding and credits, not just a bigger discount %.</li>
+      </ul>
+      <div class="warn"><span class="tag">Watch out: fiscal year</span><p style="margin:0">Microsoft's fiscal year ends <strong>June 30</strong>. Reps have quota pressure into that date — the best flexibility often appears in Q4 (Apr–Jun). Align your client's renewal calendar to it when you can.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="2"><span>Previous</span><b>← 02 · AWS Deep Dive</b></button>
+        <button data-goto="4"><span>Next</span><b>04 · Google Cloud →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 4 GCP ============ -->
+    <section class="page" id="p4">
+      <div class="provhead"><div class="logo gcp">G</div><div><div class="kicker" style="margin:0">The challenger</div><h2 class="title" style="margin:0">Google Cloud (GCP)</h2></div></div>
+      <p class="lede">The #3 cloud — smaller, but growing fastest, and the most aggressive on price and incentives to win business. That hunger makes GCP a fantastic <strong>stalking horse</strong> in any multi-cloud negotiation.</p>
+
+      <h3>Who they are &amp; how they think</h3>
+      <p>Google is the technical underdog with genuinely strong data, analytics, Kubernetes, and AI credentials. Because they're chasing share, GCP is typically the <strong>most willing to discount deeply, throw in migration credits, and co-fund</strong> a move. For you, GCP's eagerness is a tool: even a client committed to AWS/Azure can use a credible GCP bid to pull down the incumbent's price.</p>
+      <div class="coach"><span class="tag">Coach's note: the stalking horse</span><p style="margin:0">You rarely need a client to <em>actually</em> switch clouds. A credible, well-run GCP (or AWS) alternative bid — real architecture, real pricing — is often enough to move the incumbent 10–20%. Competition is the cheapest discount there is.</p></div>
+
+      <h3>Services (and the AWS translation)</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>GCP service</th><th>Plain English</th><th>AWS equivalent</th></tr></thead>
+        <tbody>
+          <tr><td class="gcp">Compute Engine</td><td>Rent virtual servers by the hour/second.</td><td>EC2</td></tr>
+          <tr><td class="gcp">Cloud Storage</td><td>Store any file cheaply.</td><td>S3</td></tr>
+          <tr><td class="gcp">BigQuery</td><td>Analyze massive datasets fast — GCP's crown jewel.</td><td>Redshift / Athena</td></tr>
+          <tr><td class="gcp">Cloud SQL / Spanner</td><td>Managed databases (Spanner = global scale).</td><td>RDS / Aurora</td></tr>
+          <tr><td class="gcp">GKE</td><td>Managed Kubernetes — Google invented Kubernetes.</td><td>EKS</td></tr>
+          <tr><td class="gcp">Cloud Functions / Run</td><td>Serverless code.</td><td>Lambda</td></tr>
+          <tr><td class="gcp">Vertex AI</td><td>Build/run AI &amp; ML, incl. Gemini models.</td><td>SageMaker / Bedrock</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>How GCP discounting works — three layers</h3>
+      <div class="grid g3">
+        <div class="card"><h4>1. Sustained Use Discounts</h4><p style="margin:0">Automatic. Run a VM a lot in a month and the price drops on its own — no commitment, no paperwork.</p></div>
+        <div class="card"><h4>2. Committed Use Discounts (CUDs)</h4><p style="margin:0">Commit for 1 or 3 years for deeper cuts. Spend-based or resource-based.</p></div>
+        <div class="card"><h4>3. Custom enterprise agreement</h4><p style="margin:0">A negotiated deal layered on top — extra discount, spend incentives, credits.</p></div>
+      </div>
+      <div class="warn"><span class="tag">Watch out (2025–2026 model change)</span><p style="margin:0">Google rolled out a new spend-based CUD model on July 15, 2025: discounts now apply <em>directly to the SKU price</em> rather than issuing a credit offset. Flex CUD coverage expanded Sept 5, 2025, and Google is migrating older accounts through 2026. If a client's savings show up as "credits," they may be on the legacy model — worth checking.</p></div>
+
+      <ul class="checklist">
+        <li>Use a credible GCP bid to discipline AWS/Azure pricing — even if the client stays put.</li>
+        <li>Stack: Sustained Use → CUDs → custom enterprise discount.</li>
+        <li>Push hard for migration credits and co-funding — GCP is the most generous here.</li>
+        <li>Confirm whether the client is on the new (SKU-based) or legacy (credit) CUD model.</li>
+        <li>Lean on BigQuery/AI strengths where they're the client's real reason to consider Google.</li>
+      </ul>
+
+      <div class="pagenav">
+        <button data-goto="3"><span>Previous</span><b>← 03 · Azure Deep Dive</b></button>
+        <button data-goto="5"><span>Next</span><b>05 · Head-to-Head →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 5 HEAD TO HEAD ============ -->
+    <section class="page" id="p5">
+      <div class="kicker">The three hyperscalers</div>
+      <h2 class="title">Head-to-Head — the comparison cheat sheets</h2>
+      <p class="lede">Two tables: a "Rosetta Stone" that translates service names across providers, and a commercial comparison of how each one discounts.</p>
+
+      <h3>The Rosetta Stone — same thing, three names</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>What it does</th><th>AWS</th><th>Azure</th><th>Google Cloud</th></tr></thead>
+        <tbody>
+          <tr><td>Virtual servers</td><td class="aws">EC2</td><td class="azure">Virtual Machines</td><td class="gcp">Compute Engine</td></tr>
+          <tr><td>Object storage</td><td class="aws">S3</td><td class="azure">Blob Storage</td><td class="gcp">Cloud Storage</td></tr>
+          <tr><td>Managed relational DB</td><td class="aws">RDS / Aurora</td><td class="azure">Azure SQL</td><td class="gcp">Cloud SQL / Spanner</td></tr>
+          <tr><td>Serverless functions</td><td class="aws">Lambda</td><td class="azure">Azure Functions</td><td class="gcp">Cloud Functions / Run</td></tr>
+          <tr><td>Managed Kubernetes</td><td class="aws">EKS</td><td class="azure">AKS</td><td class="gcp">GKE</td></tr>
+          <tr><td>Private network</td><td class="aws">VPC</td><td class="azure">VNet</td><td class="gcp">VPC</td></tr>
+          <tr><td>Data warehouse / analytics</td><td class="aws">Redshift</td><td class="azure">Synapse</td><td class="gcp">BigQuery</td></tr>
+          <tr><td>Content delivery (CDN)</td><td class="aws">CloudFront</td><td class="azure">Azure CDN / Front Door</td><td class="gcp">Cloud CDN</td></tr>
+          <tr><td>AI / ML platform</td><td class="aws">SageMaker / Bedrock</td><td class="azure">Azure ML / Azure OpenAI</td><td class="gcp">Vertex AI</td></tr>
+          <tr><td>Identity &amp; access</td><td class="aws">IAM</td><td class="azure">Entra ID (Azure AD)</td><td class="gcp">Cloud IAM</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The commercial comparison — how each one discounts</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Lever</th><th>AWS</th><th>Azure</th><th>Google Cloud</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Flagship enterprise deal</strong></td><td class="aws">Private Pricing Agreement (PPA / EDP)</td><td class="azure">MACC (via EA or MCA-E)</td><td class="gcp">Custom enterprise agreement</td></tr>
+          <tr><td><strong>Commitment discounts</strong></td><td class="aws">Savings Plans + Reserved Instances</td><td class="azure">Reservations + Savings Plans</td><td class="gcp">CUDs (spend- &amp; resource-based)</td></tr>
+          <tr><td><strong>Automatic discount</strong></td><td>None (must commit)</td><td>None (must commit)</td><td class="gcp">Sustained Use Discounts (auto)</td></tr>
+          <tr><td><strong>Deep-discount spare capacity</strong></td><td class="aws">Spot (up to ~90%)</td><td class="azure">Spot VMs</td><td class="gcp">Spot VMs / Preemptible</td></tr>
+          <tr><td><strong>Marketplace counts to commit?</strong></td><td>Partially (usually not discounted)</td><td>Yes (strong lever)</td><td>Yes</td></tr>
+          <tr><td><strong>Signature extra lever</strong></td><td>Enterprise Support &amp; migration credits</td><td>Azure Hybrid Benefit; bundling with M365</td><td>Aggressive migration credits &amp; co-funding</td></tr>
+          <tr><td><strong>Negotiation personality</strong></td><td>Disciplined, data-driven</td><td>Bundled, relationship-led</td><td>Hungry, flexible, fastest to discount</td></tr>
+          <tr><td><strong>Fiscal year-end (timing lever)</strong></td><td>Dec 31</td><td>June 30</td><td>Dec 31</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="coach"><span class="tag">Coach's takeaway</span><p style="margin:0">All three reward commitment and punish list-price complacency. AWS makes you earn it with committed spend; Azure hides levers in the wider Microsoft bundle; Google will move fastest on price to win or keep you. Your edge is knowing which string to pull with which vendor.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="4"><span>Previous</span><b>← 04 · Google Cloud</b></button>
+        <button data-goto="6"><span>Next</span><b>06 · Pricing &amp; Commitments →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 6 PRICING ============ -->
+    <section class="page" id="p6">
+      <div class="kicker">The money</div>
+      <h2 class="title">Pricing &amp; Commitments — how the discounts actually stack</h2>
+      <p class="lede">All three providers use the same core idea: <strong>trade certainty for a discount.</strong> The more you promise to spend, and the longer you promise it, the cheaper the unit price.</p>
+
+      <h3>The universal trade: commitment for discount</h3>
+      <div class="analogy"><span class="tag">Analogy: the gym membership</span><p style="margin:0">Pay-as-you-go day passes are expensive per visit (<strong>on-demand</strong>). A 1-year membership is cheaper per visit (<strong>1-year commitment</strong>). A 3-year membership is cheapest of all — but if you stop going, you've still paid. Cloud commitments are gym memberships for computers: great value <em>if you actually use them,</em> a wealth-destroyer if you over-commit.</p></div>
+
+      <h3>The discount stack — layers that combine</h3>
+      <div class="stack">
+        <div class="lvl"><div class="pct" style="color:#94a3b8">List</div><div class="bar"><i style="width:100%;background:#cbd5e1"></i></div><div>On-demand list price — the number nobody sophisticated pays</div></div>
+        <div class="lvl"><div class="pct" style="color:#6366f1">Layer 1</div><div class="bar"><i style="width:70%"></i></div><div>Commitment discounts (Savings Plans / RIs / CUDs) — up to ~70%+</div></div>
+        <div class="lvl"><div class="pct" style="color:#4f46e5">Layer 2</div><div class="bar"><i style="width:55%"></i></div><div>Enterprise deal (PPA / MACC / custom) — an extra % across the board</div></div>
+        <div class="lvl"><div class="pct" style="color:var(--green)">Layer 3</div><div class="bar"><i style="width:44%;background:linear-gradient(90deg,#16a34a,#4f46e5)"></i></div><div>Credits, incentives, hybrid benefits, right-sizing — the final squeeze</div></div>
+      </div>
+
+      <h3>Reserved vs. Savings Plans vs. Spot — the decision</h3>
+      <div class="scroller"><table>
+        <thead><tr><th>Vehicle</th><th>Discount</th><th>Flexibility</th><th>Capacity guarantee?</th><th>Use when…</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reserved Instances</strong></td><td>Up to ~72%</td><td>Low — tied to instance type/region</td><td>Yes</td><td>Workload is stable &amp; you need guaranteed capacity</td></tr>
+          <tr><td><strong>Savings Plans / CUDs</strong></td><td>Up to ~66–72%</td><td>High — applies across services</td><td>No</td><td>You want savings without locking to specific machines</td></tr>
+          <tr><td><strong>Spot / Preemptible</strong></td><td>Up to ~90%</td><td>N/A — can be reclaimed anytime</td><td>No</td><td>Work is interruptible (batch, testing, rendering)</td></tr>
+        </tbody>
+      </table></div>
+      <div class="warn"><span class="tag">Watch out: the coverage vs. commitment tension</span><p style="margin:0">Commit too little and you leave savings unclaimed. Commit too much and you pay for capacity you don't use. The art is finding the <strong>baseline</strong> — the floor of usage the client will <em>always</em> have — and committing that, while flexing the spiky part on-demand/spot.</p></div>
+
+      <h3>The metrics you'll live by (FinOps vocabulary)</h3>
+      <div class="grid g2">
+        <div class="card"><h4>Coverage</h4><p style="margin:0">The % of eligible spend covered by a commitment. Too low = wasted savings.</p></div>
+        <div class="card"><h4>Utilization</h4><p style="margin:0">The % of a commitment actually used. Too low = paying for nothing.</p></div>
+        <div class="card"><h4>Effective Savings Rate (ESR)</h4><p style="margin:0">The real, blended discount vs. list after all layers. The single best scorecard number.</p></div>
+        <div class="card"><h4>Waste / idle</h4><p style="margin:0">Resources running but unused — forgotten servers, oversized machines, orphaned storage.</p></div>
+      </div>
+
+      <div class="pagenav">
+        <button data-goto="5"><span>Previous</span><b>← 05 · Head-to-Head</b></button>
+        <button data-goto="7"><span>Next</span><b>07 · The Negotiation Playbook →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 7 NEGOTIATION ============ -->
+    <section class="page" id="p7">
+      <div class="kicker">The money</div>
+      <h2 class="title">The Negotiation Playbook</h2>
+      <p class="lede">Everything so far was preparation. This is the craft: how to actually move a hyperscaler off its opening number and build a deal that protects your client for years.</p>
+
+      <h3>The sources of leverage</h3>
+      <div class="grid g2">
+        <div class="card"><h4>1. Competition</h4><p style="margin:0">A credible alternative bid. The single strongest lever. Even the <em>threat</em> of moving workloads moves prices.</p></div>
+        <div class="card"><h4>2. Commitment size &amp; term</h4><p style="margin:0">More dollars and more years = more discount. Offer the <em>least</em> commitment that still unlocks the discount tier.</p></div>
+        <div class="card"><h4>3. Timing</h4><p style="margin:0">Vendor quarter/fiscal-year-end (AWS/GCP: Dec 31; Microsoft: Jun 30). Reps chasing quota get creative.</p></div>
+        <div class="card"><h4>4. Growth story</h4><p style="margin:0">Vendors discount deeply for accounts they believe will grow. A credible expansion roadmap is currency.</p></div>
+        <div class="card"><h4>5. Strategic value</h4><p style="margin:0">Reference logos, case studies, AI adoption, marquee workloads. Non-cash things the vendor wants from you.</p></div>
+        <div class="card"><h4>6. Information</h4><p style="margin:0">Knowing benchmarks — what comparable companies actually pay. Asymmetry is the vendor's default advantage; erase it.</p></div>
+      </div>
+
+      <h3>What to negotiate for (beyond the headline %)</h3>
+      <ul class="checklist">
+        <li><strong>Discount rate</strong> — the obvious one, across all services.</li>
+        <li><strong>Migration &amp; onboarding credits</strong> — free money to fund the move or expansion.</li>
+        <li><strong>Ramp / flexibility</strong> — a commitment that starts small and grows, matching real adoption.</li>
+        <li><strong>Egress fee waivers or caps</strong> — especially in competitive/migration deals.</li>
+        <li><strong>Price protection</strong> — caps on future list-price increases during the term.</li>
+        <li><strong>Support fees</strong> — negotiate or offset (esp. AWS Enterprise Support under a PPA).</li>
+        <li><strong>Shortfall / true-up terms</strong> — what happens if they under-consume. Critical downside protection.</li>
+        <li><strong>Co-investment / funding</strong> — especially Microsoft &amp; Google (POCs, training, partner-funded work).</li>
+        <li><strong>Exit &amp; flexibility clauses</strong> — the right to adjust if the business changes.</li>
+      </ul>
+
+      <h3>The deal cycle</h3>
+      <div class="timeline">
+        <div class="step"><span class="when">T minus 9–12 months</span><h4>Discovery &amp; baseline</h4><p style="margin:0">Pull usage data, map spend, find waste, right-size. Establish the true consumption baseline. <em>Never</em> start negotiating from a bloated bill.</p></div>
+        <div class="step"><span class="when">T minus 6–9 months</span><h4>Strategy &amp; benchmarking</h4><p style="margin:0">Set targets from benchmarks. Decide commitment size/term. Model scenarios. Identify leverage.</p></div>
+        <div class="step"><span class="when">T minus 3–6 months</span><h4>Create competitive tension</h4><p style="margin:0">Engage the alternative provider(s) for a real bid. Signal optionality to the incumbent. This is where the price actually moves.</p></div>
+        <div class="step"><span class="when">T minus 1–3 months</span><h4>Negotiate &amp; trade</h4><p style="margin:0">Work the whole envelope, not just %. Trade things the vendor values (references, term, growth) for things you value (rate, credits, flexibility).</p></div>
+        <div class="step"><span class="when">Close (aligned to vendor FY/QE)</span><h4>Sign &amp; lock protections</h4><p style="margin:0">Close near the vendor's quarter/year-end for max flexibility. Lock price protection and shortfall terms in writing.</p></div>
+        <div class="step"><span class="when">Ongoing</span><h4>Govern &amp; monitor</h4><p style="margin:0">Track utilization/coverage monthly so they hit the commitment and you're ready with data for the next renewal.</p></div>
+      </div>
+
+      <h3>Tactics that work</h3>
+      <div class="grid g2">
+        <div class="card"><h4>Anchor with data, not feelings</h4><p style="margin:0">"Comparable companies at our scale pay X" beats "this feels expensive." Benchmarks reset the vendor's anchor.</p></div>
+        <div class="card"><h4>Make them compete for real</h4><p style="margin:0">A bluff the rep sees through is worthless. Run a genuine alternative bid — architecture and pricing that could actually happen.</p></div>
+        <div class="card"><h4>Separate the levers</h4><p style="margin:0">Unbundle rate, credits, term, and support so the vendor can't disguise a giveback in one as a concession in another.</p></div>
+        <div class="card"><h4>Protect the downside</h4><p style="margin:0">Spend as much energy on shortfall/true-up and price-increase caps as on the headline discount.</p></div>
+      </div>
+
+      <div class="warn"><span class="tag">The classic traps</span>
+        <ul style="margin:8px 0 0">
+          <li><strong>Over-committing:</strong> signing to an optimistic growth number and owing the shortfall.</li>
+          <li><strong>Locking in waste:</strong> negotiating a big commitment on an un-optimized estate.</li>
+          <li><strong>Chasing the % only:</strong> winning a headline discount while giving back price protection or flexibility.</li>
+          <li><strong>Ignoring the ramp:</strong> committing full volume from day one when adoption takes months.</li>
+          <li><strong>Bundle blindness (Microsoft):</strong> a "great" Azure discount funded by an overpriced M365 renewal.</li>
+          <li><strong>No exit:</strong> multi-year lock-in with no flexibility if the business contracts or pivots.</li>
+        </ul>
+      </div>
+
+      <div class="coach"><span class="tag">Coach's closing note on negotiation</span><p style="margin:0">The best cloud negotiators aren't the most aggressive — they're the <strong>best prepared</strong>. Ninety percent of the win is done before you're in the room: clean usage data, real benchmarks, a credible alternative, and the right timing. Walk in with those four things and the discount almost negotiates itself.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="6"><span>Previous</span><b>← 06 · Pricing &amp; Commitments</b></button>
+        <button data-goto="8"><span>Next</span><b>08 · Infrastructure Sourcing →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 8 SOURCING ============ -->
+    <section class="page" id="p8">
+      <div class="kicker">The money</div>
+      <h2 class="title">Infrastructure Sourcing — beyond the hyperscalers</h2>
+      <p class="lede">Big clients also buy data centers, network, hardware, and managed services. A principal sees the whole estate — and knows the disciplined process to source any of it.</p>
+
+      <h3>The infrastructure sourcing landscape</h3>
+      <div class="grid g2">
+        <div class="card"><h4>☁️ Public cloud (hyperscalers)</h4><p style="margin:0">AWS, Azure, GCP — covered above. Usually the biggest and fastest-growing category.</p></div>
+        <div class="card"><h4>🏢 Colocation &amp; data centers</h4><p style="margin:0">Renting space, power, and cooling in someone's data center for your own hardware. Priced by rack space and power (per kW).</p></div>
+        <div class="card"><h4>📡 Network &amp; connectivity</h4><p style="margin:0">Circuits, bandwidth, private links to clouds (Direct Connect / ExpressRoute), SD-WAN, telco contracts. Often overpaid and under-managed.</p></div>
+        <div class="card"><h4>🖥 Hardware &amp; OEM</h4><p style="margin:0">Servers, storage, network gear (Dell, HPE, Cisco). Volume purchasing, leasing vs. buying, refresh cycles, maintenance contracts.</p></div>
+        <div class="card"><h4>🔧 Managed &amp; professional services</h4><p style="margin:0">MSPs, systems integrators, and consultancies who run or migrate infrastructure. Rate cards, SOWs, outcome-based deals.</p></div>
+        <div class="card"><h4>💳 Software &amp; SaaS</h4><p style="margin:0">Licensing (VMware, databases, observability) and SaaS tools that ride on the infrastructure — frequently the same renewal window.</p></div>
+      </div>
+
+      <h3>Cloud vs. colo vs. on-prem</h3>
+      <div class="scroller"><table>
+        <thead><tr><th></th><th>Public cloud</th><th>Colocation</th><th>On-premises</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Upfront cost</strong></td><td>Low (pay-as-you-go)</td><td>Medium (buy own gear)</td><td>High (buy gear + build)</td></tr>
+          <tr><td><strong>Scales instantly?</strong></td><td>Yes</td><td>Slowly</td><td>Slowly</td></tr>
+          <tr><td><strong>Best for</strong></td><td>Variable, spiky, new workloads</td><td>Steady, heavy, predictable loads</td><td>Regulatory / total-control needs</td></tr>
+          <tr><td><strong>Cost at huge steady scale</strong></td><td>Can get expensive</td><td>Often cheaper</td><td>Cheapest if fully utilized</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>The sourcing lifecycle</h3>
+      <div class="timeline">
+        <div class="step"><span class="when">1</span><h4>Requirements &amp; baseline</h4><p style="margin:0">What does the client actually need, and what do they spend/use today? Clean data first, always.</p></div>
+        <div class="step"><span class="when">2</span><h4>Market &amp; benchmark</h4><p style="margin:0">Who are the viable providers? What's a fair price? Gather benchmarks and comps.</p></div>
+        <div class="step"><span class="when">3</span><h4>Go to market (RFP/RFQ)</h4><p style="margin:0">Structure a clear ask, invite competitors, and force apples-to-apples comparison. Competition = leverage.</p></div>
+        <div class="step"><span class="when">4</span><h4>Evaluate on TCO</h4><p style="margin:0">Compare <em>total cost of ownership</em>, not sticker price — include migration, egress, support, staff, exit costs.</p></div>
+        <div class="step"><span class="when">5</span><h4>Negotiate &amp; contract</h4><p style="margin:0">Rate, term, SLAs, protections, exit rights. Same playbook as Section 07.</p></div>
+        <div class="step"><span class="when">6</span><h4>Govern &amp; optimize</h4><p style="margin:0">Manage consumption, hold vendors to SLAs, and prep data for the next cycle. Sourcing is a loop, not a line.</p></div>
+      </div>
+
+      <div class="warn"><span class="tag">Watch out: the sticker-price trap</span><p style="margin:0">The cheapest quote is rarely the cheapest deal. <strong>TCO</strong> counts everything: the price, plus migration cost, egress/data-transfer, support fees, the staff needed to run it, integration, training, and the cost to leave. Always compare on TCO over the full term.</p></div>
+
+      <h3>Key contract concepts</h3>
+      <div class="grid g2">
+        <div class="card"><h4>SLA (Service Level Agreement)</h4><p style="margin:0">The uptime/performance the vendor guarantees and the penalties/credits if they miss.</p></div>
+        <div class="card"><h4>MSA &amp; SOW</h4><p style="margin:0">Master Service Agreement (overarching legal terms) plus Statements of Work (specific deliverables/pricing).</p></div>
+        <div class="card"><h4>True-up / true-down</h4><p style="margin:0">Mechanisms to adjust committed volume as real usage changes. Fight for true-down rights.</p></div>
+        <div class="card"><h4>Lock-in &amp; exit</h4><p style="margin:0">How hard/expensive it is to leave — egress fees, proprietary services, data portability. Always negotiate an exit.</p></div>
+      </div>
+
+      <div class="pagenav">
+        <button data-goto="7"><span>Previous</span><b>← 07 · Negotiation Playbook</b></button>
+        <button data-goto="9"><span>Next</span><b>09 · Glossary &amp; Cheat Sheet →</b></button>
+      </div>
+    </section>
+
+    <!-- ============ 9 GLOSSARY ============ -->
+    <section class="page" id="p9">
+      <div class="kicker">Reference</div>
+      <h2 class="title">Glossary &amp; Cheat Sheet</h2>
+      <p class="lede">The acronyms and terms you'll hear daily. Skim it now; come back whenever a meeting throws a new one at you.</p>
+
+      <h3>The 60-second pre-meeting cheat sheet</h3>
+      <div class="grid g3">
+        <div class="card"><h4 style="color:var(--aws-d)">AWS</h4><p style="margin:0"><strong>Deal:</strong> PPA (was EDP)<br><strong>Commit:</strong> Savings Plans / RIs<br><strong>FY end:</strong> Dec 31<br><strong>Style:</strong> disciplined, data-led</p></div>
+        <div class="card"><h4 style="color:var(--azure-d)">Azure</h4><p style="margin:0"><strong>Deal:</strong> MACC (EA / MCA-E)<br><strong>Commit:</strong> Reservations / SP<br><strong>FY end:</strong> Jun 30<br><strong>Style:</strong> bundled with M365</p></div>
+        <div class="card"><h4 style="color:var(--gcp-d)">Google Cloud</h4><p style="margin:0"><strong>Deal:</strong> Custom agreement<br><strong>Commit:</strong> CUDs + Sustained Use<br><strong>FY end:</strong> Dec 31<br><strong>Style:</strong> hungry, flexible</p></div>
+      </div>
+
+      <h3>Full glossary</h3>
+      <div class="glossary"><dl>
+        <dt>Availability Zone (AZ)</dt><dd>An isolated data center within a Region, with independent power/cooling for fault tolerance.</dd>
+        <dt>Colocation (colo)</dt><dd>Renting space, power, and cooling in a third-party data center to house your own hardware.</dd>
+        <dt>Committed Use Discount (CUD)</dt><dd>Google Cloud's commitment discount — spend-based or resource-based, 1 or 3 years.</dd>
+        <dt>Coverage</dt><dd>The share of eligible usage that a commitment discount actually applies to.</dd>
+        <dt>Effective Savings Rate (ESR)</dt><dd>The real blended discount off list price after all discounts — the best single scorecard.</dd>
+        <dt>Egress</dt><dd>Data transferred <em>out</em> of a cloud — usually billed (ingress is typically free). A source of lock-in.</dd>
+        <dt>Enterprise Agreement (EA)</dt><dd>Microsoft's classic 3-year volume licensing contract; Azure is a separate enrollment within it.</dd>
+        <dt>Enterprise Discount Program (EDP)</dt><dd>AWS's former name for its committed-spend enterprise discount — now folded under "PPA."</dd>
+        <dt>FinOps</dt><dd>Cloud Financial Operations — the practice of managing cloud cost across finance, engineering, and procurement.</dd>
+        <dt>Hyperscaler</dt><dd>A massive-scale cloud provider — AWS, Azure, Google Cloud.</dd>
+        <dt>IaaS / PaaS / SaaS</dt><dd>Infrastructure / Platform / Software as a Service — the three levels of "how much they manage for you."</dd>
+        <dt>MACC</dt><dd>Microsoft Azure Consumption Commitment — a promise to spend a set total on Azure over a term for discounts and leverage.</dd>
+        <dt>MCA-E</dt><dd>Microsoft Customer Agreement (Enterprise) — the newer, evergreen contract Microsoft steers large Azure buyers toward.</dd>
+        <dt>MSA / SOW</dt><dd>Master Service Agreement (overarching terms) / Statement of Work (specific deliverables and pricing).</dd>
+        <dt>On-Demand</dt><dd>Paying full list price for cloud with no commitment — the most expensive per-unit rate.</dd>
+        <dt>On-premises (on-prem)</dt><dd>Infrastructure the client owns and runs in its own facilities.</dd>
+        <dt>PPA (Private Pricing Agreement)</dt><dd>AWS's flagship custom enterprise contract — committed spend for across-the-board discounts.</dd>
+        <dt>Region</dt><dd>A geographic cluster of data centers; matters for data-residency law and pricing.</dd>
+        <dt>Repatriation</dt><dd>Moving workloads <em>off</em> public cloud back to colo/on-prem, usually for cost at steady scale.</dd>
+        <dt>Reserved Instance (RI)</dt><dd>A 1–3 year commitment to specific compute for a discount; can guarantee capacity.</dd>
+        <dt>Right-sizing</dt><dd>Matching resource size to actual need — eliminating oversized/idle capacity before committing.</dd>
+        <dt>Savings Plan</dt><dd>A flexible commitment to $X/hour of compute for 1–3 years; applies across services.</dd>
+        <dt>Shared Responsibility Model</dt><dd>The split where the provider secures the infrastructure and the customer secures their data/config.</dd>
+        <dt>SLA (Service Level Agreement)</dt><dd>The guaranteed uptime/performance and the credits owed if the vendor misses it.</dd>
+        <dt>Spot / Preemptible</dt><dd>Deeply discounted spare capacity that can be reclaimed at short notice; for interruptible work.</dd>
+        <dt>Sustained Use Discount</dt><dd>Google Cloud's automatic discount for running resources heavily in a month — no commitment needed.</dd>
+        <dt>TCO (Total Cost of Ownership)</dt><dd>The full cost of a choice — price plus migration, egress, support, staffing, and exit.</dd>
+        <dt>True-up / true-down</dt><dd>Contract mechanisms to adjust committed volumes up or down as real usage changes.</dd>
+        <dt>Utilization</dt><dd>The share of a purchased commitment that's actually being used. Low utilization = wasted money.</dd>
+      </dl></div>
+
+      <div class="coach"><span class="tag">Final word from your coach</span><p style="margin:0">You're not expected to know all of this on day one — nobody does. Master the four buckets, the discount stack, and the sources of leverage first; the rest fills in through real deals. Come back to this guide before every negotiation, and you'll be the most prepared person in the room.</p></div>
+
+      <div class="pagenav">
+        <button data-goto="8"><span>Previous</span><b>← 08 · Infrastructure Sourcing</b></button>
+        <button data-goto="0"><span>Back to</span><b>00 · Start Here ↑</b></button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  var pages = document.querySelectorAll('section.page');
+  var btns = document.querySelectorAll('nav.side button[data-p]');
+  var labels = ['00 · Start Here','01 · Cloud 101','02 · AWS Deep Dive','03 · Azure Deep Dive','04 · Google Cloud','05 · Head-to-Head','06 · Pricing & Commitments','07 · Negotiation Playbook','08 · Infrastructure Sourcing','09 · Glossary & Cheat Sheet'];
+
+  var msel = document.getElementById('msel');
+  labels.forEach(function(l,i){var o=document.createElement('option');o.value=i;o.textContent=l;msel.appendChild(o);});
+  msel.addEventListener('change',function(){go(parseInt(this.value));});
+
+  function go(n){
+    pages.forEach(function(p){p.classList.remove('show');});
+    document.getElementById('p'+n).classList.add('show');
+    btns.forEach(function(b){b.classList.toggle('active', b.getAttribute('data-p')==String(n));});
+    if(msel) msel.value = n;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){go(parseInt(b.getAttribute('data-p')));});});
+  document.querySelectorAll('button[data-goto]').forEach(function(b){
+    b.addEventListener('click',function(){go(parseInt(b.getAttribute('data-goto')));});
+  });
+</script>
+</body>
+</html>

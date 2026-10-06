@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Proxima Sizing Tools</title>
+  <link rel="stylesheet" href="../styles.css?v=20261001f" />
+</head>
+<body>
+  <header>
+    <div class="header-brand"><span class="brand-pill">Proxima</span>
+      <div><div class="header-title">Engagement Sizing</div><div class="header-sub">Five offerings, from rapid cash release to structural margin and governance change</div></div></div>
+  </header>
+  <div class="container">
+    <div class="hero">
+      <div class="sku-badge">Opportunity sizing</div>
+      <h1>Packaging the opportunities into five Proxima offerings</h1>
+      <p>Each offering can be positioned standalone or sequenced. Answer a few questions to size the opportunity, the Proxima team and the client engineering effort. Answers carry across tools on this device.</p>
+    </div>
+    <div class="offer-grid" id="grid"></div>
+    <p class="note-line" style="margin-top:28px">Looking for the baseline? <a href="https://tools.briansavesbillions.com/cloud-baseline-planner/">Cloud Baseline Renewal Roadmap</a>. Commercial ranges are drawn from the Proxima hyperscaler negotiation planners. Planning heuristics only.</p>
+  </div>
+  <script src="../engine.js?v=20261001f"></script>
+  <script>
+    document.getElementById('grid').innerHTML = PX.OFFERINGS.map(function (o, i) {
+      return '<div class="offer-card"><span class="offer-tag">Offering ' + (i + 1) + ' · ' + PX.esc(o.months) + '</span>' +
+        '<h3><a class="offer-link" href="../' + o.slug + '/">' + PX.esc(o.name) + '</a></h3><p>' + PX.esc(o.blurb) + '</p>' +
+        '<span class="offer-fit">Fit: ' + PX.esc(o.fit) + '</span>' +
+        '<div class="offer-foot"><a class="offer-open" href="../' + o.slug + '/">Open tool →</a>' +
+        '<a class="hdr-link" href="../' + o.slug + '/?config">⚙ Configure</a></div></div>';
+    }).join('');
+  </script>
+</body>
+</html>

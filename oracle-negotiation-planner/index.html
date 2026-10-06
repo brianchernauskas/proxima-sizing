@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oracle Renewal Negotiation Planner</title>
+  <link rel="stylesheet" href="src/styles.css?v=20260916p" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="logo">
+          <svg width="84" height="22" viewBox="0 0 84 22" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="0" y="18" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-weight="700" fill="#ffffff" letter-spacing="-0.3">Proxima</text></svg>
+          <span class="logo-divider"></span>
+          <span>Oracle Negotiation Planner</span>
+        </div>
+        <div class="header-taglines">
+          <div class="header-tagline">World-class renewal strategy, tailored to your situation</div>
+          <div class="header-tagline">Intended for Proxima use only, please contact Brian Chernauskas with questions</div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- Step indicator -->
+      <div class="step-nav" id="step-nav">
+        <div class="step-item active" data-step="1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Estate &amp; Timing</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Footprint &amp; Compliance</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Leverage &amp; M&amp;A</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="4">
+          <div class="step-circle">4</div>
+          <div class="step-label">Your Strategy</div>
+        </div>
+      </div>
+
+      <!-- ══ Step 1: Estate & Timing ══ -->
+      <section class="step-panel active" id="step-1">
+        <div class="panel-header">
+          <h2>Oracle Estate &amp; Timing</h2>
+          <p>Most Oracle spend is annual support on licenses bought years ago, and it only goes up. What you can change depends on the event in front of you: a support renewal, a new purchase, a ULA ending, a cloud or SaaS commitment, or an audit. Oracle's fiscal year ends May 31.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Size</label>
+            <div class="radio-cards" id="company-size">
+              <div class="radio-card" data-value="smb">
+                <div class="rc-icon">🏢</div>
+                <div class="rc-title">SMB</div>
+                <div class="rc-desc">&lt;1,000 employees</div>
+              </div>
+              <div class="radio-card" data-value="midmarket">
+                <div class="rc-icon">🏬</div>
+                <div class="rc-title">Mid-Market</div>
+                <div class="rc-desc">1,000–4,999 employees</div>
+              </div>
+              <div class="radio-card" data-value="enterprise">
+                <div class="rc-icon">🏛️</div>
+                <div class="rc-title">Enterprise</div>
+                <div class="rc-desc">5,000–24,999</div>
+              </div>
+              <div class="radio-card" data-value="global">
+                <div class="rc-icon">🌐</div>
+                <div class="rc-title">Global Enterprise</div>
+                <div class="rc-desc">25,000+ employees</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="annual-spend">Annual Oracle Spend (support + subscriptions)</label>
+              <select id="annual-spend">
+                <option value="">Select spend…</option>
+                <option value="under100k">Under $100K</option>
+                <option value="100k-250k">$100K–$250K</option>
+                <option value="250k-500k">$250K–$500K</option>
+                <option value="500k-1m">$500K–$1M</option>
+                <option value="1m-2500k">$1M–$2.5M</option>
+                <option value="2500k-5m">$2.5M–$5M</option>
+                <option value="5m-10m">$5M–$10M</option>
+                <option value="10mplus">$10M+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="primary-contract">Primary Contract Structure</label>
+              <select id="primary-contract">
+                <option value="">Select…</option>
+                <option value="perpetual">Perpetual licenses + annual support</option>
+                <option value="ula">Unlimited License Agreement (ULA)</option>
+                <option value="pula">Perpetual ULA (PULA)</option>
+                <option value="saas">Fusion / NetSuite SaaS subscription</option>
+                <option value="oci">OCI Universal Credits commitment</option>
+                <option value="mixed">Mix of on-prem support and cloud subscriptions</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="event-type">Event You Are Negotiating</label>
+              <select id="event-type">
+                <option value="">Select…</option>
+                <option value="support">Annual support renewal</option>
+                <option value="purchase">New license or subscription purchase</option>
+                <option value="ula-end">ULA ending — certify or renew</option>
+                <option value="saas-renewal">SaaS subscription renewal</option>
+                <option value="cloud">OCI or multicloud commitment</option>
+                <option value="java">Java SE subscription</option>
+                <option value="audit">Audit settlement</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="audit-status">Audit &amp; Compliance Contact</label>
+              <select id="audit-status">
+                <option value="">Select…</option>
+                <option value="none">No recent contact</option>
+                <option value="soft">Soft outreach — "license review" or Java emails</option>
+                <option value="notice">Formal audit notice received</option>
+                <option value="inprogress">Audit underway — scripts or data requested</option>
+                <option value="findings">Findings or compliance claim delivered</option>
+                <option value="closed">Audit closed within the last 2 years</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="renewal-month">Renewal / Decision Month</label>
+              <select id="renewal-month">
+                <option value="">Select month…</option>
+                <option value="6">June — Oracle Q1 opens</option>
+                <option value="7">July</option>
+                <option value="8">August — Q1 end</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November — Q2 end</option>
+                <option value="12">December</option>
+                <option value="1">January</option>
+                <option value="2">February — Q3 end</option>
+                <option value="3">March — Q4 opens</option>
+                <option value="4">April</option>
+                <option value="5">May — Oracle fiscal year end</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="renewal-timeline">Time Until the Event</label>
+              <select id="renewal-timeline">
+                <option value="">Select…</option>
+                <option value="within-1mo">Less than 30 days</option>
+                <option value="1-3mo">1–3 months</option>
+                <option value="3-6mo">3–6 months</option>
+                <option value="6-12mo">6–12 months</option>
+                <option value="12plusmo">More than 12 months</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="price-protection">Current Price Protection</label>
+              <select id="price-protection">
+                <option value="">Select…</option>
+                <option value="none">None — support rises at Oracle's discretion</option>
+                <option value="capped">Written cap on support or renewal increases</option>
+                <option value="expiring">Cap or price hold ends at this renewal</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="estate-direction">Direction for the Oracle Estate</label>
+              <select id="estate-direction">
+                <option value="">Select…</option>
+                <option value="reduce">Reduce — retire or migrate workloads</option>
+                <option value="hold">Hold — keep what we have, pay less</option>
+                <option value="grow">Grow — more Oracle products or capacity</option>
+                <option value="cloud">Move Oracle workloads to cloud</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(1, this)">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="showSample()" style="margin-right:auto">👁 View Sample Output</button><button class="btn-primary" onclick="nextStep(1)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 2: Footprint & Compliance ══ -->
+      <section class="step-panel" id="step-2">
+        <div class="panel-header">
+          <h2>Footprint, Support &amp; Compliance</h2>
+          <p>Oracle's leverage comes from compliance exposure as much as from price. Virtualization, database options you didn't know you'd enabled, and Java counted per employee all create claims before any renewal conversation starts.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Oracle Products Owned</label>
+            <div class="use-case-grid" id="products">
+              <div class="use-case-card" data-value="db"><div class="uc-icon">🗄️</div><div class="uc-title">Database Enterprise Edition</div></div>
+              <div class="use-case-card" data-value="dboptions"><div class="uc-icon">🧩</div><div class="uc-title">DB Options &amp; Packs (RAC, Partitioning, Diagnostics)</div></div>
+              <div class="use-case-card" data-value="middleware"><div class="uc-icon">⚙️</div><div class="uc-title">WebLogic / Fusion Middleware</div></div>
+              <div class="use-case-card" data-value="java"><div class="uc-icon">☕</div><div class="uc-title">Java SE</div></div>
+              <div class="use-case-card" data-value="ebs"><div class="uc-icon">📒</div><div class="uc-title">E-Business Suite</div></div>
+              <div class="use-case-card" data-value="peoplesoft"><div class="uc-icon">👥</div><div class="uc-title">PeopleSoft</div></div>
+              <div class="use-case-card" data-value="jde"><div class="uc-icon">🏭</div><div class="uc-title">JD Edwards</div></div>
+              <div class="use-case-card" data-value="siebel"><div class="uc-icon">📇</div><div class="uc-title">Siebel / Hyperion</div></div>
+              <div class="use-case-card" data-value="fusion"><div class="uc-icon">☁️</div><div class="uc-title">Fusion Cloud ERP / HCM / SCM</div></div>
+              <div class="use-case-card" data-value="netsuite"><div class="uc-icon">📊</div><div class="uc-title">NetSuite</div></div>
+              <div class="use-case-card" data-value="oci"><div class="uc-icon">🖥️</div><div class="uc-title">OCI</div></div>
+              <div class="use-case-card" data-value="exadata"><div class="uc-icon">🧱</div><div class="uc-title">Exadata / Engineered Systems</div></div>
+              <div class="use-case-card" data-value="multicloud"><div class="uc-icon">🔗</div><div class="uc-title">Oracle Database@AWS / Azure / Google Cloud</div></div>
+              <div class="use-case-card" data-value="mysql"><div class="uc-icon">🐬</div><div class="uc-title">MySQL Enterprise</div></div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="deployment">Where Oracle Software Runs</label>
+              <select id="deployment">
+                <option value="">Select…</option>
+                <option value="vmware">VMware or other soft-partitioned virtualization</option>
+                <option value="physical">Physical or Oracle-approved hard partitioning</option>
+                <option value="publiccloud">AWS / Azure / Google Cloud (BYOL)</option>
+                <option value="oci">Mostly OCI or Oracle-managed cloud</option>
+                <option value="mixed">A mix of the above</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="shelfware">Licenses on Support but Not Deployed</label>
+              <select id="shelfware">
+                <option value="">Select…</option>
+                <option value="significant">Significant — over 25% of support spend</option>
+                <option value="some">Some — 10–25%</option>
+                <option value="little">Little — under 10%</option>
+                <option value="unknown">Never reconciled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="java-position">Java Position</label>
+              <select id="java-position">
+                <option value="">Select…</option>
+                <option value="none-used">Oracle JDK in use, no subscription</option>
+                <option value="legacy">Legacy Named User Plus / Processor Java subscription</option>
+                <option value="universal">Java SE Universal Subscription (per employee)</option>
+                <option value="openjdk">Migrated to OpenJDK builds</option>
+                <option value="unknown">Don't know what's installed</option>
+                <option value="na">Not applicable</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="support-stream">Support Model</label>
+              <select id="support-stream">
+                <option value="">Select…</option>
+                <option value="premier">Oracle Premier Support on everything</option>
+                <option value="sustaining">Some products on Extended or Sustaining Support</option>
+                <option value="considering">Considering third-party support</option>
+                <option value="thirdparty">Already on third-party support for part of the estate</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="compliance-confidence">Confidence in License Compliance</label>
+              <select id="compliance-confidence">
+                <option value="">Select…</option>
+                <option value="high">High — deployments reconciled to entitlements recently</option>
+                <option value="moderate">Moderate — reviewed, some gaps likely</option>
+                <option value="low">Low — known exposure</option>
+                <option value="unknown">Never assessed</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ula-position">ULA Deployment Position</label>
+              <select id="ula-position">
+                <option value="">Select…</option>
+                <option value="high">Deployed well beyond pre-ULA entitlements</option>
+                <option value="modest">Modest growth since the ULA started</option>
+                <option value="low">Little growth — paid for unlimited, used little</option>
+                <option value="unknown">Not tracked</option>
+                <option value="na">Not applicable — no ULA</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Known Cost Pressures</label>
+            <div class="checkbox-group" id="cost-pressures">
+              <label class="checkbox-item"><input type="checkbox" value="uplift" /> Annual support increases on every renewal</label>
+              <label class="checkbox-item"><input type="checkbox" value="repricing" /> Blocked from dropping licenses by repricing rules</label>
+              <label class="checkbox-item"><input type="checkbox" value="options" /> Database options or packs enabled without licenses</label>
+              <label class="checkbox-item"><input type="checkbox" value="javametric" /> Java cost jump from the per-employee metric</label>
+              <label class="checkbox-item"><input type="checkbox" value="csis" /> Many support contracts (CSIs) on different dates</label>
+              <label class="checkbox-item"><input type="checkbox" value="credits" /> Unused OCI credits or SaaS subscriptions</label>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(2, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
+          <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 3: Leverage & M&A ══ -->
+      <section class="step-panel" id="step-3">
+        <div class="panel-header">
+          <h2>Leverage, Context &amp; M&amp;A</h2>
+          <p>Oracle prices against switching cost. A workload you could credibly move, a third-party support quote, or a cloud commitment Oracle wants can change what it is willing to give. So can a corporate transaction that changes which entities use Oracle.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Competitive Alternative</label>
+            <div class="radio-cards" id="alternative">
+              <div class="radio-card" data-value="none">
+                <div class="rc-icon">🔒</div>
+                <div class="rc-title">None</div>
+                <div class="rc-desc">Oracle is the only option</div>
+              </div>
+              <div class="radio-card" data-value="theoretical">
+                <div class="rc-icon">💭</div>
+                <div class="rc-title">Theoretical</div>
+                <div class="rc-desc">Alternatives exist, none evaluated</div>
+              </div>
+              <div class="radio-card" data-value="evaluating">
+                <div class="rc-icon">🔍</div>
+                <div class="rc-title">Evaluating</div>
+                <div class="rc-desc">Migration plan or quote underway</div>
+              </div>
+              <div class="radio-card" data-value="dual">
+                <div class="rc-icon">⚖️</div>
+                <div class="rc-title">Already Moving</div>
+                <div class="rc-desc">Workloads already migrating off</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="alternative-vendor">Most Credible Alternative</label>
+              <select id="alternative-vendor">
+                <option value="">Select…</option>
+                <option value="postgres">PostgreSQL (incl. Aurora, AlloyDB, Azure Database)</option>
+                <option value="sqlserver">Microsoft SQL Server</option>
+                <option value="thirdparty">Third-party support (Rimini Street, Spinnaker)</option>
+                <option value="openjdk">OpenJDK builds (Azul, Corretto, Red Hat, Microsoft)</option>
+                <option value="apps">SAP / Workday / Microsoft Dynamics for applications</option>
+                <option value="hyperscaler">AWS / Azure / Google Cloud instead of OCI</option>
+                <option value="none">No credible alternative</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="relationship-quality">Oracle Account Team Relationship</label>
+              <select id="relationship-quality">
+                <option value="">Select…</option>
+                <option value="none">No stable rep — frequent turnover</option>
+                <option value="poor">Weak / adversarial</option>
+                <option value="moderate">Moderate — occasional contact</option>
+                <option value="strong">Strong — regular cadence</option>
+                <option value="strategic">Strategic — executive sponsorship</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="previous-negotiation">Prior Negotiation Experience</label>
+              <select id="previous-negotiation">
+                <option value="">Select…</option>
+                <option value="none">Never negotiated — paid support invoices as issued</option>
+                <option value="basic">Basic — asked for minor concessions</option>
+                <option value="moderate">Moderate — negotiated a purchase or audit before</option>
+                <option value="experienced">Experienced — multiple full cycles incl. audits</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="internal-champion">Internal Decision Owner</label>
+              <select id="internal-champion">
+                <option value="">Select…</option>
+                <option value="cio">CIO / CTO</option>
+                <option value="cfo">CFO / Finance</option>
+                <option value="procurement">Procurement / Vendor Management</option>
+                <option value="sam">Software Asset Management</option>
+                <option value="infra">Infrastructure / DBA lead</option>
+                <option value="none">No clear owner</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Change Events in the Coming Term</label>
+            <div class="checkbox-group" id="change-events">
+              <label class="checkbox-item"><input type="checkbox" value="expansion" /> Planned expansion — new Oracle products or capacity</label>
+              <label class="checkbox-item"><input type="checkbox" value="hyperscaler" /> Moving Oracle workloads to AWS, Azure or Google Cloud</label>
+              <label class="checkbox-item"><input type="checkbox" value="appsmigration" /> Replacing EBS, PeopleSoft or JDE (with Fusion or another vendor)</label>
+              <label class="checkbox-item"><input type="checkbox" value="dcexit" /> Data center exit or hardware refresh</label>
+              <label class="checkbox-item"><input type="checkbox" value="ocipush" /> Oracle proposing OCI, Support Rewards or a support conversion</label>
+              <label class="checkbox-item"><input type="checkbox" value="ulapitch" /> Oracle proposing a new or renewed ULA</label>
+            </div>
+          </div>
+
+          <!-- M&A module -->
+          <label class="mna-toggle" id="mna-toggle">
+            <input type="checkbox" id="mna-enabled" />
+            <div>
+              <div class="mna-toggle-title">🔀 Include M&amp;A implications</div>
+              <div class="mna-toggle-desc">Turn on if an acquisition, merger, sale, or divestiture will change which entities use Oracle during this term. Adds an M&amp;A section covering license assignment, ULA entity scope, support contract consolidation, and carve-outs.</div>
+            </div>
+          </label>
+
+          <div class="mna-panel" id="mna-panel" hidden>
+            <div class="form-group">
+              <label>Transaction Type</label>
+              <div class="radio-cards" id="mna-type">
+                <div class="radio-card" data-value="acquiring">
+                  <div class="rc-icon">➕</div>
+                  <div class="rc-title">Acquiring</div>
+                  <div class="rc-desc">We are buying a company</div>
+                </div>
+                <div class="radio-card" data-value="acquired">
+                  <div class="rc-icon">🤝</div>
+                  <div class="rc-title">Being Acquired</div>
+                  <div class="rc-desc">We are the target</div>
+                </div>
+                <div class="radio-card" data-value="merger">
+                  <div class="rc-icon">🔗</div>
+                  <div class="rc-title">Merger</div>
+                  <div class="rc-desc">Combining with a peer</div>
+                </div>
+                <div class="radio-card" data-value="divesting">
+                  <div class="rc-icon">✂️</div>
+                  <div class="rc-title">Divesting</div>
+                  <div class="rc-desc">Selling or spinning off a unit</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="mna-stage">Deal Stage</label>
+                <select id="mna-stage">
+                  <option value="">Select…</option>
+                  <option value="confidential">Confidential — not yet announced</option>
+                  <option value="announced">Announced — not yet closed</option>
+                  <option value="integrating">Closed — integration underway</option>
+                  <option value="settled">Closed more than 12 months ago</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="mna-user-impact">Change in Oracle Usage</label>
+                <select id="mna-user-impact">
+                  <option value="">Select…</option>
+                  <option value="under10">Under 10%</option>
+                  <option value="10-25">10–25%</option>
+                  <option value="25-50">25–50%</option>
+                  <option value="over50">Over 50%</option>
+                  <option value="unknown">Don't know yet</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="mna-counterparty">Other Party's Oracle Footprint</label>
+                <select id="mna-counterparty">
+                  <option value="">Select…</option>
+                  <option value="none">No Oracle contracts</option>
+                  <option value="perpetual">Perpetual licenses + support</option>
+                  <option value="ula">Its own ULA</option>
+                  <option value="cloud">SaaS or OCI subscriptions</option>
+                  <option value="unknown">Don't know yet</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="mna-assignment">Assignment / Entity Definition</label>
+                <select id="mna-assignment">
+                  <option value="">Select…</option>
+                  <option value="consent">Assignment requires Oracle's consent</option>
+                  <option value="permitted">Agreement covers affiliates or successors</option>
+                  <option value="unknown">Haven't reviewed it</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Integration Complications</label>
+              <div class="checkbox-group" id="mna-complications">
+                <label class="checkbox-item"><input type="checkbox" value="ulascope" /> ULA lists named legal entities only</label>
+                <label class="checkbox-item"><input type="checkbox" value="shared" /> Shared databases or applications serve both entities</label>
+                <label class="checkbox-item"><input type="checkbox" value="csis" /> Support contracts (CSIs) on different dates</label>
+                <label class="checkbox-item"><input type="checkbox" value="tsa" /> Carved-out entity needs a transition period (TSA)</label>
+                <label class="checkbox-item"><input type="checkbox" value="java" /> Employee count changes the Java subscription</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(3, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(3)">← Back</button>
+          <button class="btn-primary" onclick="generateStrategy()">Generate My Strategy →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 4: Output ══ -->
+      <section class="step-panel" id="step-4">
+        <div id="strategy-output"></div>
+        <div class="step-actions" style="margin-top:2rem;">
+          <button class="btn-secondary" onclick="prevStep(4)">← Edit Inputs</button>
+          <button class="btn-primary" onclick="printStrategy()">🖨️ Export Strategy</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>This tool provides strategic guidance based on publicly reported Oracle contracting practices and procurement benchmarks. Oracle does not publish negotiated discount or support increase data, so every percentage here is a directional estimate, not a vendor-confirmed figure. Actual outcomes depend on contract structure, compliance position, timing within Oracle's fiscal year, and your credible alternatives. Nothing here is legal advice on audits, license assignment, or M&amp;A. Have counsel read the actual clauses.</p>
+    </footer>
+  </div>
+
+  <script src="src/app.js?v=20260916p"></script>
+</body>
+</html>

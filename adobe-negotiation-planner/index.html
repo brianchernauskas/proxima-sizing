@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adobe Renewal Negotiation Planner</title>
+  <link rel="stylesheet" href="src/styles.css?v=20260929a" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="logo">
+          <svg width="84" height="22" viewBox="0 0 84 22" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="0" y="18" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-weight="700" fill="#ffffff" letter-spacing="-0.3">Proxima</text></svg>
+          <span class="logo-divider"></span>
+          <span>Adobe Negotiation Planner</span>
+        </div>
+        <div class="header-taglines">
+          <div class="header-tagline">World-class renewal strategy, tailored to your situation</div>
+          <div class="header-tagline">Intended for Proxima use only, please contact Brian Chernauskas with questions</div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- Step indicator -->
+      <div class="step-nav" id="step-nav">
+        <div class="step-item active" data-step="1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Agreement &amp; Timing</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Products &amp; Usage</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Leverage &amp; M&amp;A</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="4">
+          <div class="step-circle">4</div>
+          <div class="step-label">Your Strategy</div>
+        </div>
+      </div>
+
+      <!-- ══ Step 1: Agreement & Timing ══ -->
+      <section class="step-panel active" id="step-1">
+        <div class="panel-header">
+          <h2>Agreement &amp; Timing</h2>
+          <p>How you buy from Adobe decides what is negotiable. VIP pricing is largely a published price list; ETLA and Experience Cloud agreements are negotiated. Adobe's fiscal year ends on the Friday closest to November 30.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Size</label>
+            <div class="radio-cards" id="company-size">
+              <div class="radio-card" data-value="smb">
+                <div class="rc-icon">🏢</div>
+                <div class="rc-title">SMB</div>
+                <div class="rc-desc">&lt;500 employees</div>
+              </div>
+              <div class="radio-card" data-value="midmarket">
+                <div class="rc-icon">🏬</div>
+                <div class="rc-title">Mid-Market</div>
+                <div class="rc-desc">500–4,999 employees</div>
+              </div>
+              <div class="radio-card" data-value="enterprise">
+                <div class="rc-icon">🏛️</div>
+                <div class="rc-title">Enterprise</div>
+                <div class="rc-desc">5,000–24,999</div>
+              </div>
+              <div class="radio-card" data-value="global">
+                <div class="rc-icon">🌐</div>
+                <div class="rc-title">Global Enterprise</div>
+                <div class="rc-desc">25,000+ employees</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="annual-spend">Annual Adobe Spend (ACV)</label>
+              <select id="annual-spend">
+                <option value="">Select ACV…</option>
+                <option value="under100k">Under $100K</option>
+                <option value="100k-250k">$100K–$250K</option>
+                <option value="250k-500k">$250K–$500K</option>
+                <option value="500k-1m">$500K–$1M</option>
+                <option value="1m-2500k">$1M–$2.5M</option>
+                <option value="2500k-5m">$2.5M–$5M</option>
+                <option value="5m-10m">$5M–$10M</option>
+                <option value="10mplus">$10M+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="agreement-type">Primary Agreement Type</label>
+              <select id="agreement-type">
+                <option value="">Select…</option>
+                <option value="vip">VIP / VIP Marketplace — annual, no commitment</option>
+                <option value="vip3yc">VIP with 3-Year Commit (3YC)</option>
+                <option value="etla">ETLA — Enterprise Term License Agreement</option>
+                <option value="experience">Experience Cloud enterprise agreement</option>
+                <option value="mixed">ETLA plus a separate Experience Cloud agreement</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="purchase-channel">How You Buy</label>
+              <select id="purchase-channel">
+                <option value="">Select…</option>
+                <option value="direct">Direct from Adobe</option>
+                <option value="reseller">Through a reseller (LAR)</option>
+                <option value="several">Several resellers / card purchases across teams</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="headcount-trajectory">Headcount Trajectory (next 12–36 mo)</label>
+              <select id="headcount-trajectory">
+                <option value="">Select…</option>
+                <option value="shrinking">Shrinking — layoffs or restructuring</option>
+                <option value="flat">Flat — no material change</option>
+                <option value="modest">Modest growth (0–10%)</option>
+                <option value="strong">Strong growth (10–30%)</option>
+                <option value="aggressive">Aggressive growth (30%+)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="renewal-month">Renewal / Anniversary Month</label>
+              <select id="renewal-month">
+                <option value="">Select month…</option>
+                <option value="12">December — Adobe Q1 opens</option>
+                <option value="1">January</option>
+                <option value="2">February — Q1 end</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May — Q2 end</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August — Q3 end</option>
+                <option value="9">September — Q4 opens</option>
+                <option value="10">October</option>
+                <option value="11">November — Adobe fiscal year end</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="renewal-timeline">Time Until Renewal</label>
+              <select id="renewal-timeline">
+                <option value="">Select…</option>
+                <option value="within-1mo">Less than 30 days</option>
+                <option value="1-3mo">1–3 months</option>
+                <option value="3-6mo">3–6 months</option>
+                <option value="6-12mo">6–12 months</option>
+                <option value="12plusmo">More than 12 months</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="notice-status">Auto-Renewal Notice Window</label>
+              <select id="notice-status">
+                <option value="">Select…</option>
+                <option value="unknown">Don't know what our notice period is</option>
+                <option value="passed">Already passed — auto-renewal triggered</option>
+                <option value="imminent">Closing within 30 days</option>
+                <option value="open">Still open with room to spare</option>
+                <option value="served">Notice already served</option>
+                <option value="none">No auto-renewal clause</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="price-protection">Current Price Protection</label>
+              <select id="price-protection">
+                <option value="">Select…</option>
+                <option value="none">None — renews at then-current list</option>
+                <option value="expiring">Locked, but the lock ends at this renewal</option>
+                <option value="capped">Written cap on renewal increase</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="desired-term">Desired Term at Renewal</label>
+            <select id="desired-term">
+              <option value="">Select…</option>
+              <option value="1yr">1 year — maximum flexibility</option>
+              <option value="3yr">3 years — standard ETLA / 3YC term</option>
+              <option value="undecided">Undecided — want modelling</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(1, this)">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="showSample()" style="margin-right:auto">👁 View Sample Output</button><button class="btn-primary" onclick="nextStep(1)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 2: Products & Usage ══ -->
+      <section class="step-panel" id="step-2">
+        <div class="panel-header">
+          <h2>Product Footprint &amp; Utilization</h2>
+          <p>Adobe estates leak money in two places: idle named-user licenses, and Creative Cloud Pro seats assigned to people who only ever open one or two apps.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Adobe Products Owned</label>
+            <div class="use-case-grid" id="products">
+              <div class="use-case-card" data-value="ccpro"><div class="uc-icon">🎨</div><div class="uc-title">Creative Cloud Pro / All Apps</div></div>
+              <div class="use-case-card" data-value="ccsingle"><div class="uc-icon">🖌️</div><div class="uc-title">Single-App Plans</div></div>
+              <div class="use-case-card" data-value="acrobat"><div class="uc-icon">📄</div><div class="uc-title">Acrobat Pro / Standard</div></div>
+              <div class="use-case-card" data-value="sign"><div class="uc-icon">✍️</div><div class="uc-title">Acrobat Sign</div></div>
+              <div class="use-case-card" data-value="firefly"><div class="uc-icon">✨</div><div class="uc-title">Firefly / GenStudio</div></div>
+              <div class="use-case-card" data-value="express"><div class="uc-icon">⚡</div><div class="uc-title">Adobe Express</div></div>
+              <div class="use-case-card" data-value="stock"><div class="uc-icon">🖼️</div><div class="uc-title">Adobe Stock</div></div>
+              <div class="use-case-card" data-value="frameio"><div class="uc-icon">🎬</div><div class="uc-title">Frame.io</div></div>
+              <div class="use-case-card" data-value="aem"><div class="uc-icon">🌐</div><div class="uc-title">Experience Manager</div></div>
+              <div class="use-case-card" data-value="analytics"><div class="uc-icon">📊</div><div class="uc-title">Analytics / CJA</div></div>
+              <div class="use-case-card" data-value="aep"><div class="uc-icon">🗄️</div><div class="uc-title">AEP / RT-CDP / Journey Optimizer</div></div>
+              <div class="use-case-card" data-value="marketo"><div class="uc-icon">📣</div><div class="uc-title">Marketo Engage</div></div>
+              <div class="use-case-card" data-value="workfront"><div class="uc-icon">🗂️</div><div class="uc-title">Workfront</div></div>
+              <div class="use-case-card" data-value="commerce"><div class="uc-icon">🛒</div><div class="uc-title">Adobe Commerce</div></div>
+              <div class="use-case-card" data-value="target"><div class="uc-icon">🎯</div><div class="uc-title">Target</div></div>
+              <div class="use-case-card" data-value="semrush"><div class="uc-icon">🔎</div><div class="uc-title">Semrush</div></div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="license-utilization">License Utilization (active in last 90 days ÷ licensed)</label>
+              <select id="license-utilization">
+                <option value="">Select…</option>
+                <option value="under60">Under 60% — significant shelfware</option>
+                <option value="60-75">60–75%</option>
+                <option value="75-90">75–90%</option>
+                <option value="over90">Over 90% — tightly managed</option>
+                <option value="unknown">Never measured</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="app-fit">Creative Cloud Pro Users Who Use Only 1–2 Apps</label>
+              <select id="app-fit">
+                <option value="">Select…</option>
+                <option value="high">Many — over 40%</option>
+                <option value="some">Some — 20–40%</option>
+                <option value="low">Few — under 20%</option>
+                <option value="unknown">Never measured</option>
+                <option value="na">Not applicable — no Creative Cloud Pro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="trueup-position">ETLA True-Up Position</label>
+              <select id="trueup-position">
+                <option value="">Select…</option>
+                <option value="over">Deployed well above contract — large true-up bills</option>
+                <option value="at">Roughly at contracted quantity</option>
+                <option value="under">Deployed below contract — paying for unused</option>
+                <option value="unknown">Don't know</option>
+                <option value="na">Not applicable — no ETLA</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="metric-position">Experience Cloud Contracted Metrics</label>
+              <select id="metric-position">
+                <option value="">Select…</option>
+                <option value="over">Exceeding — overage charges or warnings</option>
+                <option value="near">Close to contracted limits</option>
+                <option value="under">Well under — buying capacity we don't use</option>
+                <option value="unknown">Don't know</option>
+                <option value="na">Not applicable — no Experience Cloud</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="adoption-health">Adoption Health</label>
+            <select id="adoption-health">
+              <option value="">Select…</option>
+              <option value="poor">Poor — low usage, workarounds common</option>
+              <option value="mixed">Mixed — strong in creative teams, weak elsewhere</option>
+              <option value="good">Good — broadly embedded</option>
+              <option value="critical">Critical — content supply chain or customer data runs on Adobe</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Known Cost Pressures</label>
+            <div class="checkbox-group" id="cost-pressures">
+              <label class="checkbox-item"><input type="checkbox" value="overlap" /> Overlapping tools (Canva, Figma, other PDF tools)</label>
+              <label class="checkbox-item"><input type="checkbox" value="sprawl" /> Licenses bought outside the agreement (cards, team plans)</label>
+              <label class="checkbox-item"><input type="checkbox" value="consoles" /> Multiple Admin Consoles or VIP memberships</label>
+              <label class="checkbox-item"><input type="checkbox" value="credits" /> Generative credit limits or overages</label>
+              <label class="checkbox-item"><input type="checkbox" value="shelfmodules" /> Experience Cloud modules bought but not implemented</label>
+              <label class="checkbox-item"><input type="checkbox" value="listincrease" /> Hit by Adobe's 2026 list price increases</label>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(2, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
+          <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 3: Leverage & M&A ══ -->
+      <section class="step-panel" id="step-3">
+        <div class="panel-header">
+          <h2>Leverage, Context &amp; M&amp;A</h2>
+          <p>Adobe prices against workflow lock-in. What you can credibly move — and any corporate transaction reshaping your user base — determines what you can ask for.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Competitive Alternative</label>
+            <div class="radio-cards" id="alternative">
+              <div class="radio-card" data-value="none">
+                <div class="rc-icon">🔒</div>
+                <div class="rc-title">None</div>
+                <div class="rc-desc">Adobe is the only option</div>
+              </div>
+              <div class="radio-card" data-value="theoretical">
+                <div class="rc-icon">💭</div>
+                <div class="rc-title">Theoretical</div>
+                <div class="rc-desc">Alternatives exist, none evaluated</div>
+              </div>
+              <div class="radio-card" data-value="evaluating">
+                <div class="rc-icon">🔍</div>
+                <div class="rc-title">Evaluating</div>
+                <div class="rc-desc">Active pilot or RFP underway</div>
+              </div>
+              <div class="radio-card" data-value="dual">
+                <div class="rc-icon">⚖️</div>
+                <div class="rc-title">Already Dual</div>
+                <div class="rc-desc">Competing tool deployed at scale</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="alternative-vendor">Most Credible Alternative</label>
+              <select id="alternative-vendor">
+                <option value="">Select…</option>
+                <option value="canva">Canva (incl. Affinity)</option>
+                <option value="figma">Figma</option>
+                <option value="pdf">Foxit / Nitro / other PDF tools</option>
+                <option value="microsoft">Microsoft 365 native PDF &amp; Copilot</option>
+                <option value="docusign">DocuSign</option>
+                <option value="salesforce">Salesforce Marketing Cloud / Data Cloud</option>
+                <option value="dxp">Sitecore / Optimizely / Contentful</option>
+                <option value="google">Google Analytics 4 / Amplitude</option>
+                <option value="none">No credible alternative</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="relationship-quality">Adobe Account Team Relationship</label>
+              <select id="relationship-quality">
+                <option value="">Select…</option>
+                <option value="none">No dedicated rep — reseller only</option>
+                <option value="poor">Weak / transactional</option>
+                <option value="moderate">Moderate — occasional contact</option>
+                <option value="strong">Strong — regular cadence</option>
+                <option value="strategic">Strategic — executive sponsorship</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="previous-negotiation">Prior Negotiation Experience</label>
+              <select id="previous-negotiation">
+                <option value="">Select…</option>
+                <option value="none">Never negotiated — accepted renewal quotes</option>
+                <option value="basic">Basic — asked for minor concessions</option>
+                <option value="moderate">Moderate — negotiated discounts before</option>
+                <option value="experienced">Experienced — multiple full cycles</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="internal-champion">Internal Decision Owner</label>
+              <select id="internal-champion">
+                <option value="">Select…</option>
+                <option value="cio">CIO / CTO</option>
+                <option value="cfo">CFO / Finance</option>
+                <option value="procurement">Procurement / Vendor Management</option>
+                <option value="cmo">CMO / Marketing Ops</option>
+                <option value="creative">Creative Operations</option>
+                <option value="none">No clear owner</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Change Events in the Coming Term</label>
+            <div class="checkbox-group" id="change-events">
+              <label class="checkbox-item"><input type="checkbox" value="expansion" /> Planned expansion — new products or seats</label>
+              <label class="checkbox-item"><input type="checkbox" value="consolidation" /> Consolidating onto Adobe from other tools</label>
+              <label class="checkbox-item"><input type="checkbox" value="migration" /> Evaluating migration away from Adobe</label>
+              <label class="checkbox-item"><input type="checkbox" value="ai" /> Adobe pushing Firefly, GenStudio or AI Assistant</label>
+              <label class="checkbox-item"><input type="checkbox" value="platform" /> Adobe proposing a CX Enterprise / platform bundle</label>
+            </div>
+          </div>
+
+          <!-- M&A module -->
+          <label class="mna-toggle" id="mna-toggle">
+            <input type="checkbox" id="mna-enabled" />
+            <div>
+              <div class="mna-toggle-title">🔀 Include M&amp;A implications</div>
+              <div class="mna-toggle-desc">Turn on if an acquisition, merger, sale, or divestiture will change who uses Adobe during this term. Adds an M&amp;A section to the strategy covering license transfer, contract consolidation, carve-outs, and Adobe's own recent acquisitions.</div>
+            </div>
+          </label>
+
+          <div class="mna-panel" id="mna-panel" hidden>
+            <div class="form-group">
+              <label>Transaction Type</label>
+              <div class="radio-cards" id="mna-type">
+                <div class="radio-card" data-value="acquiring">
+                  <div class="rc-icon">➕</div>
+                  <div class="rc-title">Acquiring</div>
+                  <div class="rc-desc">We are buying a company</div>
+                </div>
+                <div class="radio-card" data-value="acquired">
+                  <div class="rc-icon">🤝</div>
+                  <div class="rc-title">Being Acquired</div>
+                  <div class="rc-desc">We are the target</div>
+                </div>
+                <div class="radio-card" data-value="merger">
+                  <div class="rc-icon">🔗</div>
+                  <div class="rc-title">Merger</div>
+                  <div class="rc-desc">Combining with a peer</div>
+                </div>
+                <div class="radio-card" data-value="divesting">
+                  <div class="rc-icon">✂️</div>
+                  <div class="rc-title">Divesting</div>
+                  <div class="rc-desc">Selling or spinning off a unit</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="mna-stage">Deal Stage</label>
+                <select id="mna-stage">
+                  <option value="">Select…</option>
+                  <option value="confidential">Confidential — not yet announced</option>
+                  <option value="announced">Announced — not yet closed</option>
+                  <option value="integrating">Closed — integration underway</option>
+                  <option value="settled">Closed more than 12 months ago</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="mna-user-impact">Change in Adobe Users</label>
+                <select id="mna-user-impact">
+                  <option value="">Select…</option>
+                  <option value="under10">Under 10%</option>
+                  <option value="10-25">10–25%</option>
+                  <option value="25-50">25–50%</option>
+                  <option value="over50">Over 50%</option>
+                  <option value="unknown">Don't know yet</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="mna-counterparty">Other Party's Adobe Footprint</label>
+                <select id="mna-counterparty">
+                  <option value="">Select…</option>
+                  <option value="none">No Adobe contract</option>
+                  <option value="vip">VIP / team plans</option>
+                  <option value="etla">Its own ETLA</option>
+                  <option value="experience">Experience Cloud agreement</option>
+                  <option value="unknown">Don't know yet</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="mna-assignment">Assignment / Change-of-Control Clause</label>
+                <select id="mna-assignment">
+                  <option value="">Select…</option>
+                  <option value="consent">Assignment requires Adobe's consent</option>
+                  <option value="permitted">Permits assignment to a successor or affiliate</option>
+                  <option value="unknown">Haven't reviewed it</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Integration Complications</label>
+              <div class="checkbox-group" id="mna-complications">
+                <label class="checkbox-item"><input type="checkbox" value="consoles" /> Separate Admin Consoles / org IDs to merge</label>
+                <label class="checkbox-item"><input type="checkbox" value="identity" /> Different identity domains (SSO / Federated ID)</label>
+                <label class="checkbox-item"><input type="checkbox" value="anniversaries" /> Contracts with different anniversary dates</label>
+                <label class="checkbox-item"><input type="checkbox" value="tsa" /> Carved-out entity needs a transition period (TSA)</label>
+                <label class="checkbox-item"><input type="checkbox" value="assets" /> Shared brand assets, libraries or AEM content to split or merge</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(3, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(3)">← Back</button>
+          <button class="btn-primary" onclick="generateStrategy()">Generate My Strategy →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 4: Output ══ -->
+      <section class="step-panel" id="step-4">
+        <div id="strategy-output"></div>
+        <div class="step-actions" style="margin-top:2rem;">
+          <button class="btn-secondary" onclick="prevStep(4)">← Edit Inputs</button>
+          <button class="btn-primary" onclick="printStrategy()">🖨️ Export Strategy</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>This tool provides strategic guidance based on publicly reported Adobe contracting practices and procurement benchmarks. Adobe does not publish ETLA discount or renewal increase data — all ranges are directional estimates, not vendor-confirmed figures. Actual outcomes depend on agreement type, reseller involvement, timing within Adobe's fiscal year, and your credible alternatives. Nothing here is legal advice on M&amp;A contract assignment — have counsel read the actual clauses.</p>
+    </footer>
+  </div>
+
+  <script src="src/app.js?v=20260929a"></script>
+</body>
+</html>

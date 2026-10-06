@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxima — Cloud Negotiation Research Digest</title>
+  <link rel="stylesheet" href="digest.css">
+  <style>
+    .archive { padding:26px 40px 80px;max-width:820px; }
+    @media(max-width:640px) { .archive { padding:20px 20px 60px; } }
+    .year-label { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin:26px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border-sub); }
+    .year-label:first-child { margin-top:0; }
+    .issue-card { background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:12px;position:relative;overflow:hidden;cursor:pointer;transition:background .15s,border-color .15s,transform .12s; }
+    .issue-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--proxima); }
+    .issue-card:hover { background:var(--card-hover);transform:translateY(-1px);border-color:var(--proxima); }
+    .issue-top { display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px; }
+    .issue-num { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--proxima);background:var(--proxima-dim);padding:3px 8px;border-radius:3px; }
+    .issue-when { font-size:11.5px;color:var(--text-3);margin-left:auto;font-variant-numeric:tabular-nums; }
+    .issue-card h2 { font-family:Georgia,serif;font-size:18px;font-weight:700;letter-spacing:-.2px;line-height:1.3;margin-bottom:7px; }
+    .issue-card p.summary { font-size:13.5px;color:var(--text-2);line-height:1.7; }
+    .highlights { list-style:none;margin-top:12px;padding-top:11px;border-top:1px solid var(--border-sub);display:flex;flex-direction:column;gap:5px; }
+    .highlights li { font-size:12.5px;color:var(--text-2);padding-left:14px;position:relative;line-height:1.6; }
+    .highlights li::before { content:'—';position:absolute;left:0;color:var(--text-3); }
+    .issue-open { display:inline-flex;align-items:center;gap:5px;margin-top:13px;font-size:12px;font-weight:600;color:var(--proxima); }
+    .next-issue { background:var(--card);border:1px dashed var(--border);border-radius:10px;padding:18px 20px;margin-top:18px;font-size:13px;color:var(--text-3);line-height:1.7; }
+    .next-issue strong { color:var(--text-2); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wordmark">Proxima<span>.</span></div>
+  <div class="header-right">
+    <a class="back-link" href="../index.html">← All tools</a>
+    <a class="back-link" href="../updates.html">Running log</a>
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle theme</button>
+  </div>
+</header>
+
+<div class="masthead">
+  <p class="masthead-eyebrow">Archive</p>
+  <h1>Cloud Negotiation<br>Research Digest</h1>
+  <p class="standfirst">A monthly synthesis of where AWS, Azure, and Google Cloud moved, what practitioners are reporting, and what it changes about how we advise a renewal. Compiled from the <a href="../updates.html" style="color:var(--proxima)">running update log</a>.</p>
+</div>
+
+<div class="archive" id="archive"></div>
+
+<footer class="site-footer">
+  <p>Intended for Proxima use only — contact Brian Chernauskas with questions</p>
+  <div class="footer-wordmark">Proxima.</div>
+</footer>
+
+<script>
+/* ============================================================
+   DIGEST ARCHIVE
+   Issue metadata now lives in digest/issues.json (single source
+   of truth shared with the hub's "latest issue" link). Add a new
+   entry there when publishing — nothing to edit here.
+   ============================================================ */
+let ISSUES = [];
+
+function fmtDate(iso) {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+}
+
+function render() {
+  const sorted = [...ISSUES].sort((a, b) => b.date.localeCompare(a.date));
+  let html = '', lastYear = '';
+
+  for (const i of sorted) {
+    const year = i.date.slice(0, 4);
+    if (year !== lastYear) { html += `<div class="year-label">${year}</div>`; lastYear = year; }
+    html += `<article class="issue-card" onclick="location.href='${i.slug}.html'">
+      <div class="issue-top">
+        <span class="issue-num">Issue ${String(i.issueNum).padStart(2, '0')}</span>
+        <span class="issue-when">${fmtDate(i.date)}</span>
+      </div>
+      <h2>${i.title}</h2>
+      <p class="summary">${i.summary}</p>
+      ${i.highlights && i.highlights.length ? `<ul class="highlights">${i.highlights.map(h => `<li>${h}</li>`).join('')}</ul>` : ''}
+      <span class="issue-open">Read issue <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </article>`;
+  }
+
+  html += `<div class="next-issue"><strong>Next issue compiles automatically.</strong> The weekly Monday scan files entries to the running log; on the first Monday of each month those entries are synthesized into a new issue and published here.</div>`;
+
+  document.getElementById('archive').innerHTML = html;
+}
+
+fetch('issues.json')
+  .then(r => r.json())
+  .then(data => { ISSUES = data; render(); })
+  .catch(() => {
+    document.getElementById('archive').innerHTML =
+      '<p class="summary">Could not load the issue list. <a href="issues.json" style="color:var(--proxima)">View issues.json</a> directly.</p>';
+  });
+
+function toggleTheme() {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+</script>
+</body>
+</html>

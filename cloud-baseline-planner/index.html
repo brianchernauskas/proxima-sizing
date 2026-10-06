@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud Baseline Renewal Planner | Proxima</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3248;
+      --text: #e8eaf0;
+      --muted: #8b90a8;
+      --accent: #6c63ff;
+      --accent-soft: rgba(108,99,255,0.12);
+      --accent-glow: rgba(108,99,255,0.3);
+      --aws: #ff9900;
+      --aws-soft: rgba(255,153,0,0.12);
+      --azure: #0078d4;
+      --azure-soft: rgba(0,120,212,0.12);
+      --gcp: #1a73e8;
+      --gcp-soft: rgba(26,115,232,0.12);
+      --green: #34d399;
+      --green-soft: rgba(52,211,153,0.12);
+      --amber: #fbbf24;
+      --amber-soft: rgba(251,191,36,0.12);
+      --red: #f87171;
+      --red-soft: rgba(248,113,113,0.12);
+      --radius: 10px;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f4f5f9;
+        --surface: #ffffff;
+        --surface2: #f0f1f7;
+        --border: #dde0ee;
+        --text: #1a1d27;
+        --muted: #6b7099;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a;
+      --border: #2e3248; --text: #e8eaf0; --muted: #8b90a8;
+    }
+    :root[data-theme="light"] {
+      --bg: #f4f5f9; --surface: #ffffff; --surface2: #f0f1f7;
+      --border: #dde0ee; --text: #1a1d27; --muted: #6b7099;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 58px;
+    }
+    .header-brand { display: flex; align-items: center; gap: 12px; }
+    .header-brand a { text-decoration: none; }
+    .brand-pill {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent);
+      background: var(--accent-soft); border-radius: 5px;
+      padding: 3px 8px;
+    }
+    .header-title {
+      font-size: 14px; font-weight: 600; color: var(--text);
+    }
+    .header-sub { font-size: 12px; color: var(--muted); }
+
+    /* LAYOUT */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* HERO */
+    .hero {
+      margin-bottom: 40px;
+    }
+    .sku-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      background: var(--accent-soft); border-radius: 5px;
+      padding: 3px 10px; margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-size: 28px; font-weight: 700; line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .hero p { color: var(--muted); max-width: 600px; }
+
+    /* STEP INDICATOR */
+    .steps {
+      display: flex; gap: 0; margin-bottom: 36px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+    }
+    .step-tab {
+      flex: 1; padding: 12px 8px; text-align: center;
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      border-right: 1px solid var(--border); cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .step-tab:last-child { border-right: none; }
+    .step-tab.active {
+      background: var(--accent-soft); color: var(--accent);
+    }
+    .step-tab.done { color: var(--green); }
+    .step-num {
+      display: block; font-size: 18px; font-weight: 700;
+      line-height: 1; margin-bottom: 2px;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .card-title {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* FORM ELEMENTS */
+    .field { margin-bottom: 22px; }
+    .field label {
+      display: block; font-size: 13px; font-weight: 600;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .field label span { color: var(--muted); font-weight: 400; }
+    select, input[type="text"] {
+      width: 100%; padding: 10px 14px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text);
+      font-size: 14px; outline: none;
+      appearance: none; -webkit-appearance: none;
+    }
+    select:focus, input[type="text"]:focus { border-color: var(--accent); }
+
+    .checkbox-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .check-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; cursor: pointer;
+      transition: all 0.15s; user-select: none;
+    }
+    .check-item:hover { border-color: var(--accent); }
+    .check-item.selected {
+      background: var(--accent-soft); border-color: var(--accent);
+    }
+    .check-item input { display: none; }
+    .check-dot {
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 2px solid var(--border); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .check-item.selected .check-dot {
+      background: var(--accent); border-color: var(--accent);
+    }
+    .check-dot::after {
+      content: ''; display: none;
+      width: 5px; height: 8px;
+      border: 2px solid #fff; border-top: none; border-left: none;
+      transform: rotate(45deg) translate(-1px,-1px);
+    }
+    .check-item.selected .check-dot::after { display: block; }
+    .check-label { font-size: 13px; font-weight: 600; }
+    .check-sub { font-size: 11px; color: var(--muted); }
+
+    /* RADIO GROUPS */
+    .radio-group { display: flex; flex-direction: column; gap: 8px; }
+    .radio-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; cursor: pointer;
+      transition: all 0.15s; user-select: none;
+    }
+    .radio-row:hover { border-color: var(--accent); }
+    .radio-row.selected {
+      background: var(--accent-soft); border-color: var(--accent);
+    }
+    .radio-row input { display: none; }
+    .radio-dot {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid var(--border); flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .radio-row.selected .radio-dot {
+      border-color: var(--accent); background: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .radio-text { font-size: 13px; }
+    .radio-text strong { display: block; font-weight: 600; }
+    .radio-text span { font-size: 12px; color: var(--muted); }
+
+    /* PROVIDER BLOCKS */
+    .provider-blocks { display: flex; flex-direction: column; gap: 16px; }
+    .provider-block {
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    }
+    .provider-block-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px;
+      font-size: 13px; font-weight: 700;
+    }
+    .provider-block-body { padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .provider-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* NAV BUTTONS */
+    .nav-row {
+      display: flex; gap: 12px; margin-top: 8px; justify-content: space-between;
+    }
+    .btn {
+      padding: 11px 24px; border-radius: 8px; font-size: 14px;
+      font-weight: 600; cursor: pointer; border: none; transition: all 0.15s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: var(--surface2); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+    .btn-ghost {
+      background: none; color: var(--muted); padding: 11px 8px;
+    }
+
+    /* RESULTS */
+    .results-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 600px) { .results-grid { grid-template-columns: 1fr; } }
+
+    .result-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px;
+    }
+    .result-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+    }
+    .result-value {
+      font-size: 28px; font-weight: 700; line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .result-sub { font-size: 12px; color: var(--muted); }
+
+    /* TEAM TABLE */
+    .team-table { width: 100%; border-collapse: collapse; }
+    .team-table th {
+      text-align: left; padding: 8px 12px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .team-table td { padding: 10px 12px; font-size: 14px; }
+    .team-table tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
+    .role-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 4px;
+      font-size: 11px; font-weight: 700;
+    }
+
+    /* SAVINGS TABLE */
+    .savings-table { width: 100%; border-collapse: collapse; }
+    .savings-table th {
+      text-align: left; padding: 8px 12px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .savings-table td { padding: 10px 12px; font-size: 14px; }
+    .savings-table tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
+
+    /* FLAGS */
+    .flags { display: flex; flex-direction: column; gap: 8px; }
+    .flag {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 14px; border-radius: 8px; font-size: 13px;
+    }
+    .flag-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .flag.risk { background: var(--red-soft); color: var(--red); }
+    .flag.warn { background: var(--amber-soft); color: var(--amber); }
+    .flag.ok { background: var(--green-soft); color: var(--green); }
+    .flag-text strong { display: block; font-weight: 700; }
+    .flag-text span { opacity: 0.85; font-size: 12px; }
+
+    /* OPTIMIZE PREVIEW */
+    .optimize-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .optimize-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    }
+    .optimize-badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 3px 10px; border-radius: 5px;
+      background: var(--green-soft); color: var(--green);
+    }
+    .optimize-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .optimize-grid { grid-template-columns: 1fr; } }
+    .opt-item {
+      background: var(--surface2); border-radius: 8px; padding: 14px;
+    }
+    .opt-item-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+    }
+    .opt-item-value { font-size: 13px; font-weight: 600; }
+    .opt-item-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* PRINT */
+    .print-row { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+    .btn-print {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); padding: 9px 18px; border-radius: 8px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .btn-print:hover { border-color: var(--accent); color: var(--accent); }
+
+    @media print {
+      header .header-sub, .steps, .nav-row, .print-row { display: none !important; }
+      body { background: white; color: black; }
+      .card, .result-card, .optimize-card { break-inside: avoid; }
+    }
+
+    /* UTILITY */
+    .hidden { display: none !important; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .text-center { text-align: center; }
+    .mt-4 { margin-top: 16px; }
+    .gap-row { display: flex; align-items: center; gap: 8px; }
+
+    /* Ranges callout */
+    .ranges-note {
+      font-size: 12px; color: var(--muted);
+      background: var(--surface2); border-radius: 6px;
+      padding: 8px 12px; margin-top: 12px;
+      border-left: 3px solid var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-brand">
+      <a href="https://tools.briansavesbillions.com/"><span class="brand-pill">Proxima</span></a>
+      <div>
+        <div class="header-title">Cloud Baseline Renewal Planner</div>
+        <div class="header-sub">SKU 1 · Control / Diagnostic</div>
+      </div>
+    </div>
+    <a href="https://tools.briansavesbillions.com/cloud-baseline-planner/config.html" style="font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:5px 12px;border-radius:6px;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">⚙ Configure</a>
+  </header>
+
+  <div class="container">
+    <div class="hero">
+      <div class="sku-badge">SKU 1 — Control</div>
+      <h1>Cloud Baseline Renewal Roadmap</h1>
+      <p>Answer the questions below to size the engagement: team composition, delivery timeline, and potential savings opportunity for your client.</p>
+    </div>
+
+    <!-- STEP TABS -->
+    <div class="steps">
+      <div class="step-tab active" id="tab-1" onclick="goTo(1)">
+        <span class="step-num">1</span>Client Profile
+      </div>
+      <div class="step-tab" id="tab-2" onclick="goTo(2)">
+        <span class="step-num">2</span>Contract Status
+      </div>
+      <div class="step-tab" id="tab-3" onclick="goTo(3)">
+        <span class="step-num">3</span>Data Readiness
+      </div>
+      <div class="step-tab" id="tab-4" onclick="goTo(4)">
+        <span class="step-num">4</span>Results
+      </div>
+    </div>
+
+    <!-- STEP 1: CLIENT PROFILE -->
+    <div class="section active" id="section-1">
+      <div class="card">
+        <div class="card-title">Client Profile</div>
+
+        <div class="field">
+          <label>Client name <span>(optional)</span></label>
+          <input type="text" id="client-name" placeholder="e.g. Acme Corp" />
+        </div>
+
+        <div class="field">
+          <label>Total annual cloud spend</label>
+          <div class="radio-group" id="spend-group">
+            <label class="radio-row" onclick="selectRadio(this,'spend-group')">
+              <input type="radio" name="spend" value="under5m" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Under $5M</strong><span>Smallest spend tier</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'spend-group')">
+              <input type="radio" name="spend" value="5-25m" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>$5M – $25M</strong><span>Standard baseline engagement</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'spend-group')">
+              <input type="radio" name="spend" value="25-100m" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>$25M – $100M</strong><span>Mid-market; multi-workstream likely</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'spend-group')">
+              <input type="radio" name="spend" value="100-250m" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>$100M – $250M</strong><span>Enterprise; full resource complement</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'spend-group')">
+              <input type="radio" name="spend" value="250mplus" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>$250M+</strong><span>Strategic account; VP-led engagement</span></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Cloud providers in use <span>(select all that apply)</span></label>
+          <div class="checkbox-grid" id="providers-group">
+            <label class="check-item" onclick="toggleCheck(event,this)">
+              <input type="checkbox" value="aws" /><div class="check-dot"></div>
+              <div><div class="check-label" style="color:var(--aws)">AWS</div><div class="check-sub">Amazon Web Services</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(event,this)">
+              <input type="checkbox" value="azure" /><div class="check-dot"></div>
+              <div><div class="check-label" style="color:var(--azure)">Azure</div><div class="check-sub">Microsoft Azure</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(event,this)">
+              <input type="checkbox" value="gcp" /><div class="check-dot"></div>
+              <div><div class="check-label" style="color:var(--gcp)">GCP</div><div class="check-sub">Google Cloud</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(event,this)">
+              <input type="checkbox" value="other" /><div class="check-dot"></div>
+              <div><div class="check-label">Other</div><div class="check-sub">Oracle, IBM, etc.</div></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Infrastructure posture</label>
+          <div class="radio-group" id="posture-group">
+            <label class="radio-row" onclick="selectRadio(this,'posture-group')">
+              <input type="radio" name="posture" value="cloud-native" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Cloud-native</strong><span>Fully in the cloud, no on-prem dependency</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'posture-group')">
+              <input type="radio" name="posture" value="hybrid" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Hybrid</strong><span>Mix of cloud and on-premise</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'posture-group')">
+              <input type="radio" name="posture" value="migration" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Migration in progress</strong><span>Active move from on-prem to cloud</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'posture-group')">
+              <input type="radio" name="posture" value="on-prem" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Primarily on-premise</strong><span>Cloud usage is minimal or early-stage</span></div>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="nav-row">
+        <span></span>
+        <button class="btn btn-primary" onclick="next(1)">Next: Contract Status →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: CONTRACT STATUS -->
+    <div class="section" id="section-2">
+      <div class="card" id="contract-fields">
+        <div class="card-title">Contract & Commitment Status</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Answer per provider selected. These factors directly drive the savings calculation.</p>
+        <div id="provider-status-blocks"></div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" onclick="next(0)">← Back</button>
+        <button class="btn btn-primary" onclick="next(2)">Next: Data Readiness →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: DATA READINESS -->
+    <div class="section" id="section-3">
+      <div class="card">
+        <div class="card-title">Data Readiness Assessment</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Data gaps add time and risk to the engagement. Be honest — this affects the timeline estimate.</p>
+
+        <div class="field">
+          <label>AP / invoice data availability <span>(12–24 months preferred)</span></label>
+          <div class="radio-group" id="ap-data-group">
+            <label class="radio-row" onclick="selectRadio(this,'ap-data-group')">
+              <input type="radio" name="ap-data" value="yes" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Available</strong><span>Clean, accessible AP data for 12–24 months</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'ap-data-group')">
+              <input type="radio" name="ap-data" value="partial" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Partial</strong><span>Some data available but gaps or quality issues</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'ap-data-group')">
+              <input type="radio" name="ap-data" value="no" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Not available</strong><span>Will require extraction, cleansing, or sourcing</span></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Contract repository access</label>
+          <div class="radio-group" id="contracts-group">
+            <label class="radio-row" onclick="selectRadio(this,'contracts-group')">
+              <input type="radio" name="contracts" value="yes" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Available</strong><span>Current contracts and amendments accessible</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'contracts-group')">
+              <input type="radio" name="contracts" value="partial" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Partial</strong><span>Some contracts available; others need to be sourced</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'contracts-group')">
+              <input type="radio" name="contracts" value="no" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Not available</strong><span>Contracts unknown or not yet gathered</span></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Stakeholder access confirmed</label>
+          <div class="radio-group" id="stakeholders-group">
+            <label class="radio-row" onclick="selectRadio(this,'stakeholders-group')">
+              <input type="radio" name="stakeholders" value="yes" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Confirmed</strong><span>IT, Finance, and procurement stakeholders aligned</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'stakeholders-group')">
+              <input type="radio" name="stakeholders" value="partial" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Partial</strong><span>Some stakeholders identified; others TBC</span></div>
+            </label>
+            <label class="radio-row" onclick="selectRadio(this,'stakeholders-group')">
+              <input type="radio" name="stakeholders" value="no" /><div class="radio-dot"></div>
+              <div class="radio-text"><strong>Not confirmed</strong><span>Stakeholder mapping not yet completed</span></div>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="nav-row">
+        <button class="btn btn-secondary" onclick="next(1)">← Back</button>
+        <button class="btn btn-primary" onclick="buildResults()">Generate Results →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: RESULTS -->
+    <div class="section" id="section-4">
+      <div id="results-content"></div>
+      <div id="params-used-line" style="font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px;margin-top:24px;line-height:1.6;"></div>
+      <div class="print-row">
+        <button class="btn-print" onclick="window.print()">⎙ Print / Export PDF</button>
+        <button class="btn btn-secondary" onclick="next(0); goTo(1)">← Start Over</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── NAVIGATION ──────────────────────────────────────────────────────────
+    let currentStep = 1;
+    function goTo(step) {
+      if (step < 1 || step > 4) return;
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.step-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('section-' + step).classList.add('active');
+      document.getElementById('tab-' + step).classList.add('active');
+      currentStep = step;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function next(dir) {
+      if (dir === 0) { goTo(currentStep - 1); return; }
+      if (!validateStep(currentStep)) return;
+      if (currentStep === 2) buildProviderBlocks();
+      goTo(currentStep + 1);
+    }
+
+    // ─── FORM HELPERS ────────────────────────────────────────────────────────
+    function selectRadio(el, groupId) {
+      document.querySelectorAll('#' + groupId + ' .radio-row').forEach(r => r.classList.remove('selected'));
+      el.classList.add('selected');
+      el.querySelector('input').checked = true;
+    }
+    function toggleCheck(e, el) {
+      e.preventDefault();
+      el.classList.toggle('selected');
+      el.querySelector('input').checked = el.classList.contains('selected');
+    }
+    function getRadio(name) {
+      const el = document.querySelector('input[name="' + name + '"]:checked');
+      return el ? el.value : null;
+    }
+    function getChecked(groupId) {
+      return [...document.querySelectorAll('#' + groupId + ' input:checked')].map(i => i.value);
+    }
+
+    function validateStep(step) {
+      if (step === 1) {
+        if (!getRadio('spend')) { alert('Please select an annual cloud spend range.'); return false; }
+        if (getChecked('providers-group').length === 0) { alert('Please select at least one cloud provider.'); return false; }
+        if (!getRadio('posture')) { alert('Please select an infrastructure posture.'); return false; }
+        buildProviderStatusBlocks();
+      }
+      if (step === 2) {
+        const providers = getChecked('providers-group');
+        for (const p of providers) {
+          if (!getRadio('neg-' + p)) { alert('Please select when ' + p.toUpperCase() + ' was last negotiated.'); return false; }
+          if (!getRadio('ri-' + p)) { alert('Please select committed use status for ' + p.toUpperCase() + '.'); return false; }
+        }
+      }
+      if (step === 3) {
+        if (!getRadio('ap-data')) { alert('Please select AP data availability.'); return false; }
+        if (!getRadio('contracts')) { alert('Please select contract repository status.'); return false; }
+        if (!getRadio('stakeholders')) { alert('Please select stakeholder access status.'); return false; }
+      }
+      return true;
+    }
+
+    // ─── PROVIDER STATUS BLOCKS ──────────────────────────────────────────────
+    const PROVIDER_META = {
+      aws:   { label: 'AWS', color: 'var(--aws)', bg: 'var(--aws-soft)' },
+      azure: { label: 'Azure', color: 'var(--azure)', bg: 'var(--azure-soft)' },
+      gcp:   { label: 'GCP', color: 'var(--gcp)', bg: 'var(--gcp-soft)' },
+      other: { label: 'Other', color: 'var(--muted)', bg: 'var(--surface2)' },
+    };
+
+    function buildProviderStatusBlocks() {
+      const providers = getChecked('providers-group');
+      const container = document.getElementById('provider-status-blocks');
+      container.innerHTML = providers.map(p => {
+        const m = PROVIDER_META[p];
+        return `
+          <div class="provider-block" style="border-color:${m.color}33; margin-bottom:14px;">
+            <div class="provider-block-header" style="background:${m.bg}">
+              <div class="provider-dot" style="background:${m.color}"></div>
+              <span style="color:${m.color}">${m.label}</span>
+            </div>
+            <div class="provider-block-body">
+              <div class="field" style="margin:0">
+                <label style="font-size:12px">Last negotiated</label>
+                <div class="radio-group" id="neg-${p}-group" style="gap:6px">
+                  ${[
+                    ['under12m','Under 12 months','Recently negotiated'],
+                    ['12-24m','12–24 months','Approaching renewal window'],
+                    ['24-36m','24–36 months','Overdue for review'],
+                    ['36mplus','36+ months','Significant opportunity'],
+                  ].map(([v,l,s]) => `
+                    <label class="radio-row" onclick="selectRadio(this,'neg-${p}-group')" style="padding:8px 12px">
+                      <input type="radio" name="neg-${p}" value="${v}"/><div class="radio-dot"></div>
+                      <div class="radio-text"><strong>${l}</strong><span>${s}</span></div>
+                    </label>`).join('')}
+                </div>
+              </div>
+              <div class="field" style="margin:0">
+                <label style="font-size:12px">Reserved / committed use in place</label>
+                <div class="radio-group" id="ri-${p}-group" style="gap:6px">
+                  ${[
+                    ['none','None','No commitments in place'],
+                    ['partial','Partial','Some coverage; gaps remain'],
+                    ['full','Full coverage','Commitments optimised'],
+                  ].map(([v,l,s]) => `
+                    <label class="radio-row" onclick="selectRadio(this,'ri-${p}-group')" style="padding:8px 12px">
+                      <input type="radio" name="ri-${p}" value="${v}"/><div class="radio-dot"></div>
+                      <div class="radio-text"><strong>${l}</strong><span>${s}</span></div>
+                    </label>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function buildProviderBlocks() { /* already built in validateStep(1) */ }
+
+    // ─── CALCULATION ENGINE ──────────────────────────────────────────────────
+
+    const DEFAULTS = {
+      duration: { 'under5m':[3,4],'5-25m':[4,6],'25-100m':[5,8],'100-250m':[6,10],'250mplus':[7,12] },
+      team: {
+        'under5m':{vp:0,pc:0,sc:1,c:0,ac:1},'5-25m':{vp:0,pc:0,sc:1,c:1,ac:1},
+        '25-100m':{vp:0,pc:1,sc:1,c:1,ac:0},'100-250m':{vp:0,pc:1,sc:2,c:1,ac:0},'250mplus':{vp:1,pc:1,sc:2,c:2,ac:1}
+      },
+      providerMods: { p2:{sc:1,ac:1}, p3:{pcMin:1,sc:1}, p4:{sc:1,ac:1}, dur2:{lo:1,hi:2}, dur3:{lo:1,hi:2} },
+      dataMods: {
+        ap:{p:{lo:0,hi:1},n:{lo:1,hi:2}}, con:{p:{lo:0,hi:1},n:{lo:1,hi:2}}, sh:{p:{lo:0,hi:1},n:{lo:1,hi:1}}
+      },
+      savings: { aws:{lo:3,hi:8}, azure:{lo:4,hi:12}, gcp:{lo:3,hi:7}, other:{lo:2,hi:5} }
+    };
+
+    function getCfg() {
+      try { return JSON.parse(localStorage.getItem('proxima-baseline-config')) || DEFAULTS; }
+      catch { return DEFAULTS; }
+    }
+
+    function getSavingsModifier(neg, ri) {
+      let loMod = 0, hiMod = 0;
+      if (neg === 'under12m') { loMod -= 1; hiMod -= 2; }
+      if (neg === '24-36m')   { loMod += 1; hiMod += 2; }
+      if (neg === '36mplus')  { loMod += 2; hiMod += 4; }
+      if (ri === 'none')      { loMod += 1; hiMod += 2; }
+      if (ri === 'full')      { loMod -= 1; hiMod -= 2; }
+      return [loMod, hiMod];
+    }
+
+    const SPEND_MID = { 'under5m':3,'5-25m':15,'25-100m':60,'100-250m':175,'250mplus':350 };
+    const SPEND_LABEL = { 'under5m':'<$5M','5-25m':'$5–25M','25-100m':'$25–100M','100-250m':'$100–250M','250mplus':'$250M+' };
+
+    function calcTeam(spend, providerCount) {
+      const cfg = getCfg();
+      const base = { ...cfg.team[spend] };
+      const m = cfg.providerMods;
+      if (providerCount >= 2) { base.sc += m.p2.sc; base.ac += m.p2.ac; }
+      if (providerCount >= 3) { base.pc = Math.max(base.pc, m.p3.pcMin); base.sc += m.p3.sc; }
+      if (providerCount >= 4) { base.sc += m.p4.sc; base.ac += m.p4.ac; }
+      return base;
+    }
+
+    function calcDuration(spend, providerCount, apData, contracts, stakeholders) {
+      const cfg = getCfg();
+      let [lo, hi] = cfg.duration[spend];
+      const m = cfg.providerMods; const d = cfg.dataMods;
+      if (providerCount >= 2) { lo += m.dur2.lo; hi += m.dur2.hi; }
+      if (providerCount >= 3) { lo += m.dur3.lo; hi += m.dur3.hi; }
+      if (apData === 'partial')      { lo += d.ap.p.lo;  hi += d.ap.p.hi; }
+      if (apData === 'no')           { lo += d.ap.n.lo;  hi += d.ap.n.hi; }
+      if (contracts === 'partial')   { lo += d.con.p.lo; hi += d.con.p.hi; }
+      if (contracts === 'no')        { lo += d.con.n.lo; hi += d.con.n.hi; }
+      if (stakeholders === 'partial'){ lo += d.sh.p.lo;  hi += d.sh.p.hi; }
+      if (stakeholders === 'no')     { lo += d.sh.n.lo;  hi += d.sh.n.hi; }
+      return [lo, hi];
+    }
+
+    // Data readiness flags
+    function buildFlags(apData, contracts, stakeholders) {
+      const flags = [];
+      if (apData === 'no') flags.push({ type: 'risk', title: 'AP data not available', detail: 'Adds 1–2 weeks for extraction and cleansing. Spend cube quality will be lower until resolved.' });
+      else if (apData === 'partial') flags.push({ type: 'warn', title: 'AP data partially available', detail: 'Plan for a data reconciliation workstream. May limit the depth of the supplier prioritization matrix.' });
+      else flags.push({ type: 'ok', title: 'AP data ready', detail: 'Spend cube build can begin immediately.' });
+
+      if (contracts === 'no') flags.push({ type: 'risk', title: 'Contract repository not available', detail: 'Adds 1–2 weeks. Renewals and BATNA scenarios cannot be scoped without current terms.' });
+      else if (contracts === 'partial') flags.push({ type: 'warn', title: 'Contract repository partial', detail: 'Prioritize sourcing missing agreements before negotiation strategy is drafted.' });
+      else flags.push({ type: 'ok', title: 'Contracts accessible', detail: 'Negotiation strategy can be scoped against existing terms.' });
+
+      if (stakeholders === 'no') flags.push({ type: 'risk', title: 'Stakeholder access not confirmed', detail: 'Adds 1 week for stakeholder mapping. Scope and sign-off risk increases.' });
+      else if (stakeholders === 'partial') flags.push({ type: 'warn', title: 'Stakeholders partially aligned', detail: 'Complete stakeholder mapping in week 1 to avoid mid-engagement blockers.' });
+      else flags.push({ type: 'ok', title: 'Stakeholders confirmed', detail: 'Interviews and sign-offs can be scheduled immediately.' });
+
+      return flags;
+    }
+
+    function fmtM(v) {
+      if (v >= 1000) return '$' + (v/1000).toFixed(1).replace(/\.0$/,'') + 'B';
+      if (v >= 1) return '$' + v.toFixed(1).replace(/\.0$/,'') + 'M';
+      return '$' + (v*1000).toFixed(0) + 'K';
+    }
+
+    function buildResults() {
+      if (!validateStep(3)) return;
+
+      const spend = getRadio('spend');
+      const providers = getChecked('providers-group');
+      const posture = getRadio('posture');
+      const apData = getRadio('ap-data');
+      const contracts = getRadio('contracts');
+      const stakeholders = getRadio('stakeholders');
+      const clientName = document.getElementById('client-name').value.trim() || 'Client';
+
+      const spendMid = SPEND_MID[spend];
+      const providerCount = providers.length;
+      const team = calcTeam(spend, providerCount);
+      const [durLo, durHi] = calcDuration(spend, providerCount, apData, contracts, stakeholders);
+      const flags = buildFlags(apData, contracts, stakeholders);
+
+      // Savings by provider
+      const cfg = getCfg();
+      let totalLoM = 0, totalHiM = 0;
+      const savingsRows = providers.map(p => {
+        const sr = cfg.savings[p] || cfg.savings.other;
+        const neg = getRadio('neg-' + p) || '12-24m';
+        const ri  = getRadio('ri-' + p)  || 'partial';
+        const [lm, hm] = getSavingsModifier(neg, ri);
+        const lo = Math.max(1, sr.lo + lm);
+        const hi = Math.min(30, sr.hi + hm);
+        const loM = (spendMid * lo / 100) / providerCount;
+        const hiM = (spendMid * hi / 100) / providerCount;
+        totalLoM += loM; totalHiM += hiM;
+        const m = PROVIDER_META[p];
+        return { label: m.label, color: m.color, lo, hi, loM, hiM };
+      });
+
+      const totalHeadcount = team.vp + team.pc + team.sc + team.c + team.ac;
+
+      const ROLE_META = [
+        { key: 'vp', label: 'Vice President', sub: 'Executive leader', color: '#a78bfa', bg: 'rgba(167,139,250,0.12)' },
+        { key: 'pc', label: 'Principal Consultant', sub: 'Account leader', color: '#6c63ff', bg: 'rgba(108,99,255,0.12)' },
+        { key: 'sc', label: 'Senior Consultant', sub: 'Workstream lead', color: '#34d399', bg: 'rgba(52,211,153,0.12)' },
+        { key: 'c',  label: 'Consultant', sub: 'Independent delivery', color: '#38bdf8', bg: 'rgba(56,189,248,0.12)' },
+        { key: 'ac', label: 'Associate Consultant', sub: 'Analyst / execution', color: '#94a3b8', bg: 'rgba(148,163,184,0.12)' },
+      ];
+
+      const teamRows = ROLE_META
+        .filter(r => team[r.key] > 0)
+        .map(r => `
+          <tr>
+            <td><span class="role-badge" style="background:${r.bg};color:${r.color}">${r.label}</span></td>
+            <td style="color:var(--muted);font-size:13px">${r.sub}</td>
+            <td style="font-weight:700;font-size:16px;text-align:right">${team[r.key]}</td>
+          </tr>`).join('');
+
+      const savingsTableRows = savingsRows.map(r => `
+        <tr>
+          <td><span style="color:${r.color};font-weight:700">${r.label}</span></td>
+          <td>${r.lo}–${r.hi}%</td>
+          <td>${fmtM(r.loM)} – ${fmtM(r.hiM)}</td>
+        </tr>`).join('');
+
+      const flagsHTML = flags.map(f => `
+        <div class="flag ${f.type}">
+          <div class="flag-icon">${f.type === 'risk' ? '⚠' : f.type === 'warn' ? '◉' : '✓'}</div>
+          <div class="flag-text"><strong>${f.title}</strong><span>${f.detail}</span></div>
+        </div>`).join('');
+
+      const postureLabel = { 'cloud-native':'Cloud-native','hybrid':'Hybrid','migration':'Migration in progress','on-prem':'Primarily on-premise' }[posture] || posture;
+
+      document.getElementById('results-content').innerHTML = `
+        <div style="margin-bottom:24px">
+          <div class="sku-badge">Results · ${clientName}</div>
+          <h2 style="font-size:22px;font-weight:700;margin-bottom:4px">Cloud Baseline Renewal Roadmap</h2>
+          <div style="font-size:13px;color:var(--muted)">${SPEND_LABEL[spend]} spend · ${providers.map(p=>PROVIDER_META[p].label).join(', ')} · ${postureLabel}</div>
+        </div>
+
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-label">Engagement Duration</div>
+            <div class="result-value">${durLo}–${durHi} <span style="font-size:18px;font-weight:500">weeks</span></div>
+            <div class="result-sub">Control / Diagnostic phase</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Total Team Size</div>
+            <div class="result-value">${totalHeadcount} <span style="font-size:18px;font-weight:500">people</span></div>
+            <div class="result-sub">${providerCount} provider${providerCount > 1 ? 's' : ''} · ${providers.length > 1 ? 'Multi-workstream' : 'Single workstream'}</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Savings Opportunity (Low)</div>
+            <div class="result-value" style="color:var(--green)">${fmtM(totalLoM)}</div>
+            <div class="result-sub">Conservative estimate across providers</div>
+          </div>
+          <div class="result-card">
+            <div class="result-label">Savings Opportunity (High)</div>
+            <div class="result-value" style="color:var(--green)">${fmtM(totalHiM)}</div>
+            <div class="result-sub">Upside if commitments are renegotiated</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">Team Composition</div>
+          <div style="overflow-x:auto">
+            <table class="team-table">
+              <thead><tr><th>Role</th><th>Function</th><th style="text-align:right">Count</th></tr></thead>
+              <tbody>${teamRows}</tbody>
+            </table>
+          </div>
+          <div class="ranges-note">VP engagement is fractional (oversight and escalation) unless spend exceeds $250M or the engagement is a named strategic account.</div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">Savings Opportunity by Provider</div>
+          <div style="overflow-x:auto">
+            <table class="savings-table">
+              <thead><tr><th>Provider</th><th>Range (%)</th><th>Range ($M, approx.)</th></tr></thead>
+              <tbody>${savingsTableRows}</tbody>
+              <tfoot>
+                <tr style="font-weight:700;border-top:2px solid var(--border)">
+                  <td>Total</td>
+                  <td></td>
+                  <td>${fmtM(totalLoM)} – ${fmtM(totalHiM)}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="ranges-note">Ranges calibrated August 2026. Modifiers applied for time since last negotiation and committed use coverage.</div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-title">Data Readiness</div>
+          <div class="flags">${flagsHTML}</div>
+        </div>
+
+        <div class="optimize-card">
+          <div class="optimize-header">
+            <div class="optimize-badge">Next: Optimize Phase</div>
+            <span style="font-size:13px;color:var(--muted)">Strategic CSP Negotiations (SKU 5)</span>
+          </div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px">
+            Once the baseline is established, the Optimize phase executes strategic negotiations with the prioritized providers. Typical timing: start Optimize 1–2 weeks before Control closes.
+          </p>
+          <div class="optimize-grid">
+            <div class="opt-item">
+              <div class="opt-item-label">Duration</div>
+              <div class="opt-item-value">10–18 weeks</div>
+              <div class="opt-item-sub">Negotiation execution</div>
+            </div>
+            <div class="opt-item">
+              <div class="opt-item-label">Key Deliverables</div>
+              <div class="opt-item-value">Negotiation strategy, BATNA scenarios, Key asks & levers</div>
+            </div>
+            <div class="opt-item">
+              <div class="opt-item-label">Dependencies from Control</div>
+              <div class="opt-item-value">Spend cube, supplier deep dive, savings opportunity (A1)</div>
+            </div>
+            <div class="opt-item">
+              <div class="opt-item-label">Resource Uplift</div>
+              <div class="opt-item-value">+1 SC per provider</div>
+              <div class="opt-item-sub">Dedicated negotiation leads</div>
+            </div>
+            <div class="opt-item">
+              <div class="opt-item-label">Estimated Savings Capture</div>
+              <div class="opt-item-value">${fmtM(totalLoM)} – ${fmtM(totalHiM)}</div>
+              <div class="opt-item-sub">From Control baseline</div>
+            </div>
+            <div class="opt-item">
+              <div class="opt-item-label">Executive Sponsor</div>
+              <div class="opt-item-value">Required</div>
+              <div class="opt-item-sub">Renewals and contract risk review</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Parameter provenance line
+      const isCustom = !!localStorage.getItem('proxima-baseline-config');
+      const savingsSummary = providers.map(p => {
+        const sr = cfg.savings[p] || cfg.savings.other;
+        return `${PROVIDER_META[p].label} ${sr.lo}–${sr.hi}%`;
+      }).join(', ');
+      const baseTeam = cfg.team[spend];
+      const roleParts = [
+        baseTeam.vp  ? `${baseTeam.vp} VP`   : null,
+        baseTeam.pc  ? `${baseTeam.pc} PCon`  : null,
+        baseTeam.sc  ? `${baseTeam.sc} SCon`  : null,
+        baseTeam.c   ? `${baseTeam.c} Con`    : null,
+        baseTeam.ac  ? `${baseTeam.ac} ACon`  : null,
+      ].filter(Boolean).join(', ');
+      const durBase = cfg.duration[spend];
+      document.getElementById('params-used-line').innerHTML =
+        `<strong>Parameters (${isCustom ? 'custom' : 'default'}):</strong> &nbsp;` +
+        `Base team for ${SPEND_LABEL[spend]}: ${roleParts} &nbsp;·&nbsp; ` +
+        `Base duration: ${durBase[0]}–${durBase[1]} wks &nbsp;·&nbsp; ` +
+        `Savings ranges: ${savingsSummary} &nbsp;·&nbsp; ` +
+        `Generated ${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}` +
+        ' &nbsp;·&nbsp; <a href="https://tools.briansavesbillions.com/cloud-baseline-planner/config.html" target="_blank" style="color:var(--accent);text-decoration:none">Adjust parameters & rerun →</a>';
+
+      goTo(4);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Azure Renewal Negotiation Planner</title>
+  <link rel="stylesheet" href="src/styles.css?v=20260929a" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="logo">
+          <svg width="84" height="22" viewBox="0 0 84 22" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="0" y="18" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-weight="700" fill="#ffffff" letter-spacing="-0.3">Proxima</text></svg>
+          <span class="logo-divider"></span>
+          <span>Azure Negotiation Planner</span>
+        </div>
+        <div class="header-taglines">
+          <div class="header-tagline">World-class renewal strategy, tailored to your situation</div>
+          <div class="header-tagline">Intended for Proxima use only, please contact Brian Chernauskas with questions</div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="step-nav" id="step-nav">
+        <div class="step-item active" data-step="1"><div class="step-circle">1</div><div class="step-label">Company Profile</div></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="2"><div class="step-circle">2</div><div class="step-label">Spend & Contract</div></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="3"><div class="step-circle">3</div><div class="step-label">Use Cases</div></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="4"><div class="step-circle">4</div><div class="step-label">Leverage & Context</div></div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="5"><div class="step-circle">5</div><div class="step-label">Your Strategy</div></div>
+      </div>
+
+      <!-- Step 1 -->
+      <section class="step-panel active" id="step-1">
+        <div class="panel-header">
+          <h2>Company Profile</h2>
+          <p>Tell us about your organization so we can calibrate your Azure negotiating position.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Size</label>
+            <div class="radio-cards" id="company-size">
+              <div class="radio-card" data-value="startup"><div class="rc-icon">🚀</div><div class="rc-title">Startup</div><div class="rc-desc">&lt;100 employees</div></div>
+              <div class="radio-card" data-value="smb"><div class="rc-icon">🏢</div><div class="rc-title">SMB</div><div class="rc-desc">100–999 employees</div></div>
+              <div class="radio-card" data-value="midmarket"><div class="rc-icon">🏬</div><div class="rc-title">Mid-Market</div><div class="rc-desc">1,000–4,999 employees</div></div>
+              <div class="radio-card" data-value="enterprise"><div class="rc-icon">🏛️</div><div class="rc-title">Enterprise</div><div class="rc-desc">5,000+ employees</div></div>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="industry">Industry Vertical</label>
+              <select id="industry">
+                <option value="">Select industry…</option>
+                <option value="fintech">Financial Services / Fintech</option>
+                <option value="healthcare">Healthcare / Life Sciences</option>
+                <option value="retail">Retail / E-commerce</option>
+                <option value="saas">SaaS / Technology</option>
+                <option value="media">Media / Entertainment</option>
+                <option value="manufacturing">Manufacturing / Industrial</option>
+                <option value="government">Government / Public Sector</option>
+                <option value="education">Education</option>
+                <option value="energy">Energy / Utilities</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="growth-rate">Annual Revenue Growth Rate</label>
+              <select id="growth-rate">
+                <option value="">Select growth rate…</option>
+                <option value="declining">Declining / Flat (&lt;0%)</option>
+                <option value="slow">Slow (0–10%)</option>
+                <option value="moderate">Moderate (10–30%)</option>
+                <option value="fast">Fast (30–100%)</option>
+                <option value="hypergrowth">Hypergrowth (&gt;100%)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="azure-tenure">How long have you been an Azure customer?</label>
+              <select id="azure-tenure">
+                <option value="">Select tenure…</option>
+                <option value="new">&lt;1 year (new customer)</option>
+                <option value="1-3">1–3 years</option>
+                <option value="3-5">3–5 years</option>
+                <option value="5plus">5+ years (established customer)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="contract-type">Current Contract Type</label>
+              <select id="contract-type">
+                <option value="">Select contract type…</option>
+                <option value="payg">Pay-As-You-Go (PAYG)</option>
+                <option value="csp">Cloud Solution Provider (CSP)</option>
+                <option value="mca">Microsoft Customer Agreement (MCA)</option>
+                <option value="ea">Enterprise Agreement (EA)</option>
+                <option value="mca-e">MCA – Enterprise (MCA-E)</option>
+                <option value="macc">MACC / Azure Consumption Commitment</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Existing Microsoft Product Footprint (select all that apply)</label>
+            <div class="checkbox-group" id="ms-products">
+              <label class="checkbox-item"><input type="checkbox" value="m365" /> Microsoft 365 (M365)</label>
+              <label class="checkbox-item"><input type="checkbox" value="dynamics" /> Dynamics 365</label>
+              <label class="checkbox-item"><input type="checkbox" value="github" /> GitHub Enterprise</label>
+              <label class="checkbox-item"><input type="checkbox" value="power-platform" /> Power Platform</label>
+              <label class="checkbox-item"><input type="checkbox" value="copilot" /> Microsoft Copilot</label>
+              <label class="checkbox-item"><input type="checkbox" value="unified-support" /> Microsoft Unified Support</label>
+              <label class="checkbox-item"><input type="checkbox" value="visual-studio" /> Visual Studio Subscriptions</label>
+              <label class="checkbox-item"><input type="checkbox" value="none" /> Azure only</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Compliance & Regulatory Requirements</label>
+            <div class="checkbox-group" id="compliance">
+              <label class="checkbox-item"><input type="checkbox" value="hipaa" /> HIPAA</label>
+              <label class="checkbox-item"><input type="checkbox" value="pci" /> PCI-DSS</label>
+              <label class="checkbox-item"><input type="checkbox" value="fedramp" /> FedRAMP</label>
+              <label class="checkbox-item"><input type="checkbox" value="gdpr" /> GDPR</label>
+              <label class="checkbox-item"><input type="checkbox" value="sox" /> SOX</label>
+              <label class="checkbox-item"><input type="checkbox" value="iso27001" /> ISO 27001</label>
+              <label class="checkbox-item"><input type="checkbox" value="none" /> None specific</label>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(1, this)">✨ Fill Sample Data</button><button class="btn-secondary" onclick="showSample()" style="margin-right:auto">👁 View Sample Output</button><button class="btn-primary" onclick="nextStep(1)">Continue →</button></div>
+      </section>
+
+      <!-- Step 2 -->
+      <section class="step-panel" id="step-2">
+        <div class="panel-header">
+          <h2>Spend & Contract Details</h2>
+          <p>Your Azure spend profile and contract structure determine your baseline negotiating position.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="annual-spend">Current Annual Azure Spend</label>
+              <select id="annual-spend">
+                <option value="">Select range…</option>
+                <option value="under100k">&lt;$100K</option>
+                <option value="100k-500k">$100K–$500K</option>
+                <option value="500k-1m">$500K–$1M</option>
+                <option value="1m-5m">$1M–$5M</option>
+                <option value="5m-10m">$5M–$10M</option>
+                <option value="10m-25m">$10M–$25M</option>
+                <option value="25m-50m">$25M–$50M</option>
+                <option value="50mplus">$50M+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="total-ms-spend">Total Annual Microsoft Spend (Azure + M365 + other)</label>
+              <select id="total-ms-spend">
+                <option value="">Select range…</option>
+                <option value="under500k">&lt;$500K</option>
+                <option value="500k-2m">$500K–$2M</option>
+                <option value="2m-10m">$2M–$10M</option>
+                <option value="10m-25m">$10M–$25M</option>
+                <option value="25m-50m">$25M–$50M</option>
+                <option value="50mplus">$50M+</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="spend-growth">Expected Azure Spend Growth (Next 12 months)</label>
+              <select id="spend-growth">
+                <option value="">Select growth…</option>
+                <option value="declining">Declining (&lt;-10%)</option>
+                <option value="flat">Flat (±10%)</option>
+                <option value="moderate">Moderate (+10–30%)</option>
+                <option value="fast">Fast (+30–75%)</option>
+                <option value="hypergrowth">Hypergrowth (+75%+)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="renewal-timeline">When does your contract expire?</label>
+              <select id="renewal-timeline">
+                <option value="">Select timeline…</option>
+                <option value="within-1mo">Within 1 month (urgent)</option>
+                <option value="1-3mo">1–3 months</option>
+                <option value="3-6mo">3–6 months</option>
+                <option value="6-12mo">6–12 months (ideal window)</option>
+                <option value="12plusmo">12+ months out</option>
+                <option value="no-contract">No formal contract yet</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="desired-term">Preferred Commitment Term</label>
+              <select id="desired-term">
+                <option value="">Select term…</option>
+                <option value="1yr">1 Year</option>
+                <option value="3yr">3 Years (MACC / EA)</option>
+                <option value="flexible">Flexible / TBD</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="commit-utilization">Historical Commitment Utilization</label>
+              <select id="commit-utilization">
+                <option value="">Select utilization…</option>
+                <option value="na">N/A — no existing commitment</option>
+                <option value="under70">Under 70% (significant shortfall)</option>
+                <option value="70-85">70–85% (mild shortfall)</option>
+                <option value="85-100">85–100% (on track)</option>
+                <option value="over100">Over 100% (exceeded commitment)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>On-Premises License Assets (select all that apply)</label>
+            <div class="checkbox-group" id="onprem-licenses">
+              <label class="checkbox-item"><input type="checkbox" value="windows-server" /> Windows Server (with Software Assurance)</label>
+              <label class="checkbox-item"><input type="checkbox" value="sql-server" /> SQL Server (with Software Assurance)</label>
+              <label class="checkbox-item"><input type="checkbox" value="rhel" /> Red Hat Enterprise Linux</label>
+              <label class="checkbox-item"><input type="checkbox" value="suse" /> SUSE Linux</label>
+              <label class="checkbox-item"><input type="checkbox" value="none-onprem" /> No on-prem license assets</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ea-pricing-level">Current EA Pricing Level (EA customers only)</label>
+            <select id="ea-pricing-level">
+              <option value="">Select level…</option>
+              <option value="level-a">Level A — standard / list price baseline</option>
+              <option value="level-b">Level B — minor volume discount (at risk Nov 2025)</option>
+              <option value="level-c">Level C — moderate volume discount (at risk Nov 2025)</option>
+              <option value="level-d">Level D — highest volume discount tier (at risk Nov 2025)</option>
+              <option value="not-applicable">Not applicable — on MCA-E, MACC, or CSP</option>
+              <option value="unknown">Unknown / not sure</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ea-anniversary">Next EA Anniversary (EA customers only)</label>
+            <select id="ea-anniversary">
+              <option value="">Select…</option>
+              <option value="na">Not applicable — not on an EA</option>
+              <option value="within-3mo">Within 3 months</option>
+              <option value="3-6mo">3–6 months away</option>
+              <option value="6-12mo">6–12 months away</option>
+              <option value="passed">Recently passed (within last 3 months)</option>
+              <option value="unknown">Unknown / not sure</option>
+            </select>
+            <p class="field-hint">Anniversary true-ups are when seats and products can be added at your EA's locked pricing.</p>
+          </div>
+          <div class="form-group">
+            <label for="ea-term-start">When did your current EA term begin? (EA customers only)</label>
+            <select id="ea-term-start">
+              <option value="">Select…</option>
+              <option value="pre-increase">Before July 1, 2026</option>
+              <option value="post-increase">On or after July 1, 2026</option>
+              <option value="na">Not applicable — not on an EA</option>
+              <option value="unknown">Unknown / not sure</option>
+            </select>
+            <p class="field-hint">The July 1, 2026 Microsoft 365 increase applies at the next renewal after that date. A term that began earlier keeps pre-increase pricing until renewal, so renewing early brings the increase forward rather than avoiding it.</p>
+          </div>
+          <div class="form-group">
+            <label for="m365-reclamation">M365 License Reclamation Pass</label>
+            <select id="m365-reclamation">
+              <option value="">Select…</option>
+              <option value="recent">Yes — ran reclamation in the past 12 months</option>
+              <option value="never">No — never run a reclamation pass</option>
+              <option value="partial">Partial — some teams only</option>
+              <option value="na">Not applicable — no M365 / small footprint</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="csp-openness">Azure via CSP (Channel Partner) Consideration</label>
+            <select id="csp-openness">
+              <option value="">Select…</option>
+              <option value="open">Open to CSP for Azure (separating from M365)</option>
+              <option value="direct-only">Prefer direct with Microsoft only</option>
+              <option value="currently-csp">Already on CSP</option>
+              <option value="unknown">Not sure / haven't evaluated</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="support-tier">Current Microsoft Support Tier</label>
+            <select id="support-tier">
+              <option value="">Select support tier…</option>
+              <option value="basic">Basic / No support contract</option>
+              <option value="developer">Developer</option>
+              <option value="standard">Standard</option>
+              <option value="professional-direct">Professional Direct</option>
+              <option value="unified">Microsoft Unified (formerly Premier)</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(2, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
+          <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section class="step-panel" id="step-3">
+        <div class="panel-header">
+          <h2>Azure Use Cases</h2>
+          <p>Your workload mix determines which Azure-specific cost levers and service credits to negotiate.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Primary Workload Types (select all that apply)</label>
+            <div class="use-case-grid" id="use-cases">
+              <div class="use-case-card" data-value="compute"><div class="uc-icon">⚙️</div><div class="uc-title">Virtual Machines (IaaS)</div></div>
+              <div class="use-case-card" data-value="containers"><div class="uc-icon">📦</div><div class="uc-title">Containers (AKS)</div></div>
+              <div class="use-case-card" data-value="serverless"><div class="uc-icon">⚡</div><div class="uc-title">Serverless (Azure Functions)</div></div>
+              <div class="use-case-card" data-value="ai-ml"><div class="uc-icon">🤖</div><div class="uc-title">AI / ML (Azure OpenAI, ML Studio)</div></div>
+              <div class="use-case-card" data-value="databases"><div class="uc-icon">🗄️</div><div class="uc-title">Databases (SQL, Cosmos DB)</div></div>
+              <div class="use-case-card" data-value="analytics"><div class="uc-icon">📊</div><div class="uc-title">Analytics (Synapse, Databricks)</div></div>
+              <div class="use-case-card" data-value="storage"><div class="uc-icon">💾</div><div class="uc-title">Storage (Blob, Files, Archive)</div></div>
+              <div class="use-case-card" data-value="networking"><div class="uc-icon">🌐</div><div class="uc-title">Networking (CDN, ExpressRoute)</div></div>
+              <div class="use-case-card" data-value="devops"><div class="uc-icon">🛠️</div><div class="uc-title">DevOps (Azure DevOps, Pipelines)</div></div>
+              <div class="use-case-card" data-value="security"><div class="uc-icon">🔒</div><div class="uc-title">Security (Defender, Sentinel)</div></div>
+              <div class="use-case-card" data-value="sap"><div class="uc-icon">🏭</div><div class="uc-title">SAP on Azure</div></div>
+              <div class="use-case-card" data-value="avd"><div class="uc-icon">🖥️</div><div class="uc-title">Azure Virtual Desktop (AVD)</div></div>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="workload-type">Workload Criticality</label>
+              <select id="workload-type">
+                <option value="">Select type…</option>
+                <option value="production-only">Production-heavy (mostly live traffic)</option>
+                <option value="mixed">Mixed production + dev/test</option>
+                <option value="dev-heavy">Dev/test heavy (R&D focus)</option>
+                <option value="batch">Batch / intermittent workloads</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="hybrid-benefit-status">Azure Hybrid Benefit Status</label>
+              <select id="hybrid-benefit-status">
+                <option value="">Select…</option>
+                <option value="fully-applied">Fully applied (maximizing savings)</option>
+                <option value="partially">Partially applied</option>
+                <option value="not-applied">Not applied (leaving savings on table)</option>
+                <option value="no-licenses">No eligible on-prem licenses</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="optimization-status">Infrastructure Optimization Status</label>
+              <select id="optimization-status">
+                <option value="">Select…</option>
+                <option value="unoptimized">Largely unoptimized</option>
+                <option value="partially">Partially optimized</option>
+                <option value="well-optimized">Well-optimized (Advisor recommendations actioned)</option>
+                <option value="expert">Expert-level (FinOps team in place)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="migration-status">Migration / Modernization Status</label>
+            <select id="migration-status">
+              <option value="">Select…</option>
+              <option value="planning">Planning migration to Azure</option>
+              <option value="in-progress">Migration in progress</option>
+              <option value="completed">Migration completed — optimizing</option>
+              <option value="native">Cloud-native on Azure from start</option>
+              <option value="hybrid">Hybrid (on-prem + Azure long-term)</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(3, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(3)">← Back</button>
+          <button class="btn-primary" onclick="nextStep(3)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- Step 4 -->
+      <section class="step-panel" id="step-4">
+        <div class="panel-header">
+          <h2>Leverage & Relationship Context</h2>
+          <p>These factors determine your negotiating power and which tactics will move Microsoft the most.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Multi-Cloud & Competitive Alternatives</label>
+            <div class="radio-cards" id="multicloud">
+              <div class="radio-card" data-value="azure-only"><div class="rc-icon">☁️</div><div class="rc-title">Azure Only</div><div class="rc-desc">All-in on Azure</div></div>
+              <div class="radio-card" data-value="azure-primary"><div class="rc-icon">⚖️</div><div class="rc-title">Azure Primary</div><div class="rc-desc">Some AWS / GCP workloads</div></div>
+              <div class="radio-card" data-value="multi-cloud"><div class="rc-icon">🌐</div><div class="rc-title">True Multi-Cloud</div><div class="rc-desc">Significant spend on 2+ clouds</div></div>
+              <div class="radio-card" data-value="evaluating"><div class="rc-icon">🔍</div><div class="rc-title">Evaluating Move</div><div class="rc-desc">Actively evaluating AWS/GCP</div></div>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="relationship-quality">Microsoft Account Team Relationship</label>
+              <select id="relationship-quality">
+                <option value="">Select…</option>
+                <option value="none">No dedicated rep</option>
+                <option value="poor">Weak / transactional relationship</option>
+                <option value="moderate">Moderate — occasional contact</option>
+                <option value="strong">Strong — regular cadence with AE/TAM</option>
+                <option value="strategic">Strategic — executive sponsorship from Microsoft</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Microsoft Product Expansion Plans (next 12 months)</label>
+            <div class="checkbox-group" id="expansion-plans">
+              <label class="checkbox-item"><input type="checkbox" value="m365-expand" /> Expanding M365 seats or upgrading tiers (E3→E5)</label>
+              <label class="checkbox-item"><input type="checkbox" value="copilot-adopt" /> Adopting Microsoft Copilot (M365 or Azure OpenAI)</label>
+              <label class="checkbox-item"><input type="checkbox" value="dynamics-expand" /> Adding or expanding Dynamics 365</label>
+              <label class="checkbox-item"><input type="checkbox" value="github-expand" /> Expanding GitHub Enterprise</label>
+              <label class="checkbox-item"><input type="checkbox" value="azure-migrate" /> Migrating significant workloads to Azure</label>
+              <label class="checkbox-item"><input type="checkbox" value="onprem-exit" /> Exiting on-premises data centers</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ea-concern">Key Contract Concern</label>
+            <select id="ea-concern">
+              <option value="">Select…</option>
+              <option value="price-lock">Price lock / protection from Microsoft price changes</option>
+              <option value="overcommit">Risk of over-committing and paying for unused spend</option>
+              <option value="vehicle">Unsure which contract vehicle (EA vs MCA-E vs CSP) is best</option>
+              <option value="extension">EA extension — worried terms will revert to list price</option>
+              <option value="support-cost">Unified Support cost is too high</option>
+              <option value="none">No specific concern — want best overall deal</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(4, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(4)">← Back</button>
+          <button class="btn-primary" onclick="generateStrategy()">Generate My Strategy →</button>
+        </div>
+      </section>
+
+      <!-- Step 5 -->
+      <section class="step-panel" id="step-5">
+        <div id="strategy-output"></div>
+        <div class="step-actions" style="margin-top:2rem;">
+          <button class="btn-secondary" onclick="prevStep(5)">← Edit Inputs</button>
+          <button class="btn-primary" onclick="window.print()">🖨️ Export Strategy</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>This tool provides strategic guidance based on publicly available Microsoft Azure negotiation best practices. Actual discounts depend on account team relationships and Microsoft business priorities at time of negotiation.</p>
+    </footer>
+  </div>
+  <script src="src/app.js?v=20260929a"></script>
+</body>
+</html>

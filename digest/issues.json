@@ -1,0 +1,54 @@
+[
+  {
+    "slug": "2026-10",
+    "issueNum": 4,
+    "date": "2026-10-05",
+    "title": "Copilot becomes a meter, GPU rates reset again, and Salesforce repackages its editions",
+    "summary": "September was about AI pricing moving from seats to usage. Microsoft relaunched Copilot with agent features on Copilot Credits, AWS reset GPU Capacity Block rates again, Google removed Code Assist from Gemini Enterprise renewals, Salesforce replaced Enterprise and Unlimited with bundled Core, Advanced and Max editions, and Adobe closed Topaz Labs. Oracle had no primary-sourced change.",
+    "highlights": [
+      "Copilot agent features bill through Copilot Credits on top of the seat, with no published rates",
+      "AWS Capacity Block rates reset effective Oct 7, about 15% above July by our calculation",
+      "Salesforce Core, Advanced and Max replace Enterprise and Unlimited, with Flex Credits bundled in",
+      "Adobe closes Topaz Labs; metering inside Creative Cloud is unanswered"
+    ]
+  },
+  {
+    "slug": "2026-09",
+    "issueNum": 3,
+    "date": "2026-09-14",
+    "title": "Gemini Enterprise's own savings plan, and Azure's new AI regional premium",
+    "summary": "Google gives Gemini Enterprise a commitment vehicle distinct from Vertex AI CUDs, with native spend caps and anomaly alerts built in. Microsoft adds a 7-20% regional pricing premium to Azure AI Foundry deployments outside the US, and a narrow but sharp reminder — Azure Maps' Gen1 retirement — that \"no action required\" migration notices can still carry a multiple-x cost increase.",
+    "highlights": [
+      "Gemini Enterprise Flexible Savings Plans: 10%/20% off token costs on 1yr/3yr, no minimum, drawn against the GCP EA",
+      "Azure AI Foundry regional deployments now price 7-20% above Global, effective Sept 1",
+      "Azure Maps Gen1 retires Sept 15 — an 800% increase on geocoding transactions for stragglers",
+      "Both tool recommendations from this issue shipped the same week they were identified"
+    ]
+  },
+  {
+    "slug": "2026-08",
+    "issueNum": 2,
+    "date": "2026-08-18",
+    "title": "GPU price hikes, Azure's vanishing price lock, and AI as its own negotiation line",
+    "summary": "AWS renames EDP to PPA and raises GPU Capacity Block prices 20%. Azure's 3-year EA price lock does not carry over to MCA-E or CSP, sharpening the cost of migrating without negotiating a bridge. Vertex AI emerges as the least-scrutinized line item in Google Cloud deals.",
+    "highlights": [
+      "EC2 GPU Capacity Block prices up ~20% effective July 1 — second hike this year",
+      "Azure's EA price lock doesn't transfer to MCA-E or CSP — the real cost of migrating off EA",
+      "Vertex AI runs 18-32% below published rates inside a CUD, 38-52% for Provisioned Throughput",
+      "FinOps practitioners now pulled into M&A due diligence, not just cost reviews"
+    ]
+  },
+  {
+    "slug": "2026-07",
+    "issueNum": 1,
+    "date": "2026-07-22",
+    "title": "EA-to-MCA-E migration, CUD scope changes, and the first Database Savings Plans",
+    "summary": "Microsoft begins moving EA customers to MCA-E ahead of renewal, eliminating the Level B/C/D discount structure. Google changes CUD default scope in a way that disrupts project-level chargeback. AWS Database Savings Plans reach GA and go almost entirely unclaimed in EDP negotiations.",
+    "highlights": [
+      "Clients migrating to MCA-E without negotiating are seeing 10–30% cost increases",
+      "GCP CUD scope now defaults to billing-account level for new accounts",
+      "Flex CUDs extended to cover GKE Autopilot and Cloud Run",
+      "All six tool recommendations from this issue have since shipped"
+    ]
+  }
+]
