@@ -19,6 +19,7 @@
       --salesforce:#0284C7; --salesforce-dim:rgba(2,132,199,.1);
       --adobe:#EF4444; --adobe-dim:rgba(239,68,68,.1);
       --oracle:#C74634; --oracle-dim:rgba(199,70,52,.1);
+      --sap:#0070F2; --sap-dim:rgba(0,112,242,.1);
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
@@ -94,6 +95,7 @@
     .entry.salesforce::before { background:var(--salesforce); }
     .entry.adobe::before { background:var(--adobe); }
     .entry.oracle::before { background:var(--oracle); }
+    .entry.sap::before { background:var(--sap); }
 
     .entry-top { display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px; }
     .entry-tag { font-family:'Courier New',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:3px; }
@@ -105,6 +107,7 @@
     .salesforce .entry-tag { color:var(--salesforce);background:var(--salesforce-dim); }
     .adobe .entry-tag { color:var(--adobe);background:var(--adobe-dim); }
     .oracle .entry-tag { color:var(--oracle);background:var(--oracle-dim); }
+    .sap .entry-tag { color:var(--sap);background:var(--sap-dim); }
     .entry-kind { font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);border:1px solid var(--border-sub);padding:2px 7px;border-radius:3px; }
     .entry-date { font-size:11px;color:var(--text-3);margin-left:auto;font-variant-numeric:tabular-nums; }
 
@@ -165,6 +168,7 @@
   <button class="filter-btn"        data-filter="salesforce" onclick="setFilter(this)">Salesforce</button>
   <button class="filter-btn"        data-filter="adobe"    onclick="setFilter(this)">Adobe</button>
   <button class="filter-btn"        data-filter="oracle"   onclick="setFilter(this)">Oracle</button>
+  <button class="filter-btn"        data-filter="sap"      onclick="setFilter(this)">SAP</button>
   <div class="search-wrap">
     <svg class="search-icon" width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 9.5L12.5 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     <input id="search-input" class="search-input" type="search" placeholder="Search all history…" oninput="setSearch(this.value)" autocomplete="off">
@@ -187,13 +191,23 @@
    date    : 'YYYY-MM-DD'
    kind    : 'industry'  (hyperscaler / market change)
            | 'update'    (change made to a Proxima tool)
-   cloud   : 'aws' | 'azure' | 'gcp' | 'salesforce' | 'adobe' | 'oracle' | 'multi' | 'tool'
+   cloud   : 'aws' | 'azure' | 'gcp' | 'salesforce' | 'adobe' | 'oracle' | 'sap' | 'multi' | 'tool'
    title   : short headline
    body    : what happened
    impact  : (optional) what it means for negotiations
    link    : (optional) { label, url }
    ============================================================ */
 const ENTRIES = [
+
+  {
+    date: '2026-10-07',
+    kind: 'update',
+    cloud: 'sap',
+    title: 'SAP Negotiation Planner (with RISE with SAP): new tool',
+    body: 'An eighth planner covers SAP maintenance renewals, S/4HANA moves, RISE with SAP and Cloud ERP Private purchases and renewals, new cloud lines of business, BTP, Business Data Cloud and Business AI purchases, and audit settlements. It scores leverage against SAP\'s calendar fiscal year (Q4 and the December year end are the pressure window) and treats the ECC deadline as a leverage factor: mainstream maintenance for ECC 6.0 ends December 31, 2027, and the planner counts the months remaining and prices the extended-maintenance premium (two percentage points, about 9% more, for 2028 to 2030). A RISE section breaks the bundle into components to pin down and negotiate (FUE user types, HANA and infrastructure sizing, managed services, bundled tools, AI units, clean core, conversion credit, term and escalators), and a paths table compares extended maintenance, self-hosted S/4HANA, RISE, public cloud, and third-party support. It also models a renewal-increase target, a discount-off-list range, user-type and sizing recovery, and digital access exposure. An optional M&A module covers entity scope, contract consolidation, user counts, and divestiture transfer rights. A dated context table covers the Q2 2026 results, the ECC maintenance dates, the transition option, the Cloud ERP Private rebrand, the Sapphire announcements, and AI pricing. SAP deals can be logged in Deal Calibration using the shared SaaS spend bands.',
+    impact: 'SAP negotiations are driven by the ECC date and by cloud backlog, which SAP rewards. The extended-maintenance premium puts a bounded price on missing the deadline, which is the number to put against any RISE proposal framed as urgent. RISE was renamed and repackaged in 2025 and 2026, so a quote cannot be compared with an older order without a SKU-level list. Items sourced from licensing advisors (digital access enforcement, AI unit terms at renewal) are marked advisor-reported and not confirmed by SAP.',
+    link: { label: 'Open SAP Planner', url: 'https://tools.briansavesbillions.com/sap-negotiation-planner/' }
+  },
 
   {
     date: '2026-10-05',
@@ -713,7 +727,7 @@ const ENTRIES = [
 /* ============================================================ */
 
 const KIND_LABEL  = { industry:'Industry', update:'Planner update' };
-const CLOUD_LABEL = { aws:'AWS', azure:'Azure', gcp:'GCP', salesforce:'Salesforce', adobe:'Adobe', oracle:'Oracle', multi:'Multi-Cloud', tool:'Proxima Tools' };
+const CLOUD_LABEL = { aws:'AWS', azure:'Azure', gcp:'GCP', salesforce:'Salesforce', adobe:'Adobe', oracle:'Oracle', sap:'SAP', multi:'Multi-Cloud', tool:'Proxima Tools' };
 
 function fmtDate(iso) {
   const [y,m,d] = iso.split('-').map(Number);

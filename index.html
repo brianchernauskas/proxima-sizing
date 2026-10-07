@@ -273,7 +273,7 @@
       <div class="tool-card news" onclick="window.open('https://tools.briansavesbillions.com/updates.html','_blank')">
         <span class="tool-tag">Multi-Cloud · Running Log</span>
         <div class="tool-name">Hyperscaler News &amp; Planner Updates</div>
-        <p class="tool-desc">Tracks AWS, Azure, GCP, Salesforce, Adobe, and Oracle program changes that shift negotiating position — pricing model changes, new discount vehicles, contract term shifts — alongside a record of what changed inside each planner and why.</p>
+        <p class="tool-desc">Tracks AWS, Azure, GCP, Salesforce, Adobe, Oracle, and SAP program changes that shift negotiating position — pricing model changes, new discount vehicles, contract term shifts — alongside a record of what changed inside each planner and why.</p>
         <div class="news-stamp">Last updated <strong id="news-last-updated">—</strong></div>
         <div class="tool-footer">
           <span class="tool-link">Open log <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -317,6 +317,15 @@
         <div class="tool-footer">
           <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </div>
+
+      <div class="tool-card saas" onclick="window.open('https://tools.briansavesbillions.com/sap-negotiation-planner/','_blank')">
+        <span class="tool-tag">SAP · ERP &amp; RISE</span>
+        <div class="tool-name">SAP Negotiation Planner</div>
+        <p class="tool-desc">Plans SAP maintenance renewals, S/4HANA moves, RISE with SAP (Cloud ERP Private) deals and renewals, and audit settlements against SAP's calendar fiscal year. Runs the ECC 2027 clock with the extended-maintenance premium, breaks RISE into components to challenge, flags digital access and user-type exposure, and includes an optional M&amp;A module.</p>
+        <div class="tool-footer">
+          <span class="tool-link">Open tool <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
       </div>
 
     </div>
@@ -497,7 +506,7 @@
 <script>
 
   // Bump this whenever a new entry is added to updates.html
-  const NEWS_LAST_UPDATED = '2026-10-05';
+  const NEWS_LAST_UPDATED = '2026-10-07';
   (function () {
     const [y, m, d] = NEWS_LAST_UPDATED.split('-').map(Number);
     document.getElementById('news-last-updated').textContent =

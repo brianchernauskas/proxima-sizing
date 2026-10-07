@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N5E1D26WRG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP Negotiation Planner</title>
+  <link rel="stylesheet" href="src/styles.css?v=20261007a" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="logo">
+          <svg width="84" height="22" viewBox="0 0 84 22" fill="none" xmlns="http://www.w3.org/2000/svg"><text x="0" y="18" font-family="Georgia, 'Times New Roman', serif" font-size="18" font-weight="700" fill="#ffffff" letter-spacing="-0.3">Proxima</text></svg>
+          <span class="logo-divider"></span>
+          <span>SAP Negotiation Planner</span>
+        </div>
+        <div class="header-taglines">
+          <div class="header-tagline">World-class renewal strategy, tailored to your situation</div>
+          <div class="header-tagline">Intended for Proxima use only, please contact Brian Chernauskas with questions</div>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <!-- Step indicator -->
+      <div class="step-nav" id="step-nav">
+        <div class="step-item active" data-step="1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Estate &amp; Timing</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Footprint &amp; Compliance</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="3">
+          <div class="step-circle">3</div>
+          <div class="step-label">Leverage &amp; M&amp;A</div>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step-item" data-step="4">
+          <div class="step-circle">4</div>
+          <div class="step-label">Your Strategy</div>
+        </div>
+      </div>
+
+      <!-- ══ Step 1: Estate & Timing ══ -->
+      <section class="step-panel active" id="step-1">
+        <div class="panel-header">
+          <h2>SAP Estate &amp; Timing</h2>
+          <p>SAP negotiations turn on one question: where is the estate in its move from ECC and annual maintenance to S/4HANA and subscription cloud? SAP rewards cloud backlog, ECC mainstream maintenance ends December 31, 2027, and SAP's fiscal year follows the calendar, so Q4 and year end matter most.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Company Size</label>
+            <div class="radio-cards" id="company-size">
+              <div class="radio-card" data-value="smb">
+                <div class="rc-icon">🏢</div>
+                <div class="rc-title">SMB</div>
+                <div class="rc-desc">&lt;1,000 employees</div>
+              </div>
+              <div class="radio-card" data-value="midmarket">
+                <div class="rc-icon">🏬</div>
+                <div class="rc-title">Mid-Market</div>
+                <div class="rc-desc">1,000–4,999 employees</div>
+              </div>
+              <div class="radio-card" data-value="enterprise">
+                <div class="rc-icon">🏛️</div>
+                <div class="rc-title">Enterprise</div>
+                <div class="rc-desc">5,000–24,999</div>
+              </div>
+              <div class="radio-card" data-value="global">
+                <div class="rc-icon">🌐</div>
+                <div class="rc-title">Global Enterprise</div>
+                <div class="rc-desc">25,000+ employees</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="annual-spend">Annual SAP Spend (maintenance + subscriptions)</label>
+              <select id="annual-spend">
+                <option value="">Select spend…</option>
+                <option value="under100k">Under $100K</option>
+                <option value="100k-250k">$100K–$250K</option>
+                <option value="250k-500k">$250K–$500K</option>
+                <option value="500k-1m">$500K–$1M</option>
+                <option value="1m-2500k">$1M–$2.5M</option>
+                <option value="2500k-5m">$2.5M–$5M</option>
+                <option value="5m-10m">$5M–$10M</option>
+                <option value="10mplus">$10M+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="primary-contract">Where the Core ERP Runs Today</label>
+              <select id="primary-contract">
+                <option value="">Select…</option>
+                <option value="ecc">SAP ECC 6.0 on-premises + annual maintenance</option>
+                <option value="s4onprem">S/4HANA on-premises (own license) + maintenance</option>
+                <option value="rise">RISE with SAP / Cloud ERP Private subscription</option>
+                <option value="grow">Cloud ERP Public / GROW with SAP</option>
+                <option value="lob">Cloud lines of business only (SuccessFactors, Ariba, Concur…)</option>
+                <option value="mixed">Mix of on-premises ERP and cloud subscriptions</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="event-type">Event You Are Negotiating</label>
+              <select id="event-type">
+                <option value="">Select…</option>
+                <option value="maintenance">Annual maintenance / Enterprise Support renewal</option>
+                <option value="migrate">S/4HANA move or new RISE purchase</option>
+                <option value="rise-renewal">RISE / Cloud ERP renewal or expansion</option>
+                <option value="ecc-extended">ECC end of mainstream maintenance (extended or transition option)</option>
+                <option value="cloud">New cloud line of business or GROW purchase</option>
+                <option value="ai-btp">BTP, Business Data Cloud, or Business AI</option>
+                <option value="audit">Audit or true-up settlement</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="audit-status">Audit &amp; Compliance Contact</label>
+              <select id="audit-status">
+                <option value="">Select…</option>
+                <option value="none">No recent contact</option>
+                <option value="soft">Soft outreach: license review, digital access, or "adoption" program</option>
+                <option value="notice">Formal audit notice received</option>
+                <option value="inprogress">Audit underway: measurement data requested</option>
+                <option value="findings">Findings or compliance claim delivered</option>
+                <option value="closed">Audit closed within the last 2 years</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="renewal-month">Renewal / Decision Month</label>
+              <select id="renewal-month">
+                <option value="">Select month…</option>
+                <option value="1">January: SAP Q1 opens</option>
+                <option value="2">February</option>
+                <option value="3">March: Q1 end</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June: Q2 end</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September: Q3 end</option>
+                <option value="10">October: Q4 opens</option>
+                <option value="11">November</option>
+                <option value="12">December: SAP fiscal year end</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="renewal-timeline">Time Until the Event</label>
+              <select id="renewal-timeline">
+                <option value="">Select…</option>
+                <option value="within-1mo">Less than 30 days</option>
+                <option value="1-3mo">1–3 months</option>
+                <option value="3-6mo">3–6 months</option>
+                <option value="6-12mo">6–12 months</option>
+                <option value="12plusmo">More than 12 months</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="price-protection">Current Price Protection</label>
+              <select id="price-protection">
+                <option value="">Select…</option>
+                <option value="none">None: fees rise at SAP's discretion or by index</option>
+                <option value="capped">Written cap on maintenance or subscription increases</option>
+                <option value="expiring">Cap or price hold ends at this renewal</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="estate-direction">Direction for the SAP Estate</label>
+              <select id="estate-direction">
+                <option value="">Select…</option>
+                <option value="stay">Stay on ECC as long as possible</option>
+                <option value="s4">Move to S/4HANA on-premises or self-hosted</option>
+                <option value="rise">Move to RISE / Cloud ERP Private</option>
+                <option value="reduce">Reduce or replace SAP</option>
+                <option value="grow">Grow: more SAP products or users</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(1, this)">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="showSample()" style="margin-right:auto">👁 View Sample Output</button><button class="btn-primary" onclick="nextStep(1)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 2: Footprint & Compliance ══ -->
+      <section class="step-panel" id="step-2">
+        <div class="panel-header">
+          <h2>Footprint, Migration &amp; Compliance</h2>
+          <p>SAP's leverage comes from the ECC deadline, from user-license classification, and from digital access, the document-based charge for non-SAP systems that create records in SAP. For RISE, the sizing choices made at signature (users, HANA memory, non-production systems) are what the next renewal reprices.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>SAP Products in Use</label>
+            <div class="use-case-grid" id="products">
+              <div class="use-case-card" data-value="ecc"><div class="uc-icon">🏭</div><div class="uc-title">ECC 6.0 / Business Suite 7</div></div>
+              <div class="use-case-card" data-value="s4"><div class="uc-icon">🧠</div><div class="uc-title">S/4HANA (on-premises)</div></div>
+              <div class="use-case-card" data-value="rise"><div class="uc-icon">🚀</div><div class="uc-title">RISE / Cloud ERP Private</div></div>
+              <div class="use-case-card" data-value="grow"><div class="uc-icon">🌱</div><div class="uc-title">Cloud ERP Public / GROW</div></div>
+              <div class="use-case-card" data-value="hana"><div class="uc-icon">🗄️</div><div class="uc-title">BW / HANA database licenses</div></div>
+              <div class="use-case-card" data-value="sf"><div class="uc-icon">👥</div><div class="uc-title">SuccessFactors</div></div>
+              <div class="use-case-card" data-value="ariba"><div class="uc-icon">🛒</div><div class="uc-title">Ariba / Procurement</div></div>
+              <div class="use-case-card" data-value="concur"><div class="uc-icon">🧾</div><div class="uc-title">Concur / Fieldglass</div></div>
+              <div class="use-case-card" data-value="cx"><div class="uc-icon">📇</div><div class="uc-title">Customer Experience (CX)</div></div>
+              <div class="use-case-card" data-value="scm"><div class="uc-icon">📦</div><div class="uc-title">Supply chain (IBP, EWM, TM)</div></div>
+              <div class="use-case-card" data-value="btp"><div class="uc-icon">🧩</div><div class="uc-title">Business Technology Platform</div></div>
+              <div class="use-case-card" data-value="bdc"><div class="uc-icon">📊</div><div class="uc-title">Business Data Cloud / Datasphere</div></div>
+              <div class="use-case-card" data-value="ai"><div class="uc-icon">🤖</div><div class="uc-title">Business AI / Joule</div></div>
+              <div class="use-case-card" data-value="sac"><div class="uc-icon">📈</div><div class="uc-title">Analytics Cloud</div></div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="migration-status">S/4HANA Migration Status</label>
+              <select id="migration-status">
+                <option value="">Select…</option>
+                <option value="notstarted">Not started</option>
+                <option value="planning">Planning: business case or partner selection underway</option>
+                <option value="inflight">In flight: build or testing underway</option>
+                <option value="partial">Partly live: some entities or modules migrated</option>
+                <option value="done">Complete</option>
+                <option value="na">Not applicable: never on ECC</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="migration-path">Migration Approach</label>
+              <select id="migration-path">
+                <option value="">Select…</option>
+                <option value="brownfield">Brownfield: system conversion</option>
+                <option value="greenfield">Greenfield: new implementation</option>
+                <option value="bluefield">Bluefield / selective data transition</option>
+                <option value="undecided">Undecided</option>
+                <option value="na">Not applicable</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="hosting">Where SAP Software Runs</label>
+              <select id="hosting">
+                <option value="">Select…</option>
+                <option value="onprem">Own data center</option>
+                <option value="iaas">Our own AWS / Azure / Google Cloud account</option>
+                <option value="risehosted">SAP-managed (RISE / Cloud ERP Private)</option>
+                <option value="mixed">A mix of the above</option>
+                <option value="unknown">Don't know</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="shelfware">Licenses Paid for but Not Used</label>
+              <select id="shelfware">
+                <option value="">Select…</option>
+                <option value="significant">Significant: over 25% of spend</option>
+                <option value="some">Some: 10–25%</option>
+                <option value="little">Little: under 10%</option>
+                <option value="unknown">Never reconciled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="user-position">User License Position (named users / FUE)</label>
+              <select id="user-position">
+                <option value="">Select…</option>
+                <option value="reconciled">Reconciled: user types match what people actually do</option>
+                <option value="misclass">Some users likely on the wrong license type</option>
+                <option value="low">Low confidence: inactive or over-specified users likely</option>
+                <option value="unknown">Never reviewed</option>
+                <option value="na">Not applicable</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="digital-access">Non-SAP Systems Creating Documents in SAP</label>
+              <select id="digital-access">
+                <option value="">Select…</option>
+                <option value="high">Many: e-commerce, CRM, EDI, IoT, RPA or custom apps write to SAP</option>
+                <option value="moderate">Some integrations</option>
+                <option value="low">Few or none</option>
+                <option value="unknown">Not mapped</option>
+                <option value="na">Not applicable</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="support-stream">Maintenance Model</label>
+              <select id="support-stream">
+                <option value="">Select…</option>
+                <option value="enterprise">SAP Enterprise Support</option>
+                <option value="standard">SAP Standard Support</option>
+                <option value="extended">Planning for extended maintenance (2028–2030)</option>
+                <option value="considering">Considering third-party support</option>
+                <option value="thirdparty">Already on third-party support for part of the estate</option>
+                <option value="na">Not applicable: cloud subscriptions only</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="compliance-confidence">Confidence in License Compliance</label>
+              <select id="compliance-confidence">
+                <option value="">Select…</option>
+                <option value="high">High: measured and reconciled recently</option>
+                <option value="moderate">Moderate: reviewed, some gaps likely</option>
+                <option value="low">Low: known exposure</option>
+                <option value="unknown">Never assessed</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="rise-term">RISE / Cloud ERP Contract Term</label>
+            <select id="rise-term">
+              <option value="">Select…</option>
+              <option value="na">Not applicable: no RISE contract and none proposed</option>
+              <option value="proposed3">Proposed or signed: 3 years</option>
+              <option value="proposed5">Proposed or signed: 5 years</option>
+              <option value="other">Other term, or not yet defined</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Known Cost Pressures</label>
+            <div class="checkbox-group" id="cost-pressures">
+              <label class="checkbox-item"><input type="checkbox" value="uplift" /> Annual increases on every maintenance or subscription renewal</label>
+              <label class="checkbox-item"><input type="checkbox" value="fue" /> Users reclassified to a more expensive license type</label>
+              <label class="checkbox-item"><input type="checkbox" value="repricing" /> Blocked from reducing maintenance by SAP's support rules</label>
+              <label class="checkbox-item"><input type="checkbox" value="infra" /> RISE infrastructure, HANA memory, or non-production system charges</label>
+              <label class="checkbox-item"><input type="checkbox" value="aiunits" /> Business AI units or add-ons priced separately</label>
+              <label class="checkbox-item"><input type="checkbox" value="services" /> Migration, transition, or managed-service costs outside the subscription</label>
+              <label class="checkbox-item"><input type="checkbox" value="contracts" /> Many SAP contracts and order forms on different dates</label>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(2, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
+          <button class="btn-primary" onclick="nextStep(2)">Continue →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 3: Leverage & M&A ══ -->
+      <section class="step-panel" id="step-3">
+        <div class="panel-header">
+          <h2>Leverage, Context &amp; M&amp;A</h2>
+          <p>SAP prices against the cost of leaving, and the cost of leaving ERP is high. What changes the conversation is a credible third-party support quote, a self-hosted S/4HANA option costed against RISE, a hyperscaler commitment that can absorb the hosting, or a corporate transaction that changes which entities use SAP.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Competitive Alternative</label>
+            <div class="radio-cards" id="alternative">
+              <div class="radio-card" data-value="none">
+                <div class="rc-icon">🔒</div>
+                <div class="rc-title">None</div>
+                <div class="rc-desc">SAP is the only option</div>
+              </div>
+              <div class="radio-card" data-value="theoretical">
+                <div class="rc-icon">💭</div>
+                <div class="rc-title">Theoretical</div>
+                <div class="rc-desc">Alternatives exist, none evaluated</div>
+              </div>
+              <div class="radio-card" data-value="evaluating">
+                <div class="rc-icon">🔍</div>
+                <div class="rc-title">Evaluating</div>
+                <div class="rc-desc">Costed plan or quote underway</div>
+              </div>
+              <div class="radio-card" data-value="dual">
+                <div class="rc-icon">⚖️</div>
+                <div class="rc-title">Already Moving</div>
+                <div class="rc-desc">Workloads already migrating off</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="alternative-vendor">Most Credible Alternative</label>
+              <select id="alternative-vendor">
+                <option value="">Select…</option>
+                <option value="selfhosted">Self-hosted S/4HANA on our own hyperscaler account (instead of RISE)</option>
+                <option value="thirdparty">Third-party ECC support (Rimini Street, Spinnaker, Support Revolution)</option>
+                <option value="stayecc">Stay on ECC with SAP extended maintenance</option>
+                <option value="oracle">Oracle Fusion Cloud ERP or NetSuite</option>
+                <option value="workday">Workday</option>
+                <option value="dynamics">Microsoft Dynamics 365</option>
+                <option value="bestofbreed">Best-of-breed or partner-led modules for part of the estate</option>
+                <option value="none">No credible alternative</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="relationship-quality">SAP Account Team Relationship</label>
+              <select id="relationship-quality">
+                <option value="">Select…</option>
+                <option value="none">No stable rep: frequent turnover</option>
+                <option value="poor">Weak / adversarial</option>
+                <option value="moderate">Moderate: occasional contact</option>
+                <option value="strong">Strong: regular cadence</option>
+                <option value="strategic">Strategic: executive sponsorship</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="previous-negotiation">Prior Negotiation Experience</label>
+              <select id="previous-negotiation">
+                <option value="">Select…</option>
+                <option value="none">Never negotiated: paid maintenance invoices as issued</option>
+                <option value="basic">Basic: asked for minor concessions</option>
+                <option value="moderate">Moderate: negotiated a purchase or audit before</option>
+                <option value="experienced">Experienced: multiple full cycles incl. audits</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="internal-champion">Internal Decision Owner</label>
+              <select id="internal-champion">
+                <option value="">Select…</option>
+                <option value="cio">CIO / CTO</option>
+                <option value="cfo">CFO / Finance</option>
+                <option value="procurement">Procurement / Vendor Management</option>
+                <option value="sam">Software Asset Management</option>
+                <option value="basis">SAP Basis / ERP program lead</option>
+                <option value="none">No clear owner</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Change Events in the Coming Term</label>
+            <div class="checkbox-group" id="change-events">
+              <label class="checkbox-item"><input type="checkbox" value="expansion" /> Planned expansion: new SAP products, users, or entities</label>
+              <label class="checkbox-item"><input type="checkbox" value="hyperscaler" /> Hyperscaler commitment (AWS, Azure, Google Cloud) that could absorb SAP hosting</label>
+              <label class="checkbox-item"><input type="checkbox" value="risepush" /> SAP proposing RISE, a maintenance-to-cloud conversion credit, or a bundle</label>
+              <label class="checkbox-item"><input type="checkbox" value="aipush" /> SAP proposing Business AI, Joule, or AI units</label>
+              <label class="checkbox-item"><input type="checkbox" value="bdcpush" /> SAP proposing Business Data Cloud or BTP credits</label>
+              <label class="checkbox-item"><input type="checkbox" value="dcexit" /> Data center exit or hardware refresh</label>
+            </div>
+          </div>
+
+          <!-- M&A module -->
+          <label class="mna-toggle" id="mna-toggle">
+            <input type="checkbox" id="mna-enabled" />
+            <div>
+              <div class="mna-toggle-title">🔀 Include M&amp;A implications</div>
+              <div class="mna-toggle-desc">Turn on if an acquisition, merger, sale, or divestiture will change which entities use SAP during this term. Adds an M&amp;A section covering license and subscription entity scope, user count changes, contract consolidation, and carve-outs.</div>
+            </div>
+          </label>
+
+          <div class="mna-panel" id="mna-panel" hidden>
+            <div class="form-group">
+              <label>Transaction Type</label>
+              <div class="radio-cards" id="mna-type">
+                <div class="radio-card" data-value="acquiring">
+                  <div class="rc-icon">➕</div>
+                  <div class="rc-title">Acquiring</div>
+                  <div class="rc-desc">We are buying a company</div>
+                </div>
+                <div class="radio-card" data-value="acquired">
+                  <div class="rc-icon">🤝</div>
+                  <div class="rc-title">Being Acquired</div>
+                  <div class="rc-desc">We are the target</div>
+                </div>
+                <div class="radio-card" data-value="merger">
+                  <div class="rc-icon">🔗</div>
+                  <div class="rc-title">Merger</div>
+                  <div class="rc-desc">Combining with a peer</div>
+                </div>
+                <div class="radio-card" data-value="divesting">
+                  <div class="rc-icon">✂️</div>
+                  <div class="rc-title">Divesting</div>
+                  <div class="rc-desc">Selling or spinning off a unit</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="mna-stage">Deal Stage</label>
+                <select id="mna-stage">
+                  <option value="">Select…</option>
+                  <option value="confidential">Confidential: not yet announced</option>
+                  <option value="announced">Announced: not yet closed</option>
+                  <option value="integrating">Closed: integration underway</option>
+                  <option value="settled">Closed more than 12 months ago</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="mna-user-impact">Change in SAP Usage</label>
+                <select id="mna-user-impact">
+                  <option value="">Select…</option>
+                  <option value="under10">Under 10%</option>
+                  <option value="10-25">10–25%</option>
+                  <option value="25-50">25–50%</option>
+                  <option value="over50">Over 50%</option>
+                  <option value="unknown">Don't know yet</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="mna-counterparty">Other Party's SAP Footprint</label>
+                <select id="mna-counterparty">
+                  <option value="">Select…</option>
+                  <option value="none">No SAP contracts</option>
+                  <option value="onprem">On-premises licenses + maintenance</option>
+                  <option value="rise">Its own RISE / Cloud ERP contract</option>
+                  <option value="cloud">Other cloud subscriptions</option>
+                  <option value="unknown">Don't know yet</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="mna-assignment">Assignment / Affiliate Definition</label>
+                <select id="mna-assignment">
+                  <option value="">Select…</option>
+                  <option value="consent">Assignment requires SAP's consent</option>
+                  <option value="permitted">Agreement covers affiliates or successors</option>
+                  <option value="unknown">Haven't reviewed it</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Integration Complications</label>
+              <div class="checkbox-group" id="mna-complications">
+                <label class="checkbox-item"><input type="checkbox" value="entities" /> Subscription or license names specific legal entities only</label>
+                <label class="checkbox-item"><input type="checkbox" value="shared" /> Shared SAP systems serve both entities</label>
+                <label class="checkbox-item"><input type="checkbox" value="contracts" /> SAP contracts on different dates and terms</label>
+                <label class="checkbox-item"><input type="checkbox" value="tsa" /> Carved-out entity needs a transition period (TSA)</label>
+                <label class="checkbox-item"><input type="checkbox" value="users" /> User counts or user types change materially</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(3, this)" style="margin-right:auto">✨ Fill Sample Data</button>
+          <button class="btn-secondary" onclick="prevStep(3)">← Back</button>
+          <button class="btn-primary" onclick="generateStrategy()">Generate My Strategy →</button>
+        </div>
+      </section>
+
+      <!-- ══ Step 4: Output ══ -->
+      <section class="step-panel" id="step-4">
+        <div id="strategy-output"></div>
+        <div class="step-actions" style="margin-top:2rem;">
+          <button class="btn-secondary" onclick="prevStep(4)">← Edit Inputs</button>
+          <button class="btn-primary" onclick="printStrategy()">🖨️ Export Strategy</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>This tool provides strategic guidance based on publicly reported SAP contracting practices and procurement benchmarks. SAP does not publish negotiated discount, maintenance, or subscription escalator data, so every percentage here is a directional estimate, not a vendor-confirmed figure. Actual outcomes depend on contract structure, compliance position, timing within SAP's fiscal year, and your credible alternatives. Nothing here is legal advice on audits, license assignment, or M&amp;A. Have counsel read the actual clauses.</p>
+    </footer>
+  </div>
+
+  <script src="src/app.js?v=20261007a"></script>
+</body>
+</html>
