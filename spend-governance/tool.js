@@ -63,7 +63,7 @@
       if (a.finops === 'mature') { lo -= 1; hi -= 1; }
       let accel = false;
       if (a.owner === 'yes') { lo = Math.max(4, lo - P.handoverMonthsSaved[0]); hi = hi - P.handoverMonthsSaved[1]; accel = true; }
-      hi = Math.min(Math.max(hi, lo + 1), 13); lo = Math.max(lo, 4);
+      hi = Math.min(Math.max(hi, lo + 1), 12); lo = Math.max(lo, 4); // cap at the stated 6–12 month offering
 
       // Value (% of annual spend per year)
       const g = P.creep[a.growth], f = P.forecastLoss[a.fc], lock = P.lockIn[a.prior];
