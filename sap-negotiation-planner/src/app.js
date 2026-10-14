@@ -133,6 +133,9 @@ function collectStep(step) {
     state.supportStream = document.getElementById('support-stream').value;
     state.complianceConfidence = document.getElementById('compliance-confidence').value;
     state.riseTerm = document.getElementById('rise-term').value;
+    state.deferIntent = document.getElementById('defer-intent').value;
+    state.deferHorizon = document.getElementById('defer-horizon').value;
+    state.deferScope = document.getElementById('defer-scope').value;
     state.costPressures = checked('cost-pressures');
   }
   if (step === 3) {
@@ -171,7 +174,7 @@ document.querySelectorAll('.use-case-card').forEach(card => {
 });
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
-const RANGES_LAST_UPDATED = 'October 7, 2026';
+const RANGES_LAST_UPDATED = 'October 14, 2026';
 
 /* ─── SAP corporate & licensing context ───────────────────────────────────────
    Unlike the percentage ranges elsewhere in this file, these are dated,
@@ -209,6 +212,13 @@ const SAP_CONTEXT = {
       detail: 'SAP will provide mainstream maintenance for Business Suite 7 core applications (including ERP 6.0) until the end of 2027. Optional extended maintenance runs from January 1, 2028 to December 31, 2030 at a premium of two percentage points on the maintenance basis. No contractual change is needed before the end of 2027.',
       implication: 'The deadline creates urgency, but it is a commercial lever more than a technical cliff: extended maintenance is available for three more years and costs about 9% more than today\'s 22% rate. Do not let the date force a rushed RISE signature. Cost the extended-maintenance path honestly and put it on the table as your fallback.',
       when: s => s.primaryContract === 'ecc' || s.primaryContract === 'mixed' || s.products?.includes('ecc') || s.eventType === 'ecc-extended',
+    },
+    {
+      id: 'eu-commitments', kind: 'licensing', date: 'Jul 9, 2026 (checked Oct 14, 2026)',
+      event: 'EU binding commitments on on-premises ERP maintenance',
+      detail: 'The European Commission accepted SAP\'s commitments in case AT.40823 and made them binding for ten years, without a finding of infringement. As reported by several outlets: customers can split an on-premises ERP landscape and use third-party support, or none, for each part; reinstatement fees are removed; back-maintenance on return is capped at the lower of six months or half the fees for the period away; extra termination rights apply in defined cases (for example divestiture, large workforce reduction, insolvency, or an implementation SAP is responsible for); and buying more licenses should not reset the lock-in period. SAP states the decision concerns on-premises maintenance only and not its cloud offerings.',
+      implication: 'Leaving SAP maintenance is cheaper and more reversible than it was a year ago, which makes third-party support a credible way to defer RISE and a stronger negotiating alternative. The limits matter: cloud and RISE are outside the decision, it does not change your license terms or audit rights, and these terms come from press coverage, not the decision text. Read the commitments and your own contract, and get SAP\'s position on your landscape in writing, before you rely on them.',
+      when: s => onPremEstate(s) || ['considering', 'thirdparty', 'extended'].includes(s.supportStream) || s.alternativeVendor === 'thirdparty' || ['option', 'quote', 'committed'].includes(s.deferIntent),
     },
     {
       id: 'transition-option', kind: 'licensing', date: 'Q1 2025',
@@ -299,6 +309,11 @@ const riseInPlay = s => s.primaryContract === 'rise' || s.products?.includes('ri
   || s.estateDirection === 'rise' || s.changeEvents?.includes('risepush');
 const auditActive = s => ['notice', 'inprogress', 'findings'].includes(s.auditStatus) || s.eventType === 'audit';
 const eccNotMigrated = s => onEcc(s) && ['notstarted', 'planning'].includes(s.migrationStatus);
+// Third-party support as a way to defer the RISE decision
+const deferCredible = s => ['quote', 'committed'].includes(s.deferIntent);
+const deferInPlay = s => onEcc(s) && (['option', 'quote', 'committed'].includes(s.deferIntent)
+  || ['considering', 'thirdparty'].includes(s.supportStream) || s.alternativeVendor === 'thirdparty'
+  || s.estateDirection === 'stay');
 
 // SAP's fiscal year is the calendar year.
 // Q1 = Jan–Mar, Q2 = Apr–Jun, Q3 = Jul–Sep, Q4 = Oct–Dec.
@@ -382,6 +397,9 @@ function getLeverageScore(s) {
   if (s.supportStream === 'thirdparty') score += 6;
   else if (s.supportStream === 'considering') score += 3;
   if (s.alternativeVendor === 'selfhosted' && ['evaluating', 'dual'].includes(s.alternative)) score += 2;
+  // A written third-party quote is the one fallback that also defers the ECC decision
+  if (s.deferIntent === 'quote') score += 3;
+  else if (s.deferIntent === 'option') score += 1;
 
   // Fiscal timing only matters where the date can move; maintenance renewals are fixed
   const fc = fiscalContext(s.renewalMonth);
@@ -394,8 +412,10 @@ function getLeverageScore(s) {
   // The ECC deadline works against customers who have not started
   if (eccNotMigrated(s)) {
     const months = eccMonthsRemaining();
-    if (months <= 15) score -= s.migrationStatus === 'notstarted' ? 7 : 4;
-    else if (months <= 24) score -= 2;
+    // A credible third-party deferral halves the pressure, because the date stops being a cliff
+    const relief = deferCredible(s) ? 0.5 : 1;
+    if (months <= 15) score -= Math.round((s.migrationStatus === 'notstarted' ? 7 : 4) * relief);
+    else if (months <= 24) score -= Math.round(2 * relief);
   }
 
   // Compliance exposure is SAP's strongest card
@@ -512,7 +532,7 @@ function getDiscountRange(s, leverage) {
   // Purchases made to settle an audit get the least discount
   if (auditActive(s)) { lo -= 5; hi -= 5; }
   // Customers up against the ECC date negotiate from a weaker position
-  if (eccNotMigrated(s) && eccMonthsRemaining() <= 15) { lo -= 2; hi -= 3; }
+  if (eccNotMigrated(s) && eccMonthsRemaining() <= 15 && !deferCredible(s)) { lo -= 2; hi -= 3; }
   if (leverage < 25) hi -= 4;
 
   lo = Math.max(0, Math.round(lo));
@@ -616,6 +636,32 @@ function extendedMaintenanceCost(s) {
   return { yearly: round(maint * EXTENDED_UPLIFT), threeYear: round(maint * EXTENDED_UPLIFT * 3), maint: round(maint) };
 }
 
+// Third-party support as a deferral of the RISE decision.
+// Provider savings are vendor-advertised (commonly quoted at 40-50% of SAP's fee).
+function deferralModel(s) {
+  const acv = ACV_TIERS[s.annualSpend]?.mid;
+  if (!acv || !onEcc(s)) return null;
+  const maintShare = { ecc: 0.9, s4onprem: 0.9, mixed: 0.55, unknown: 0.6 }[s.primaryContract] ?? 0.55;
+  const eccShare = s.primaryContract === 'mixed' ? 0.8 : 1;
+  const scopeShare = s.deferScope === 'stable' ? 0.5 : 1;
+  const inScope = acv * maintShare * eccShare * scopeShare;
+  const years = { '1-2yr': 2, '3-4yr': 4, '5plusyr': 6, unknown: 3 }[s.deferHorizon] ?? 3;
+  const round = n => Math.round(n / 1000) * 1000;
+  // Extended-maintenance premium years avoided: the 2028-2030 window that falls inside the deferral
+  const monthsToEnd = eccMonthsRemaining();
+  const premYears = Math.max(0, Math.min(3, years - Math.ceil(monthsToEnd / 12)));
+  const premium = inScope * EXTENDED_UPLIFT;
+  const yearlyLo = inScope * 0.4, yearlyHi = inScope * 0.5;
+  // Illustrative drift if SAP's list or escalators rise 3-5% a year while the decision waits
+  const driftLo = (Math.pow(1.03, years) - 1) * 100, driftHi = (Math.pow(1.05, years) - 1) * 100;
+  return {
+    years, inScope: round(inScope), premYears, premium: round(premium),
+    yearlyLo: round(yearlyLo), yearlyHi: round(yearlyHi),
+    totalLo: round(yearlyLo * years + premium * premYears), totalHi: round(yearlyHi * years + premium * premYears),
+    driftLo: Math.round(driftLo), driftHi: Math.round(driftHi),
+  };
+}
+
 const fmtMoney = n => '$' + n.toLocaleString('en-US');
 
 // ─── Renewal posture ──────────────────────────────────────────────────────────
@@ -627,6 +673,7 @@ function recommendedPosture(s, leverage) {
     if (s.mnaStage !== 'confidential') return 'Consolidate & Re-Paper';
   }
   if (s.auditStatus === 'notice') return 'Scope the Audit';
+  if (s.deferIntent === 'committed' || (s.deferIntent === 'quote' && s.estateDirection === 'stay')) return 'Defer with Third-Party Support';
   if (s.eventType === 'rise-renewal') return 'RISE Renewal Reset';
   if (s.eventType === 'migrate' || (eccNotMigrated(s) && s.estateDirection === 'rise')) return 'Negotiate the RISE Deal';
   if (eccNotMigrated(s) && eccMonthsRemaining() <= 15) return 'Run the ECC Clock';
@@ -743,6 +790,8 @@ function buildStrategyHTML(s) {
 
     ${migrationPathsHTML(s)}
 
+    ${deferInPlay(s) && onPremEstate(s) ? deferralSectionHTML(s) : ''}
+
     ${mna ? mnaSectionHTML(s, mna) : ''}
 
     <div class="strategy-section">
@@ -834,7 +883,7 @@ function buildStrategyHTML(s) {
           </tr>`).join('')}</tbody>
         </table>
         <p style="margin-top:14px;font-size:.88rem;line-height:1.7;color:var(--text-secondary);">
-          SAP's support terms generally require maintenance on the whole licensed base of a product set, and removing licenses can reprice what remains, so savings come from ending whole license sets rather than individual licenses. Map every license to the system and users behind it first. For subscriptions, the largest controllable lines are user types and the size of the hosted systems, because those are what the renewal reprices.
+          SAP's support terms have generally required maintenance on the whole licensed base of a product set, and removing licenses can reprice what remains, so savings have come from ending whole license sets rather than individual licenses. SAP's July 2026 EU commitments widen termination and landscape-split options for on-premises ERP, so ask SAP how they apply to your contract before assuming the older limits. Map every license to the system and users behind it first. For subscriptions, the largest controllable lines are user types and the size of the hosted systems, because those are what the renewal reprices.
         </p>
         <p style="margin-top:10px;font-size:.82rem;line-height:1.7;color:var(--text-muted);font-style:italic;">
           Directional estimate derived from your spend band, contract structure, and reported shelfware. It is not a measured figure. Third-party support savings are vendor-advertised, and moving off SAP maintenance ends access to SAP patches and new releases for the products moved.
@@ -999,7 +1048,7 @@ function eccClockHTML(s) {
           </div>
         </div>` : ''}
         <p style="margin-top:14px;font-size:.88rem;line-height:1.7;color:var(--text-secondary);">
-          The date is real, but the cost of missing it is bounded: three more years of support at about a 9% premium, with scope focused on security and legal compliance rather than new functionality. That figure is the number to put against any RISE proposal that is framed as urgent. If RISE costs more over the same period than staying on extended maintenance while you migrate, SAP is asking you to pay for speed, and that is a negotiable price.
+          The date is real, but the cost of missing it is bounded: three more years of support at about a 9% premium, with scope focused on security and legal compliance rather than new functionality. That figure is the number to put against any RISE proposal that is framed as urgent. If RISE costs more over the same period than staying on extended maintenance while you migrate, SAP is asking you to pay for speed, and that is a negotiable price. Third-party support is the other way to take the date out of the decision, and SAP's July 2026 EU commitments made leaving and returning cheaper for on-premises customers.
         </p>
         <p style="margin-top:10px;font-size:.82rem;line-height:1.7;color:var(--text-muted);font-style:italic;">
           Dates and the two-point premium are from SAP's published maintenance commitments (February and June 2020). The dollar figure uses a representative maintenance share of your spend band and the standard 22% rate. Confirm both against your actual contract.
@@ -1067,7 +1116,7 @@ function migrationPathsHTML(s) {
     { id: 'selfhosted', name: 'S/4HANA on-premises or self-hosted on your cloud account', cost: 'License conversion plus 22% maintenance; infrastructure paid on your own hyperscaler account.', watch: 'You run and size the platform. Confirm what conversion credit applies to your existing ECC licenses. S/4HANA is committed to be maintained through 2040.', },
     { id: 'rise', name: 'RISE / Cloud ERP Private', cost: 'Multi-year subscription covering software, infrastructure and managed services. Priced by FUE and HANA sizing.', watch: 'Fastest route to SAP\'s current cloud roadmap and the one SAP rewards. Sizing and add-ons are re-priced at renewal, and exit is harder.', },
     { id: 'grow', name: 'Cloud ERP Public / GROW with SAP', cost: 'Standardized multi-tenant subscription with less room for customization.', watch: 'Fits companies willing to adopt standard processes. Poor fit for heavily modified ECC estates.', },
-    { id: 'thirdparty', name: 'Third-party support on ECC', cost: 'Vendors advertise around half of SAP\'s maintenance fee.', watch: 'Defers the decision rather than solving it, and ends SAP patches and new releases for those systems. Ask SAP in writing how it affects your eligibility for conversion credits and discounts.', },
+    { id: 'thirdparty', name: 'Third-party support on ECC (defers the RISE decision)', cost: 'Vendors advertise around half of SAP\'s maintenance fee, and the extended-maintenance premium is avoided. See the deferral section below.', watch: 'Defers the decision rather than solving it, and ends SAP patches and new releases for those systems. Return fees were reduced by SAP\'s July 2026 EU commitments, but cloud and RISE are outside them. Ask SAP in writing how deferral affects conversion credits and discounts.', },
   ];
   return `
     <div class="strategy-section">
@@ -1087,6 +1136,89 @@ function migrationPathsHTML(s) {
         </table></div>
         <p style="margin-top:12px;font-size:.88rem;line-height:1.7;color:var(--text-secondary);">
           SAP's proposal will usually present only the RISE path. Having the other four costed, even roughly, is the largest single source of leverage in an ECC negotiation: it turns "you have to move by 2027" into "RISE is one option and we will take it on the right terms". ${s.alternativeVendor === 'selfhosted' ? 'You named self-hosted S/4HANA as your alternative, so build that total cost of ownership, including infrastructure and operations, to match the RISE quote line by line.' : ''}
+        </p>
+      </div>
+    </div>`;
+}
+
+// ═══ Third-party support: deferring the RISE decision ════════════════════════
+const DEFER_ROWS = [
+  { item: 'SAP patches, notes and new releases', effect: 'Given up for the systems moved', note: 'The provider delivers its own fixes and workarounds instead. Download every note and release you are entitled to first, and confirm in writing how security and regulatory updates are covered for each country you operate in.' },
+  { item: 'Your licenses', effect: 'Kept', note: 'The license agreement continues. So do audit rights and digital access exposure, which third-party support does not remove.' },
+  { item: 'Custom code and modifications', effect: 'Check scope', note: 'Providers advertise support for customized estates. Get the scope, response times and any exclusions for your custom code in the contract.' },
+  { item: 'Returning to SAP support', effect: 'Cheaper than before, not free', note: 'As reported, the July 2026 EU commitments remove reinstatement fees and cap back-maintenance at the lower of six months or half the fees for the period away. They cover on-premises maintenance, so confirm how they apply to your contract.' },
+  { item: 'Splitting the landscape', effect: 'Now clearer', note: 'As reported, customers can take third-party support or none for part of an on-premises landscape and keep SAP support on the rest. This is what lets you move stable ECC systems while migrating the ones that matter.' },
+  { item: 'A later RISE order', effect: 'Biggest open question', note: 'Cloud and RISE sit outside the EU commitments. Ask SAP in writing whether today\'s discount and conversion credit remain available later, and treat a refusal as information about how much SAP needs the order.' },
+  { item: 'Notice and timing', effect: 'Contract specific', note: 'Termination typically needs notice before the support term ends. Find your date, and align the cut-over with it so you do not pay for a second year you do not need.' },
+];
+
+function deferralSectionHTML(s) {
+  const d = deferralModel(s);
+  const intentLabel = { none: 'Reference', option: 'Fallback under consideration', quote: 'Quote in hand', committed: 'Decided' }[s.deferIntent]
+    || (['considering', 'thirdparty'].includes(s.supportStream) ? 'Under consideration' : 'Reference');
+  const horizonLabel = { '1-2yr': '1–2 years', '3-4yr': '3–4 years', '5plusyr': 'more than 5 years', unknown: 'an unspecified period' }[s.deferHorizon] || 'an unspecified period';
+  const fits = [];
+  const poor = [];
+  if (s.migrationStatus === 'notstarted' || s.migrationStatus === 'planning') fits.push('Migration has not started, and a rushed RISE signature is the alternative');
+  if (s.shelfware === 'significant' || s.estateDirection === 'stay') fits.push('The ECC estate is stable and heavily used as is, with little roadmap need');
+  if (s.alternative === 'none' || s.alternative === 'theoretical') fits.push('You need a credible alternative to restore negotiating position');
+  if (s.deferScope === 'stable') fits.push('You can split the landscape and keep SAP support where you are migrating');
+  if (['inflight', 'partial'].includes(s.migrationStatus)) poor.push('Migration is already in flight, so third-party support only suits entities that will not migrate soon');
+  if (s.migrationStatus === 'done') poor.push('You are already on S/4HANA, where deferral is a different question');
+  if (s.digitalAccess === 'high' || auditActive(s)) poor.push('Digital access or audit exposure is open, since leaving maintenance does not close it and SAP may press harder');
+  if (s.changeEvents?.includes('risepush') && s.estateDirection === 'rise') poor.push('The business has already committed to cloud capabilities that ECC cannot provide');
+  poor.push('You need SAP-only functionality, such as new modules or AI features, on the ECC systems');
+  if (!fits.length) fits.push('The ECC estate runs reliably and the business does not need new SAP functionality in the next few years');
+
+  return `
+    <div class="strategy-section">
+      <div class="section-header">
+        <span class="section-icon">⏸️</span>
+        <h3>Third-Party Support: Deferring the RISE Decision</h3>
+        <span class="section-badge ${s.deferIntent === 'committed' || s.deferIntent === 'quote' ? 'green' : 'blue'}">${intentLabel}</span>
+      </div>
+      <div class="section-content">
+        <p style="font-size:.9rem;line-height:1.7;color:var(--text-secondary);">
+          Moving ECC maintenance to an independent provider keeps the system supported without SAP, which removes the extended-maintenance premium and the December 2027 date from your decision. It defers RISE; it does not replace it. You still need a destination, and the value of deferring is the time and leverage it buys. It is also the one alternative SAP cannot discount away, which is why a written quote is worth having even if you never use it.
+        </p>
+        ${d ? `
+        <div class="discount-estimate" style="margin-top:14px;">
+          <div>
+            <div class="de-range" style="font-size:1.6rem;">${fmtMoney(d.yearlyLo)}–${fmtMoney(d.yearlyHi)}</div>
+            <div class="de-label">estimated annual saving</div>
+          </div>
+          <div class="de-bar-wrap">
+            <div class="de-note">On roughly <strong>${fmtMoney(d.inScope)}</strong> of in-scope ECC maintenance${s.deferScope === 'stable' ? ' (stable systems only)' : ''}, at the 40–50% saving providers advertise. Over <strong>${horizonLabel}</strong> that is about <strong>${fmtMoney(d.totalLo)}–${fmtMoney(d.totalHi)}</strong>${d.premYears ? `, including about ${fmtMoney(d.premium)} a year of extended-maintenance premium avoided in ${d.premYears} of those years` : ''}.</div>
+          </div>
+        </div>
+        <div class="alert alert-warning" style="margin-top:14px;"><span class="alert-icon">⚖️</span><div><strong>Set the saving against the cost of waiting.</strong> If SAP's list or escalators rise 3–5% a year, the entry price of RISE could be about <strong>${d.driftLo}–${d.driftHi}%</strong> higher after ${d.years} years. That is an illustrative assumption, not a forecast. Provider fees, your own operating effort, and any conversion credit you lose are not in the saving above, so the true net is lower.</div></div>` : ''}
+        <h4 style="margin:18px 0 8px;font-size:.92rem;">What changed in July 2026</h4>
+        <p style="font-size:.86rem;line-height:1.7;color:var(--text-secondary);">
+          The European Commission accepted binding commitments from SAP on on-premises ERP maintenance on July 9, 2026, for ten years. As reported, customers can split a landscape across providers, reinstatement fees are removed, back-maintenance on return is capped, and additional termination rights apply in defined cases. SAP says the decision does not concern its cloud offerings. This was reported by several outlets and SAP; the decision text itself should be read before you rely on a specific term.
+        </p>
+        <div class="table-scroll" style="margin-top:14px;"><table class="corp-table">
+          <thead><tr><th>Area</th><th>Effect</th><th>What to confirm</th></tr></thead>
+          <tbody>${DEFER_ROWS.map(r => `<tr><td><strong>${r.item}</strong></td><td>${r.effect}</td><td>${r.note}</td></tr>`).join('')}</tbody>
+        </table></div>
+        <div class="concessions-grid" style="margin-top:16px;">
+          <div class="concession-card"><div class="cc-title">Deferral fits when</div><div class="cc-desc">${fits.map(f => '• ' + f).join('<br>')}</div></div>
+          <div class="concession-card"><div class="cc-title">Deferral is a poor fit when</div><div class="cc-desc">${poor.map(f => '• ' + f).join('<br>')}</div></div>
+        </div>
+        <h4 style="margin:18px 0 8px;font-size:.92rem;">A deferral roadmap that does not become drift</h4>
+        <div class="timeline" style="margin-top:6px;">
+          ${[
+            ['1', 'Now', 'Quote and scope', 'Get itemized written quotes from two providers, covering custom code, regional compliance, response times, and exit terms. Decide whole estate or split landscape.'],
+            ['2', 'Before notice', 'Get SAP\'s position in writing', 'Ask whether today\'s RISE discount and conversion credit survive a deferral, and how the July 2026 commitments apply to your contract. Use the answer, and the quote, in the RISE negotiation.'],
+            ['3', 'At cut-over', 'Move on your contract date', 'Download every patch, note and release you are entitled to. Time notice to your term so you do not pay for a year you do not need. Keep SAP support on anything you are migrating.'],
+            ['4', 'Every 12 months', 'Hold a decision gate', 'Review security, regulatory, business and SAP price triggers against a current RISE quote. Deferral is a decision you renew, not a default.'],
+          ].map(([n, when, title, desc]) => `
+          <div class="timeline-item">
+            <div class="timeline-left"><div class="tl-dot">${n}</div><div class="tl-line"></div></div>
+            <div class="tl-content"><div class="tl-phase">${when}</div><div class="tl-title">${title}</div><div class="tl-desc">${desc}</div></div>
+          </div>`).join('')}
+        </div>
+        <p style="margin-top:12px;font-size:.78rem;line-height:1.6;color:var(--text-muted);font-style:italic;">
+          Provider savings are vendor-advertised and vary; vendors have also claimed support commitments well past 2030, which is their statement, not SAP's. Commercial guidance only. Have counsel review the termination, license and audit clauses before giving notice.
         </p>
       </div>
     </div>`;
@@ -1129,6 +1261,7 @@ function factorsTableHTML(s, fc) {
   else if (s.alternative === 'evaluating') rows.push(['Active costed alternative or quote', 'Strong', 'green']);
   else if (s.alternative === 'none') rows.push(['No credible alternative, and SAP knows it', 'Weak', 'red']);
 
+  if (deferCredible(s)) rows.push(['Written third-party quote: the ECC date is not a cliff', 'Strong', 'green']);
   if (s.supportStream === 'thirdparty') rows.push(['Third-party support already in use', 'Strong', 'green']);
   else if (s.supportStream === 'considering') rows.push(['Third-party support under evaluation', 'Moderate', 'green']);
 
@@ -1333,7 +1466,11 @@ function buildAlerts(s, tier, leverage, fc) {
 
   if (eccNotMigrated(s)) {
     const m = eccMonthsRemaining();
-    alerts.push({ type: m <= 15 ? 'danger' : 'warning', icon: '⏳', text: `<strong>About ${m} months to the end of ECC mainstream maintenance (December 31, 2027).</strong> Migration is ${s.migrationStatus === 'notstarted' ? 'not started' : 'still in planning'}. SAP's sales team will use the date as pressure. Cost extended maintenance (about a 9% premium to 2030) as a deliberate fallback, and do not sign a RISE order on a deadline you can afford to miss.` });
+    alerts.push({ type: m <= 15 ? 'danger' : 'warning', icon: '⏳', text: `<strong>About ${m} months to the end of ECC mainstream maintenance (December 31, 2027).</strong> Migration is ${s.migrationStatus === 'notstarted' ? 'not started' : 'still in planning'}. SAP's sales team will use the date as pressure. Cost extended maintenance (about a 9% premium to 2030) and third-party support as deliberate fallbacks, and do not sign a RISE order on a deadline you can afford to miss.${deferCredible(s) ? ' You have a credible third-party option, which takes most of the sting out of the date.' : ''}` });
+  }
+
+  if (s.deferIntent === 'committed') {
+    alerts.push({ type: 'warning', icon: '📤', text: '<strong>You have decided to move ECC to third-party support.</strong> Check the notice and termination terms in your SAP agreement, and download every patch, note and release you are entitled to before maintenance ends. Decide whether to move the whole estate or split the landscape, and get SAP\'s position on a later RISE order in writing before you give notice. SAP\'s July 2026 EU commitments reduce return fees, but they cover on-premises maintenance only.' });
   }
 
   if (riseInPlay(s) && (s.changeEvents?.includes('risepush') || s.eventType === 'migrate')) {
@@ -1433,8 +1570,16 @@ function buildTactics(s, tier, leverage, fc, increase) {
   if (['considering', 'thirdparty'].includes(s.supportStream) || (onEcc(s) && s.alternative !== 'dual')) {
     tactics.push({
       title: 'Get a Real Third-Party Support Quote for Stable ECC Systems',
-      desc: 'For ECC systems you will not upgrade before they are retired, third-party support vendors typically advertise around half of SAP\'s fee. A written quote is a credible alternative SAP cannot discount away. Before moving, download every patch and version you are entitled to, and ask SAP in writing how third-party support affects eligibility for conversion credits and discounts on the cloud side.',
+      desc: 'For ECC systems you will not upgrade before they are retired, third-party support vendors typically advertise around half of SAP\'s fee. A written quote is a credible alternative SAP cannot discount away. SAP\'s July 2026 EU commitments reduce the cost of leaving and returning for on-premises ERP, so the quote is also cheaper to act on than it was. Before moving, download every patch and version you are entitled to, and ask SAP in writing how third-party support affects eligibility for conversion credits and discounts on the cloud side.',
       impact: s.supportStream === 'considering' ? 'high' : 'medium',
+    });
+  }
+
+  if (deferInPlay(s) && onPremEstate(s)) {
+    tactics.push({
+      title: 'Use Third-Party Support to Move the RISE Decision to Your Timetable',
+      desc: `Third-party support lets ECC keep running and supported while you decide, which removes the extended-maintenance premium and the December 2027 deadline from the negotiation. ${s.deferScope === 'stable' ? 'Splitting the landscape and moving only stable systems keeps SAP support on what you are migrating and limits the exposure. ' : ''}Use it two ways: as the credible alternative that restores your discount, and as a real path if SAP will not price RISE sensibly. Before any move, get SAP's position in writing on whether a RISE order signed later keeps today's discount and conversion credit, and set decision gates so deferral does not become drift.`,
+      impact: 'high',
     });
   }
 
@@ -1537,6 +1682,9 @@ function buildConcessions(s, tier) {
     c.push({ icon: '🔓', title: 'Exit and Data Return', desc: 'A defined exit period, data export in a usable format at no extra charge, and clarity on what happens to custom code at the end of the term.', priority: 'should' });
     c.push({ icon: '📈', title: 'Renewal Price Mechanism', desc: 'Renewal priced as a discount off a stated list, not a fresh quote, with a ceiling on the increase at renewal.', priority: 'should' });
   }
+  if (deferInPlay(s) && onPremEstate(s)) {
+    c.push({ icon: '🔒', title: 'RISE Offer Hold for a Deferred Decision', desc: 'Written confirmation that the discount, conversion credit, and escalator terms offered today remain available if you sign RISE within 24–36 months, and that moving ECC to third-party support does not forfeit them.', priority: 'must' });
+  }
   if (s.digitalAccess === 'high' || s.digitalAccess === 'moderate' || s.digitalAccess === 'unknown') {
     c.push({ icon: '🔌', title: 'Digital Access Position', desc: 'Written acknowledgement of your digital access position, a volume baseline, and a release for past document creation as part of any new order.', priority: 'must' });
   }
@@ -1594,6 +1742,7 @@ function buildTimeline(s, fc) {
       s.alternative === 'none' || s.alternative === 'theoretical'
         ? 'Get a third-party support quote or a costed replacement case for one workload'
         : 'Turn your alternative into a costed plan with SAP revenue at risk',
+      ...(deferInPlay(s) && onPremEstate(s) ? ['Get itemized written quotes from two third-party providers, covering custom code, regional compliance updates, and exit terms'] : []),
       'Agree your walk-away position, decision owner, and single point of contact for SAP internally',
     ],
   });
@@ -1649,6 +1798,8 @@ function buildQuestions(s, tier) {
   q.push('Will you cap annual increases in writing for the full term, including add-ons purchased during it?');
   if (onPremEstate(s)) q.push('If we terminate maintenance on specific license sets, which remaining licenses would be repriced, and by how much?');
   if (onEcc(s)) q.push('What would the RISE price be if we signed in 2028 instead, and what is the exact extended-maintenance premium for the systems that have not migrated?');
+  if (deferInPlay(s) && onPremEstate(s)) q.push('If we move ECC to third-party support, will the RISE discount and conversion credit offered today remain available if we sign within 24 to 36 months, and under what conditions?');
+  if (deferInPlay(s) && onPremEstate(s)) q.push('Following the July 2026 commitments, how do you apply landscape splitting, back-maintenance, and reinstatement to our contract, and can you confirm that in writing?');
   if (riseInPlay(s)) q.push('What credit will you give against maintenance we have already paid, how long does it last, and when does it start?');
   if (riseInPlay(s)) q.push('How is the user mix mapped to FUE types today, and what is the process and price if we reduce users or memory at renewal?');
   if (auditActive(s)) q.push('Which contract clause and which specific usage support each finding, and what data did you rely on?');
@@ -1686,6 +1837,9 @@ function buildRisks(s, tier, leverage) {
   }
   if (s.costPressures?.includes('repricing') || s.shelfware === 'significant') {
     r.push({ level: 'medium', title: 'Locked-In Shelfware', desc: 'Support rules can make it cheaper to keep paying for unused licenses than to drop them. Negotiate no-repricing terms while SAP wants something from you.' });
+  }
+  if (deferInPlay(s) && onPremEstate(s)) {
+    r.push({ level: 'medium', title: 'Deferral Becomes Drift', desc: 'Third-party support makes waiting cheap, which makes it easy to wait indefinitely. Set review gates at 12 and 24 months, tie them to security, regulatory and business triggers, and keep a current RISE price on file so the eventual decision is not made under a deadline again.' });
   }
   if (['considering', 'thirdparty'].includes(s.supportStream)) {
     r.push({ level: 'medium', title: 'Leaving SAP Maintenance', desc: 'Third-party support ends access to SAP patches and releases for those systems, and may affect SAP\'s flexibility on conversion credits. Download everything you are entitled to first and get SAP\'s position in writing.' });
@@ -1746,8 +1900,11 @@ const SAMPLE_STATE = {
   shelfware: 'some',
   userPosition: 'unknown',
   digitalAccess: 'high',
-  supportStream: 'enterprise',
+  supportStream: 'considering',
   complianceConfidence: 'moderate',
+  deferIntent: 'quote',
+  deferHorizon: '3-4yr',
+  deferScope: 'stable',
   riseTerm: 'proposed5',
   costPressures: ['uplift', 'fue', 'infra', 'aiunits', 'contracts'],
   alternative: 'theoretical',

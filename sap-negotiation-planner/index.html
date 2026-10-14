@@ -6,7 +6,7 @@
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N5E1D26WRG');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SAP Negotiation Planner</title>
-  <link rel="stylesheet" href="src/styles.css?v=20261007a" />
+  <link rel="stylesheet" href="src/styles.css?v=20261014a" />
 </head>
 <body>
   <div id="app">
@@ -327,6 +327,39 @@
             </div>
           </div>
 
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="defer-intent">Third-Party Support to Defer the RISE Decision</label>
+              <select id="defer-intent">
+                <option value="">Select…</option>
+                <option value="none">Not considering it</option>
+                <option value="option">Considering it as a fallback or as leverage</option>
+                <option value="quote">Have a written quote from a third-party provider</option>
+                <option value="committed">Decided: moving ECC to third-party support</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="defer-horizon">How Long Could You Defer Moving Off ECC?</label>
+              <select id="defer-horizon">
+                <option value="">Select…</option>
+                <option value="1-2yr">1–2 years</option>
+                <option value="3-4yr">3–4 years (to around 2030)</option>
+                <option value="5plusyr">5 years or more (beyond 2030)</option>
+                <option value="unknown">Not sure</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="defer-scope">What Would Move to Third-Party Support</label>
+            <select id="defer-scope">
+              <option value="">Select…</option>
+              <option value="all">The whole ECC estate</option>
+              <option value="stable">Stable ECC systems only, keeping SAP support on the rest</option>
+              <option value="undecided">Undecided</option>
+            </select>
+          </div>
+
           <div class="form-group">
             <label for="rise-term">RISE / Cloud ERP Contract Term</label>
             <select id="rise-term">
@@ -571,6 +604,6 @@
     </footer>
   </div>
 
-  <script src="src/app.js?v=20261007a"></script>
+  <script src="src/app.js?v=20261014a"></script>
 </body>
 </html>
