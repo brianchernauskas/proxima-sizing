@@ -138,28 +138,44 @@ function generateStrategy() {
 }
 
 // ─── Ranges metadata ──────────────────────────────────────────────────────────
-const RANGES_LAST_UPDATED = 'August 3, 2026';
-const RANGES_VERSION = '2.1';
+const RANGES_LAST_UPDATED = 'October 14, 2026';
+const RANGES_VERSION = '3.0';
 
 // ─── Spend Tier Logic ─────────────────────────────────────────────────────────
+// `tier` drives the tactic/risk/alert logic (0–8). `base` is the standard
+// 1-year PPA discount range at that annual commit; null = below PPA threshold.
 const SPEND_TIERS = {
-  'under100k': { label: '<$100K', min: 0, max: 100000, tier: 0 },
-  '100k-500k': { label: '$100K–$500K', min: 100000, max: 500000, tier: 1 },
-  '500k-1m':   { label: '$500K–$1M', min: 500000, max: 1000000, tier: 2 },
-  '1m-2m':     { label: '$1M–$2M', min: 1000000, max: 2000000, tier: 3 },
-  '2m-5m':     { label: '$2M–$5M', min: 2000000, max: 5000000, tier: 4 },
-  '5m-10m':    { label: '$5M–$10M', min: 5000000, max: 10000000, tier: 5 },
-  '10m-25m':   { label: '$10M–$25M', min: 10000000, max: 25000000, tier: 6 },
-  '25m-50m':   { label: '$25M–$50M', min: 25000000, max: 50000000, tier: 7 },
-  '50mplus':   { label: '$50M+', min: 50000000, max: Infinity, tier: 8 },
+  'under100k': { label: '<$100K', min: 0, max: 100000, tier: 0, base: null },
+  '100k-300k': { label: '$100K–$300K', min: 100000, max: 300000, tier: 1, base: null },
+  '300k-500k': { label: '$300K–$500K', min: 300000, max: 500000, tier: 2, base: [3, 3] },
+  '500k-1m':   { label: '$500K–$1M', min: 500000, max: 1000000, tier: 2, base: [4, 5] },
+  '1m-2m':     { label: '$1M–$2M', min: 1000000, max: 2000000, tier: 3, base: [6, 6] },
+  '2m-5m':     { label: '$2M–$5M', min: 2000000, max: 5000000, tier: 4, base: [6, 7] },
+  '5m-10m':    { label: '$5M–$10M', min: 5000000, max: 10000000, tier: 5, base: [8, 9] },
+  '10m-25m':   { label: '$10M–$25M', min: 10000000, max: 25000000, tier: 6, base: [10, 12] },
+  '25m-50m':   { label: '$25M–$50M', min: 25000000, max: 50000000, tier: 7, base: [13, 15] },
+  '50m-100m':  { label: '$50M–$100M', min: 50000000, max: 100000000, tier: 8, base: [16, 17] },
+  '100m-200m': { label: '$100M–$200M', min: 100000000, max: 200000000, tier: 8, base: [18, 20] },
+  '200m-350m': { label: '$200M–$350M', min: 200000000, max: 350000000, tier: 8, base: [21, 23] },
+  '350mplus':  { label: '$350M+', min: 350000000, max: Infinity, tier: 8, base: [24, 24] },
+  // Legacy keys from earlier versions of the form
+  '100k-500k': { label: '$100K–$500K', min: 100000, max: 500000, tier: 1, base: null },
+  '50mplus':   { label: '$50M+', min: 50000000, max: Infinity, tier: 8, base: [16, 24] },
 };
+
+// Points added to the 1-year rate for a longer committed term
+const TERM_UPLIFT = { '1yr': 0, '2yr': 2, '3yr': 3, '4yr': 4, '5yr': 5 };
+const TERM_LABELS = { '1yr': '1-year', '2yr': '2-year', '3yr': '3-year', '4yr': '4-year', '5yr': '5-year' };
+const DISCOUNT_CAP = 35;
 
 // Maps AWS planner spend keys to deal-calibration tier keys
 const AWS_TO_CAL_TIER = {
-  'under100k': 'under1m', '100k-500k': 'under1m', '500k-1m': 'under1m',
+  'under100k': 'under1m', '100k-300k': 'under1m', '300k-500k': 'under1m',
+  '100k-500k': 'under1m', '500k-1m': 'under1m',
   '1m-2m': '1m-5m', '2m-5m': '1m-5m',
   '5m-10m': '5m-10m', '10m-25m': '10m-25m',
-  '25m-50m': '25m-50m', '50mplus': '50m-100m',
+  '25m-50m': '25m-50m', '50m-100m': '50m-100m', '50mplus': '50m-100m',
+  '100m-200m': '100m+', '200m-350m': '100m+', '350mplus': '100m+',
 };
 
 function getProximaInsight(provider, calTier) {
@@ -175,28 +191,38 @@ function getProximaInsight(provider, calTier) {
   } catch { return null; }
 }
 
-function getDiscountRange(s) {
-  const tier = SPEND_TIERS[s.annualSpend]?.tier ?? 0;
-  const multicloudBoost = s.multicloud === 'multi-cloud' ? 8 : s.multicloud === 'evaluating' ? 5 : s.multicloud === 'aws-primary' ? 2 : 0;
-  const termBoost = s.desiredTerm === '3yr' ? 5 : s.desiredTerm === '2yr' ? 3 : 0;
-  const growthBoost = s.growthRate === 'hypergrowth' ? 3 : s.growthRate === 'fast' ? 2 : 0;
-  const marketplaceBoost = s.marketplaceSpend === '500kplus' ? 4 : s.marketplaceSpend === '100k-500k' ? 2 : 0;
+// Negotiated headroom above the standard rate: competitive pressure, growth, Marketplace
+function getDiscountHeadroom(s) {
+  const multicloud = s.multicloud === 'multi-cloud' ? 4 : s.multicloud === 'evaluating' ? 3 : s.multicloud === 'aws-primary' ? 1 : 0;
+  const growth = s.growthRate === 'hypergrowth' ? 2 : s.growthRate === 'fast' ? 1 : 0;
+  const marketplace = s.marketplaceSpend === '500kplus' ? 2 : s.marketplaceSpend === '100k-500k' ? 1 : 0;
+  return multicloud + growth + marketplace;
+}
 
-  const ranges = [
-    [0, 2],   // <$100K
-    [0, 5],   // $100K–$500K
-    [3, 9],   // $500K–$1M
-    [6, 14],  // $1M–$2M
-    [10, 20], // $2M–$5M
-    [15, 28], // $5M–$10M
-    [18, 32], // $10M–$25M
-    [22, 38], // $25M–$50M
-    [25, 45], // $50M+
-  ];
-  const [lo, hi] = ranges[tier] || [0, 2];
-  const loFinal = Math.min(lo + Math.round(multicloudBoost * 0.4) + Math.round(termBoost * 0.4), 45);
-  const hiFinal = Math.min(hi + multicloudBoost + termBoost + growthBoost + marketplaceBoost, 50);
-  return { lo: loFinal, hi: hiFinal, midpoint: Math.round((loFinal + hiFinal) / 2) };
+function getDiscountRange(s) {
+  const spend = SPEND_TIERS[s.annualSpend];
+  const headroom = getDiscountHeadroom(s);
+
+  // Below the PPA threshold the number reflects Savings Plans negotiation, not a PPA rate
+  if (!spend?.base) {
+    const hi = (spend?.tier ?? 0) >= 1 ? 4 : 2;
+    const hiFinal = hi + Math.min(headroom, 3);
+    return { lo: 0, hi: hiFinal, midpoint: Math.round(hiFinal / 2), standard: null };
+  }
+
+  // Flexible / undecided term: floor at the 1-year rate, stretch up to the 3-year rate
+  const termLo = TERM_UPLIFT[s.desiredTerm] ?? 0;
+  const termHi = TERM_UPLIFT[s.desiredTerm] ?? TERM_UPLIFT['3yr'];
+  const shortfall = s.commitUtilization === 'under70' ? 1 : 0;
+
+  const loFinal = Math.max(spend.base[0] + termLo - shortfall, 0);
+  const hiFinal = Math.min(spend.base[1] + termHi + headroom, DISCOUNT_CAP);
+  return {
+    lo: loFinal,
+    hi: Math.max(hiFinal, loFinal),
+    midpoint: Math.round((loFinal + hiFinal) / 2),
+    standard: [spend.base[0] + termLo, spend.base[1] + termLo],
+  };
 }
 
 function getLeverageScore(s) {
@@ -435,23 +461,30 @@ function recommendedContractType(s, tier) {
 
 function discountBreakdownHTML(s, tier, discount) {
   const rows = [];
-  if (s.multicloud === 'multi-cloud') rows.push(['Multi-cloud positioning', '+5–10%', 'green']);
-  else if (s.multicloud === 'evaluating') rows.push(['Evaluating Azure/GCP (active RFP)', '+3–7%', 'green']);
-  if (s.desiredTerm === '3yr') rows.push(['3-year commitment term', '+3–5%', 'green']);
-  else if (s.desiredTerm === '2yr') rows.push(['2-year commitment term', '+1–3%', 'green']);
-  if (s.growthRate === 'hypergrowth' || s.growthRate === 'fast') rows.push(['High-growth trajectory (future revenue)', '+1–4%', 'green']);
+  if (discount.standard) {
+    const [sLo, sHi] = discount.standard;
+    const termName = TERM_LABELS[s.desiredTerm] || '1-year';
+    rows.push([`Standard ${termName} PPA rate at this annual commit`, sLo === sHi ? `${sLo}%` : `${sLo}–${sHi}%`, 'green']);
+  } else {
+    rows.push(['Below the $300K PPA threshold: Savings Plans and RIs carry the discount', 'No PPA', 'red']);
+  }
+  if (discount.standard && TERM_UPLIFT[s.desiredTerm]) rows.push([`${TERM_LABELS[s.desiredTerm]} term (included in standard rate above)`, `+${TERM_UPLIFT[s.desiredTerm]} pts`, 'green']);
+  else if (discount.standard && s.desiredTerm !== '1yr') rows.push(['Term undecided; each added year is worth about 1 point (5-year max)', '+0–5 pts', 'green']);
+  if (s.multicloud === 'multi-cloud') rows.push(['Multi-cloud positioning', '+2–4 pts', 'green']);
+  else if (s.multicloud === 'evaluating') rows.push(['Evaluating Azure/GCP (active RFP)', '+1–3 pts', 'green']);
+  if (s.growthRate === 'hypergrowth' || s.growthRate === 'fast') rows.push(['High-growth trajectory (future revenue)', '+1–2 pts', 'green']);
   if (tier >= 3 && s.supportTier === 'enterprise') rows.push(['Enterprise Support negotiation', '−1–3% on support', 'green']);
-  if (s.commitUtilization === 'over100') rows.push(['Exceeded prior commitment (strong signal)', '+1–2%', 'green']);
-  if (s.commitUtilization === 'under70') rows.push(['Prior shortfall — expect reduced flexibility', '−2–5%', 'red']);
-  if (s.awsTenure === '5plus') rows.push(['Long-tenured customer (loyalty)', '+0–2%', 'green']);
-  if (s.marketplaceSpend === '500kplus') rows.push(['Significant Marketplace spend — counts toward PPA drawdown', '+2–4%', 'green']);
-  else if (s.marketplaceSpend === '100k-500k') rows.push(['Marketplace spend — can be included in PPA commitment', '+1–2%', 'green']);
+  if (s.commitUtilization === 'over100') rows.push(['Exceeded prior commitment (strong signal)', '+0–1 pt', 'green']);
+  if (s.commitUtilization === 'under70') rows.push(['Prior shortfall — expect reduced flexibility', '−1–2 pts', 'red']);
+  if (s.awsTenure === '5plus') rows.push(['Long-tenured customer (loyalty)', '+0–1 pt', 'green']);
+  if (s.marketplaceSpend === '500kplus') rows.push(['Significant Marketplace spend — counts toward PPA drawdown', '+1–2 pts', 'green']);
+  else if (s.marketplaceSpend === '100k-500k') rows.push(['Marketplace spend — can be included in PPA commitment', '+0–1 pt', 'green']);
   if (tier <= 4) rows.push(['Reseller channel discount available (APN partners)', '+5–15%', 'green']);
   const cur = s.currentDiscounts || [];
   if (cur.includes('none') || cur.length === 0) rows.push(['Currently at on-demand list pricing — full range available', 'Baseline', 'green']);
   else if (cur.includes('edp')) rows.push(['Renewing an existing PPA — benchmark against current rate', 'Baseline', 'green']);
   if ((s.awsPrograms || []).includes('map')) rows.push(['MAP participant — funded credits outside PPA discount', 'Additive', 'green']);
-  if (s.workloadType === 'dev-heavy' || s.workloadType === 'batch') rows.push(['Variable workload profile — commit conservatively', '−2–4%', 'red']);
+  if (s.workloadType === 'dev-heavy' || s.workloadType === 'batch') rows.push(['Variable workload profile — commit conservatively', '−1–2 pts', 'red']);
   if (s.gpuUsage === 'evaluating') rows.push(['Net-new GPU capacity decision — AWS will bid to win it', 'Leverage', 'green']);
   else if (s.gpuUsage === 'capacity-blocks' || s.gpuUsage === 'both') rows.push(['Committed GPU footprint — strategic AI retention value', 'Leverage', 'green']);
   if (!rows.length) return '';
@@ -782,7 +815,7 @@ function buildTimeline(s) {
         'Contact your AWS account manager — request a "strategic review" meeting (not a renewal call)',
         'In the first meeting, lead with your growth roadmap, NOT your current spend',
         s.multicloud !== 'aws-only' ? 'Mention your multi-cloud footprint and the workloads you\'re evaluating consolidating' : 'Reference competitor pricing you\'ve received',
-        'Ask AWS to model 3 scenarios: 1yr vs 2yr vs 3yr with marketplace inclusion',
+        'Ask AWS to model 1yr, 3yr, and 5yr scenarios with marketplace inclusion; each added year should be worth about a point',
         'Request their first proposal in writing — do not verbally commit to anything',
       ],
     },
@@ -989,7 +1022,7 @@ function buildRisks(s, tier) {
     risks.push({
       level: 'medium',
       title: 'Below PPA Threshold',
-      desc: 'Your current spend may fall below the standard $1M PPA minimum. Focus on Savings Plans + Reserved Instances for now. Build a compelling growth story to access PPA.',
+      desc: 'Your current spend falls below the $300K annual commit where PPA pricing starts. Focus on Savings Plans + Reserved Instances for now, and build a growth story to reach PPA eligibility.',
     });
   }
 
@@ -999,11 +1032,12 @@ function buildRisks(s, tier) {
     desc: 'Many PPAs auto-renew at the same or worse terms without formal notice. Negotiate explicit renewal negotiation windows (90 days notice required) into the agreement.',
   });
 
-  if (s.desiredTerm === '3yr') {
+  if (['3yr', '4yr', '5yr'].includes(s.desiredTerm)) {
+    const years = TERM_LABELS[s.desiredTerm];
     risks.push({
-      level: 'medium',
-      title: '3-Year Lock-in Risk',
-      desc: 'A 3-year commitment at current pricing can backfire if services are repriced or if your architecture changes significantly. Negotiate annual true-up provisions.',
+      level: s.desiredTerm === '3yr' ? 'medium' : 'high',
+      title: `${years.charAt(0).toUpperCase() + years.slice(1)} Lock-in Risk`,
+      desc: `A ${years} commitment at current pricing can backfire if services are repriced or if your architecture changes significantly. Each year past three adds only about one point of discount, so weigh that against the extra lock-in. Negotiate annual true-up provisions and a carry-forward for any shortfall.`,
     });
   }
 
@@ -1099,7 +1133,7 @@ function buildAlerts(s, tier) {
     alerts.push({
       type: 'warning',
       icon: '⚡',
-      text: '<strong>No Competitive Leverage Detected.</strong> At your spend level, going into a PPA negotiation without a credible competitive alternative significantly reduces your potential discount by 5–10 points. Even requesting Azure/GCP pricing for a small workload before negotiating is worth doing.',
+      text: '<strong>No Competitive Leverage Detected.</strong> At your spend level, going into a PPA negotiation without a credible competitive alternative significantly limits you to roughly the standard rate for your commit and term; competitive pressure is worth 2–4 points on top. Even requesting Azure/GCP pricing for a small workload before negotiating is worth doing.',
     });
   }
 
@@ -1107,7 +1141,7 @@ function buildAlerts(s, tier) {
     alerts.push({
       type: 'info',
       icon: 'ℹ️',
-      text: '<strong>PPA Threshold:</strong> Standard PPA eligibility starts at $1M annual spend. At your current level, focus on Compute Savings Plans and Reserved Instances. However, if you have strong growth projections, AWS may offer a PPA based on committed future spend — especially if you\'re entering a high-growth phase.',
+      text: '<strong>PPA Threshold:</strong> PPA pricing starts at a $300K annual commit, and commits under $1M may need extra approval inside AWS. At your current level, focus on Compute Savings Plans and Reserved Instances. However, if you have strong growth projections, AWS may offer a PPA based on committed future spend, especially if you\'re entering a high-growth phase.',
     });
   }
 
@@ -1162,14 +1196,16 @@ function buildCommitStructureHTML(s, tier) {
       </div>
       <div class="section-content">
         <div class="alert alert-info"><span class="alert-icon">ℹ️</span>
-          <div>At your current spend level, the most cost-effective approach is <strong>Compute Savings Plans</strong> (1-year or 3-year, no upfront or partial upfront). These deliver 20–66% off On-Demand rates with no minimum commitment requirement and apply automatically across EC2, Fargate, and Lambda. Once your spend exceeds $500K–$1M, initiate PPA conversations with your AWS account team proactively.</div>
+          <div>At your current spend level, the most cost-effective approach is <strong>Compute Savings Plans</strong> (1-year or 3-year, no upfront or partial upfront). These deliver 20–66% off On-Demand rates with no minimum commitment requirement and apply automatically across EC2, Fargate, and Lambda. Once your spend approaches $300K, initiate PPA conversations with your AWS account team proactively.</div>
         </div>
       </div>
     </div>`;
   }
 
-  const termAdvice = s.desiredTerm === '3yr'
-    ? '3-year PPA — offers deepest discount but highest commitment risk. Negotiate annual ramp and carry-forward.'
+  const termAdvice = s.desiredTerm === '5yr' || s.desiredTerm === '4yr'
+    ? `${TERM_LABELS[s.desiredTerm]} PPA: highest standard rate, but each year past three adds only about one point. Only commit this long on stable, well-forecast spend, with annual ramp and carry-forward.`
+    : s.desiredTerm === '3yr'
+    ? '3-year PPA: strong discount with manageable commitment risk. Negotiate annual ramp and carry-forward.'
     : s.desiredTerm === '2yr'
     ? '2-year PPA — good balance of discount depth and flexibility. Most commonly signed at $2M–$5M spend.'
     : '1-year PPA (first cycle) — prove the relationship, then extend to 3 years at renewal with better terms.';
@@ -1207,6 +1243,12 @@ function buildCommitStructureHTML(s, tier) {
             <td style="padding:9px 8px;color:var(--text-secondary);">Stable workloads, predictable growth</td>
           </tr>
           <tr style="border-bottom:1px solid var(--surface-3);">
+            <td style="padding:9px 8px;font-weight:600;">4–5-Year PPA</td>
+            <td style="padding:9px 8px;text-align:center;">★★★★★</td>
+            <td style="padding:9px 8px;text-align:center;">★☆☆☆☆</td>
+            <td style="padding:9px 8px;color:var(--text-secondary);">Large, mature estates; about 1–2 points over a 3-year term</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--surface-3);">
             <td style="padding:9px 8px;font-weight:600;">PPA + Savings Plans Stack</td>
             <td style="padding:9px 8px;text-align:center;">★★★★★</td>
             <td style="padding:9px 8px;text-align:center;">★★★☆☆</td>
@@ -1216,7 +1258,7 @@ function buildCommitStructureHTML(s, tier) {
             <td style="padding:9px 8px;font-weight:600;">Savings Plans Only</td>
             <td style="padding:9px 8px;text-align:center;">★★★☆☆</td>
             <td style="padding:9px 8px;text-align:center;">★★★★★</td>
-            <td style="padding:9px 8px;color:var(--text-secondary);">Sub-$1M, high variability</td>
+            <td style="padding:9px 8px;color:var(--text-secondary);">Sub-$300K, high variability</td>
           </tr>
         </tbody>
       </table>
