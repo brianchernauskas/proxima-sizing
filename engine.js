@@ -34,8 +34,9 @@
   ];
   const PROV_LABEL = Object.fromEntries(PROVIDERS.map(p => [p[0], p[1]]));
 
-  // The five offerings, used for the landing page and "pairs well with" links.
+  // The Diagnostic (always first) and the five offerings, used for the landing page and "pairs well with" links.
   const OFFERINGS = [
+    { slug: 'diagnostic', name: 'Diagnostic', months: '2–4 weeks', fit: 'Start here, any cloud client', blurb: 'Short scoping engagement: consumption profile, billing data validation, commercial baseline and a recommended path into the offerings. Every offering assumes it is done.' },
     { slug: 'rapid-cost-optimization', name: 'Rapid Cost Optimization', months: '2–3 months', fit: 'Any cloud client', blurb: 'One-time forecast, deal negotiation, unused-resource and licensing cleanup, non-prod rightsizing, quick storage wins. Rapid payback, high ROI.' },
     { slug: 'technical-optimization', name: 'Technical Optimization', months: '3–4 months', fit: 'Client engineering partnership', blurb: 'Compute, Kubernetes and storage optimization, AI/data platform and networking tuning, cost-aware design. Engineering-led, durable run-rate savings.' },
     { slug: 'margin-transformation', name: 'Margin Transformation', months: '3–4 months', fit: 'SaaS clients', blurb: 'Unit and product-level cost models, customer profitability, COGS vs R&D treatment, and linking cloud spend to pricing and margin.' },
@@ -58,6 +59,8 @@
     finopsFactor: { poor: 1.15, partial: 1, mature: 0.6 }, // less left to capture when governance is already good
     spendMid: [3, 12, 35, 75, 150], // $M midpoint used to turn % of spend into dollars, by spend tier
     highFlagPct: 30,
+    // Recommended Proxima team for the offerings: base x cloud multiplier x size multiplier, kept between floor and cap.
+    staffing: { base: 1.5, floor: 1, cap: 3, cloudMult: [1, 1.25, 1.5], sizeMult: [0.8, 1, 1.15, 1.3, 1.5] },
   };
   const SHARED_META = {
     bands: { title: 'Hyperscaler discount bands', note: 'Achievable all-in discount off list (low, high %) by spend tier. Drawn from the AWS, Azure and GCP negotiation planners; "other" uses an 80% blend of the three.' },
@@ -66,6 +69,7 @@
     finopsFactor: { title: 'FinOps maturity factor', note: 'Scales optimization levers: less is left to capture when governance is already mature.' },
     spendMid: { title: 'Spend tier midpoints ($M)', note: 'Used to convert % of spend into dollars. Order: ' + TIERS.map(t => t[3]).join(', ') + '.' },
     highFlagPct: { title: 'High-headline warning threshold', note: 'Warn when the top of the opportunity range exceeds this % of spend.' },
+    staffing: { title: 'Recommended team sizing (offerings)', note: 'Team FTE = base x cloud multiplier (1, 2, 3+ clouds) x size multiplier (by spend tier), kept between floor and cap. Base is a 0.5 Principal plus a Senior Consultant; extra FTE is added as Consultants, then Associates. Teams above the cap are shown only as the exceptional case.' },
   };
   let SH = clone(SHARED_DEFAULTS); // active shared assumptions
 
@@ -136,6 +140,46 @@
 
   const sumTeam = t => ROLES.reduce((n, r) => n + (t[r.key] || 0), 0);
   const base = (arr, spendKey) => ({ vp: 0, pc: 0, sc: 0, c: 0, ac: 0, ...arr[TIER_IDX[spendKey]] });
+
+  // Fills a total FTE into roles. order is [[role, max], ...]; the last entry takes any remainder.
+  function fillRoles(total, order) {
+    const t = { vp: 0, pc: 0, sc: 0, c: 0, ac: 0 };
+    let left = Math.round(total * 100) / 100;
+    order.forEach(([role, max], i) => {
+      const add = i === order.length - 1 ? left : Math.min(left, max);
+      t[role] = Math.round((t[role] + add) * 100) / 100; left = Math.round((left - add) * 100) / 100;
+    });
+    return t;
+  }
+  const DEFAULT_FILL = [['pc', 0.5], ['sc', 1], ['c', 1], ['ac', 99]];
+  // Recommended team (Vish's minimum-footprint rule): base x cloud multiplier x size multiplier, capped.
+  // exceptional is the old tier-table team, shown only when it exceeds the recommendation.
+  function staffTeam(a, opts) {
+    const S = SH.staffing, o = opts || {};
+    const nc = Math.max(1, (a.providers || []).length);
+    const raw = S.base * S.cloudMult[Math.min(nc, 3) - 1] * S.sizeMult[TIER_IDX[a.spend]];
+    const total = Math.min(S.cap, Math.max(S.floor, Math.round(raw * 4) / 4));
+    const team = fillRoles(total, o.fill || DEFAULT_FILL);
+    const ex = o.exceptional ? sumTeam(o.exceptional) : 0;
+    const cm = S.cloudMult[Math.min(nc, 3) - 1], sm = S.sizeMult[TIER_IDX[a.spend]];
+    const note = `Recommended team: ${S.base} base × ${cm} for ${nc === 1 ? '1 cloud' : nc + ' clouds'} × ${sm} for ${SPEND_LABEL[a.spend]} spend = ${num(raw)}, rounded to ${fmtFTE(total)} FTE${raw > S.cap ? ` (capped at ${S.cap})` : ''}.`;
+    return { team, total, note, raw: Math.round(raw * 100) / 100, capped: raw > S.cap, cloudN: nc,
+      exceptional: ex > total ? o.exceptional : null };
+  }
+
+  // Delivery phases from Vish's model (Analysis, then Execution, then a short handover), stretched to the duration.
+  // Discovery is not repeated here: the Diagnostic covers it. focus = [analysis, execution, handover] text.
+  function vishPhases(lo, hi, focus, baseShare) {
+    const wk = Math.max(4, Math.round((lo + hi) / 2 * 4.33));
+    const ho = Math.max(1, Math.round(wk * 0.1)), an = Math.round((wk - ho) / 2), ex = wk - ho - an;
+    const span = (a, b) => a === b ? `Week ${a}` : `Weeks ${a}–${b}`;
+    return [
+      ['1. Analysis', span(1, an), focus[0], Math.round(Math.min(1, baseShare || 0.6) * 100)],
+      ['2. Execution', span(an + 1, an + ex), focus[1], 100],
+      ['3. Capture and handover', span(an + ex + 1, wk), focus[2], 40],
+    ];
+  }
+  const PHASES_NOTE = 'Discovery is covered by the Proxima Diagnostic. The team starts lean in Analysis and scales to the peak shown in Execution as technical and commercial data is validated.';
 
   // ── Shared field definitions (same ids across tools so answers carry over) ──
   const opt = (arr) => arr.map(a => [a[0], a[1], a[2] || '']);
@@ -257,7 +301,7 @@
       <header>
         <div class="header-brand">
           <a href="../"><span class="brand-pill">Proxima</span></a>
-          <div><div class="header-title">${esc(cfg.name)}</div><div class="header-sub">Offering ${cfg.num} of 5 · ${esc(cfg.months)}</div></div>
+          <div><div class="header-title">${esc(cfg.name)}</div><div class="header-sub">${cfg.slug === 'diagnostic' ? 'Start here' : `Offering ${cfg.num} of ${OFFERINGS.length - 1}`} · ${esc(cfg.months)}</div></div>
         </div>
         <div class="header-actions">
           <button class="hdr-link" data-nav="config" id="cfg-btn">⚙ Configure</button>
@@ -265,7 +309,7 @@
         </div>
       </header>
       <div class="container">
-        <div class="hero"><div class="sku-badge">Offering ${cfg.num} · ${esc(cfg.fit)}</div>
+        <div class="hero"><div class="sku-badge">${cfg.slug === 'diagnostic' ? 'Diagnostic' : `Offering ${cfg.num}`} · ${esc(cfg.fit)}</div>
           <h1>${esc(cfg.name)}</h1><p>${esc(cfg.intro)}</p><div class="note-line" id="prefill-note"></div></div>
         <div class="steps">${tabs}</div>
         ${sections}
@@ -359,6 +403,9 @@
       <tr><td><span class="role-badge" style="background:${x.bg};color:${x.color}">${x.label}</span></td>
       <td style="color:var(--muted);font-size:13px">${x.sub}</td>
       <td style="font-weight:700;font-size:16px;text-align:right">${fmtFTE(r.team[x.key])}</td></tr>`).join('');
+    const ex = r.exceptional;
+    const exRow = ex ? `<div class="flag warn" style="margin-top:12px"><div class="flag-icon">◉</div><div class="flag-text"><strong>Exceptional scenario: ${fmtFTE(sumTeam(ex))} FTE (case by case)</strong>
+      <span>${ROLES.filter(x => ex[x.key] > 0).map(x => `${fmtFTE(ex[x.key])} ${x.label}`).join(', ')}. Larger than the recommended team; staff to this only when complexity, data constraints or negotiation intensity demand it.</span></div></div>` : '';
     const flags = (r.flags || []).map(f => `<div class="flag ${f.type}"><div class="flag-icon">${f.type === 'risk' ? '⚠' : f.type === 'warn' ? '◉' : '✓'}</div>
       <div class="flag-text"><strong>${esc(f.title)}</strong><span>${esc(f.detail)}</span></div></div>`).join('');
     const phases = r.phases ? table({
@@ -380,7 +427,7 @@
     document.getElementById('results-content').innerHTML = (sampleUsed ? sampleBanner() : '') + `
       <div style="margin-bottom:24px">
         <div class="sku-badge">Results · ${esc(name)}</div>
-        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px">${esc(cfg.name)}: opportunity sizing</h2>
+        <h2 style="font-size:22px;font-weight:700;margin-bottom:4px">${esc(cfg.name)}: ${esc(cfg.resultsTitle || 'opportunity sizing')}</h2>
         <div style="font-size:13px;color:var(--muted)">${esc(r.summary || '')}</div>
       </div>
       <div class="results-grid">
@@ -388,7 +435,7 @@
           <div class="result-value"${k.color ? ` style="color:${k.color}"` : ''}>${k.value}</div>
           <div class="result-sub">${esc(k.sub || '')}</div></div>`).join('')}
         <div class="result-card"><div class="result-label">Engagement Duration</div>
-          <div class="result-value">${num(lo)}–${num(hi)} <span style="font-size:18px;font-weight:500">months</span></div>
+          <div class="result-value">${lo === hi ? num(lo) : `${num(lo)}–${num(hi)}`} <span style="font-size:18px;font-weight:500">${r.durationUnit || 'months'}</span></div>
           <div class="result-sub">Standard range ${esc(cfg.months)}</div></div>
         <div class="result-card"><div class="result-label">Proxima Team (Peak)</div>
           <div class="result-value">${fmtFTE(headcount)} <span style="font-size:18px;font-weight:500">FTE</span></div>
@@ -399,7 +446,8 @@
         <div style="overflow-x:auto"><table class="team-table">
           <thead><tr><th>Role</th><th>Function</th><th style="text-align:right">FTE</th></tr></thead>
           <tbody>${teamRows}</tbody></table></div>
-        <div class="ranges-note">Fractional FTE reflects part-time engagement (for example a Principal Consultant at 0.5). Team shown at peak; see phasing for the effort curve.</div></div>
+        <div class="ranges-note">Fractional FTE reflects part-time engagement (for example a Principal Consultant at 0.5). Team shown at peak; see phasing for the effort curve.${r.teamNote ? ' ' + esc(r.teamNote) : ''}</div>
+        ${exRow}</div>
       ${split}${phases}
       <div class="card" style="margin-bottom:16px"><div class="card-title">Readiness &amp; Risk Flags</div><div class="flags">${flags}</div></div>
       ${r.positioning || next ? `<div class="card" style="margin-bottom:16px"><div class="card-title">Positioning and Sequencing</div>
@@ -464,7 +512,7 @@
     document.getElementById('section-cfg').innerHTML = `
       <div class="card"><div class="card-title">Assumptions: ${esc(cfg.name)}</div>
         <p style="font-size:13px;color:var(--muted);margin-bottom:6px">Change any assumption behind the sizing. Edits are saved on this device only and apply the next time results are generated. A dot marks anything changed from the default.</p>
-        <p style="font-size:13px;color:var(--muted)"><strong>This tool</strong> applies to ${esc(cfg.name)} only. <strong>Shared commercial assumptions</strong> apply to all five offerings on this device.</p></div>
+        <p style="font-size:13px;color:var(--muted)"><strong>This tool</strong> applies to ${esc(cfg.name)} only. <strong>Shared commercial assumptions</strong> apply to every offering on this device.</p></div>
       <div class="cfg-heading">This tool</div>${toolGroups || '<div class="note-line">No tool-specific assumptions.</div>'}
       <div class="cfg-heading">Shared commercial assumptions (all offerings)</div>${sharedGroups}
       <div class="nav-row cfg-actions">
@@ -545,7 +593,7 @@
   window.PX = {
     TIERS, TIER_IDX, SPEND_MID, SPEND_LABEL, ROLES, PROVIDERS, PROV_LABEL, OFFERINGS, F, T,
     sharedDefaults: () => clone(SHARED_DEFAULTS),
-    esc, fmtM, r1, num, fmtFTE, highFlag, oppTable, commercialOpp, sumTeam, base,
+    esc, fmtM, r1, num, fmtFTE, highFlag, oppTable, commercialOpp, sumTeam, base, fillRoles, staffTeam, vishPhases, PHASES_NOTE,
     register(c) {
       cfg = c;
       loadParams();

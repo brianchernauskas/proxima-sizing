@@ -1,6 +1,6 @@
 // Offering 5: Commercial Migration (3–6 months, scope dependent, migration plans)
 (function () {
-  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, commercialOpp, r1, fmtM, SPEND_MID, fmtFTE, sumTeam } = PX;
+  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, commercialOpp, r1, fmtM, SPEND_MID, fmtFTE, sumTeam, staffTeam, vishPhases, PHASES_NOTE } = PX;
   const SCOPE_LABEL = { eval: 'Evaluating only', partial: '<30% of workloads', major: '30–60% of workloads', full: '60%+ or full replatform' };
 
   PX.register({
@@ -29,7 +29,7 @@
       designLever: [3, 8],
     },
     paramMeta: {
-      team: { title: 'Proxima team at peak (FTE) by spend tier' },
+      team: { title: 'Exceptional team (case by case) by spend tier', note: 'Shown only when it exceeds the recommended team from the shared staffing formula.' },
       scope: { title: 'Migration scope', note: 'Share of spend migrating, and duration in months (low, high). Labels: eval = evaluating only, partial < 30% of workloads, major 30–60%, full 60%+.' },
       clientEngByScope: { title: 'Client engineering FTE during planning (low – high) by scope' },
       clientEngTierFactor: { title: 'Client engineering multiplier by spend tier' },
@@ -88,7 +88,8 @@
       const opp = oppTable('Opportunity by Workstream', rows, a.spend,
         'Target-provider line is an indicative premium, not a stacked discount band. One-off migration costs (engineering, dual running, data transfer) are not netted off; they sit with the client. Provider incentive and migration funding programs may add to this and are not included.');
 
-      const team = base(P.team, a.spend);
+      // Commercial play: more Principal time for the negotiation once the core team is in place.
+      const st = staffTeam(a, { exceptional: base(P.team, a.spend), fill: [['pc', 0.5], ['sc', 1], ['c', 0.5], ['pc', 0.5], ['c', 0.5], ['ac', 99]] }), team = st.team;
       const ce = P.clientEngByScope[a.scope].map(v => v * P.clientEngTierFactor[t]);
       const flags = [
         PX.highFlag(opp.phi),
@@ -106,7 +107,7 @@
         { label: 'Migrating Spend', value: `~${fmtM(SPEND_MID[a.spend] * share)}`, sub: SCOPE_LABEL[a.scope] },
       ];
       return {
-        duration: [lo, hi], team, tables: [opp.table], flags, kpis,
+        duration: [lo, hi], team, exceptional: st.exceptional, teamNote: st.note, tables: [opp.table], flags, kpis,
         summary: `${SPEND_LABEL[a.spend]} spend · today ${a.providers.map(p => PROV_LABEL[p]).join(', ')} · ${SCOPE_LABEL[a.scope].toLowerCase()}`,
         teamSub: 'Principal Consultant typically at 0.5',
         split: [
@@ -114,12 +115,10 @@
           ['Client engineering', 'Migration planning, workload assessment, cost-aware design', `${fmtFTE(ce[0])}–${fmtFTE(ce[1])} FTE during planning`],
           ['Client procurement / legal', 'Contract access, negotiation sign-off', '0.1–0.25 FTE'],
         ],
-        phases: [
-          ['1. Baseline and options', 'Month 1', 'Spend baseline, migration scope, provider options', 100],
-          ['2. Provider evaluation', 'Months 1–3', 'Commercial evaluation of alternative providers', 85],
-          ['3. Negotiation', `Months ${a.renewal === 'under6' ? '2–4' : '3–5'}`, 'Renegotiate current provider, secure target terms and ramp', 80],
-          ['4. Design and handover', 'Final weeks', 'Cost-aware design principles and migration commercial plan', 40],
-        ],
+        phases: vishPhases(lo, hi, ['Migration scope, provider options and commercial evaluation of alternatives',
+          'Renegotiate the current provider; secure target terms and ramp',
+          'Cost-aware design principles and migration commercial plan'], P.shared.staffing.base / st.total),
+        phasesNote: PHASES_NOTE,
         positioning: 'Standalone for clients with migration plans. Run it ahead of the migration so the commercial terms are in place before workloads move.',
         next: [
           ['technical-optimization', 'Right-size before you commit and before you migrate.'],

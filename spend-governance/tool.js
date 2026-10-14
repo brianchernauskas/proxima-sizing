@@ -1,6 +1,6 @@
 // Offering 4: Spend Governance (6–12 months, poor FinOps control)
 (function () {
-  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, r1, fmtM, SPEND_MID, fmtFTE, sumTeam } = PX;
+  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, r1, fmtM, SPEND_MID, fmtFTE, sumTeam, staffTeam, PHASES_NOTE } = PX;
 
   PX.register({
     slug: 'spend-governance', num: 4, name: 'Spend Governance', months: '6–12 months', fit: 'Poor FinOps control',
@@ -19,7 +19,7 @@
     },
     paramMeta: {
       duration: { title: 'Base duration (months, low – high) by spend tier' },
-      team: { title: 'Proxima team at peak (FTE) by spend tier' },
+      team: { title: 'Exceptional team (case by case) by spend tier', note: 'Shown only when it exceeds the recommended team from the shared staffing formula.' },
       creep: { title: 'Cost creep avoided (% of spend per year) by growth' },
       lockIn: { title: 'Savings locked in (% of spend per year) by prior optimization' },
       forecastLoss: { title: 'Unplanned overspend avoided (% of spend per year) by forecast accuracy' },
@@ -28,12 +28,12 @@
       handoverMonthsSaved: { title: 'Months saved when a client FinOps lead takes over (low, high)' },
     },
     sample: {
-      name: 'Sample Client', spend: '20-50m', finops: 'poor', alloc: 'partial', fc: 'over15', towers: 'mid',
+      name: 'Sample Client', spend: '20-50m', providers: ['aws', 'azure'], finops: 'poor', alloc: 'partial', fc: 'over15', towers: 'mid',
       growth: 'moderate', prior: 'yes', owner: 'no', data: 'partial',
     },
 
     steps: [
-      { title: 'Client Profile', fields: [F.name(), F.spend(), F.finops()] },
+      { title: 'Client Profile', fields: [F.name(), F.spend(), F.providers(), F.finops()] },
       { title: 'Governance Today', intro: 'Forecasting is the key capability: consumption against future forecast, by SKU, across all towers.', fields: [
         { id: 'alloc', type: 'radio', label: 'Tagging and cost allocation coverage', options: [
           ['good', 'Good', 'Most spend allocated to an owner'], ['partial', 'Partial', 'Inconsistent coverage'], ['poor', 'Poor', 'Little or no allocation']] },
@@ -49,7 +49,6 @@
           ['yes', 'Yes', 'Savings exist that governance must protect'], ['no', 'No', 'Little to protect yet']] },
         { id: 'owner', type: 'radio', label: 'Client FinOps lead identified for handover?', options: [
           ['yes', 'Yes', 'A named owner can take over after the build'], ['no', 'No', 'Proxima will need to help set up the role']] },
-        F.data(),
       ] },
     ],
 
@@ -59,7 +58,6 @@
       let [lo, hi] = P.duration[t];
       if (a.towers === 'many') hi += 1;
       if (a.alloc === 'poor') hi += 1; if (a.fc === 'none') hi += 0.5;
-      if (a.data === 'no') { lo += 0.5; hi += 1; }
       if (a.finops === 'mature') { lo -= 1; hi -= 1; }
       let accel = false;
       if (a.owner === 'yes') { lo = Math.max(4, lo - P.handoverMonthsSaved[0]); hi = hi - P.handoverMonthsSaved[1]; accel = true; }
@@ -75,7 +73,8 @@
       const opp = oppTable('Annual Value by Lever (Recurring)', rows, a.spend,
         'Recurring annual value, not a one-time saving. Cost creep is the avoided drift in an ungoverned estate; it grows with spend growth and shrinks as governance matures.');
 
-      const team = base(P.team, a.spend);
+      // Change-management play: extra FTE goes to Principal time (and a light VP touch) before Consultants.
+      const st = staffTeam(a, { exceptional: base(P.team, a.spend), fill: [['pc', 0.5], ['sc', 1], ['pc', 0.5], ['vp', 0.1], ['c', 1], ['ac', 99]] }), team = st.team;
       const C = P.effortCurve;
       const mid = (lo + hi) / 2;
       // Average Proxima FTE over the engagement under the effort curve (3 build, 3 embed, rest handover months)
@@ -96,7 +95,7 @@
         a.towers === 'many' ? { type: 'warn', title: 'Decentralised ownership', detail: 'Many budget owners lengthen alignment. Plan a tower-by-tower rollout.' } : { type: 'ok', title: 'Manageable ownership', detail: 'Accountability can be set with a small number of owners.' },
       ];
       return {
-        duration: [lo, hi], team, tables: [opp.table], flags,
+        duration: [lo, hi], team, exceptional: st.exceptional, teamNote: st.note, tables: [opp.table], flags,
         kpis: [
           { label: 'Annual Value (Recurring)', value: `${fmtM(opp.dlo)} – ${fmtM(opp.dhi)}`, color: 'var(--green)', sub: `${r1(opp.plo)}–${r1(opp.phi)}% of ${SPEND_LABEL[a.spend]} spend` },
           { label: 'Spend Without an Owner', value: `~${fmtM(unowned)}`, sub: `About ${P.unownedPct[a.alloc]}% of spend, estimated` },
@@ -112,13 +111,13 @@
         ],
         phasesTitle: 'Effort Curve: Front-loaded, Then Handover',
         phases: [
-          ['1. Build', 'Months 1–3', 'Allocation methodology, tagging policy, forecast model across towers (consumption vs. forecast by SKU)', Math.round(C.build * 100)],
-          ['2. Embed', 'Months 4–6', 'Iterative forecasting, budget accountability, FinOps KPIs', Math.round(C.embed * 100)],
+          ['1. Analysis and build', 'Months 1–3', 'Allocation methodology, tagging policy, forecast model across towers (consumption vs. forecast by SKU)', Math.round(C.build * 100)],
+          ['2. Execution and embed', 'Months 4–6', 'Iterative forecasting, budget accountability, FinOps KPIs', Math.round(C.embed * 100)],
           ['3. Hand over', `Months 7–${Math.round(hi)}`, 'Client runs the cadence; Proxima light-touch reviews', Math.round(C.handover * 100)],
         ],
-        phasesNote: accel
+        phasesNote: PHASES_NOTE + ' ' + (accel
           ? 'Accelerated model: with a client FinOps lead identified, Proxima builds in the first months and hands over earlier, shortening the range shown.'
-          : 'Where the client can appoint a FinOps lead early, Proxima timescales can be quicker with an earlier handover. Answer the handover question above to see the accelerated range.',
+          : 'Where the client can appoint a FinOps lead early, Proxima timescales can be quicker with an earlier handover. Answer the handover question above to see the accelerated range.'),
         positioning: 'Standalone or sequenced after cost optimization. Governance holds the savings in place; without it, optimization gains erode within a year.',
         next: [
           ['rapid-cost-optimization', 'Release cash quickly while governance is built.'],

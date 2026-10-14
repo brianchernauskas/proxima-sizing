@@ -1,6 +1,6 @@
 // Offering 2: Technical Optimization (3–4 months, client engineering partnership)
 (function () {
-  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, r1, fmtM, fmtFTE, sumTeam } = PX;
+  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, r1, fmtM, fmtFTE, sumTeam, staffTeam, vishPhases, PHASES_NOTE } = PX;
 
   // Workload families: label and typical levers (text only; the numbers live in params.families)
   const FAMILIES = {
@@ -36,7 +36,7 @@
     },
     paramMeta: {
       duration: { title: 'Base duration (months, low – high)' },
-      team: { title: 'Proxima team at peak (FTE) by spend tier' },
+      team: { title: 'Exceptional team (case by case) by spend tier', note: 'Shown only when it exceeds the recommended team from the shared staffing formula.' },
       specialist: { title: 'Specialist technical architect FTE by spend tier' },
       clientEng: { title: 'Client engineering FTE during execution (low – high) by spend tier' },
       families: { title: 'Workload families', note: 'Assumed share of spend (renormalised to the families selected) and savings range as % of that family\'s spend.' },
@@ -47,13 +47,13 @@
       cleanup: { title: 'Unused-resource cleanup if not yet captured (% of spend, low – high)' },
     },
     sample: {
-      name: 'Sample Client', spend: '20-50m', finops: 'partial',
+      name: 'Sample Client', spend: '20-50m', providers: ['aws', 'azure'], finops: 'partial',
       families: ['compute', 'containers', 'storage', 'dataai'], arch: 'mixed', telemetry: 'partial', quickwins: 'yes',
       capacity: 'limited', appetite: 'moderate',
     },
 
     steps: [
-      { title: 'Client Profile', fields: [F.name(), F.spend(), F.finops()] },
+      { title: 'Client Profile', fields: [F.name(), F.spend(), F.providers(), F.finops()] },
       { title: 'Technical Estate', fields: [
         { id: 'families', type: 'check', label: 'Workload families in scope', hint: 'select all that apply', options: Object.entries(FAMILIES).map(([k, w]) => [k, w[0], w[1]]) },
         { id: 'arch', type: 'radio', label: 'Architecture maturity', options: [
@@ -94,7 +94,8 @@
       const opp = oppTable('Opportunity by Workload Family', rows, a.spend,
         `Spend mix is an assumption (renormalised to the families selected); replace it with the client's actual split. Structural savings realised: ${Math.round(structural * 100)}%.`);
 
-      const team = base(P.team, a.spend);
+      // Engineering play: extra FTE goes to Consultants, then more Senior Consultant time.
+      const st = staffTeam(a, { exceptional: base(P.team, a.spend), fill: [['pc', 0.5], ['sc', 1], ['c', 1], ['sc', 0.5], ['ac', 99]] }), team = st.team;
       const ce = P.clientEng[t], capF = { team: 1, limited: 0.7, none: 0 }[a.capacity];
       const needsSpecialist = a.families.includes('dataai') || a.families.includes('containers');
       const flags = [
@@ -110,7 +111,7 @@
           : { type: 'ok', title: 'Quick wins captured', detail: 'The remaining opportunity is engineering-led.' },
       ];
       return {
-        duration: [lo, hi], team, tables: [opp.table], flags,
+        duration: [lo, hi], team, exceptional: st.exceptional, teamNote: st.note, tables: [opp.table], flags,
         kpis: [
           { label: 'Annual Opportunity', value: `${fmtM(opp.dlo)} – ${fmtM(opp.dhi)}`, color: 'var(--green)', sub: `${r1(opp.plo)}–${r1(opp.phi)}% of ${SPEND_LABEL[a.spend]} spend` },
           { label: 'Structural Realised', value: `${Math.round(structural * 100)}%`, sub: 'Capacity and appetite for modernization' },
@@ -123,12 +124,10 @@
           ['Client engineering', 'Implement rightsizing, platform and design changes', `${fmtFTE(ce[0] * capF)}–${fmtFTE(ce[1] * capF)} FTE during execution`],
         ],
         splitNote: 'The technical work is delivered by client engineering teams. Proxima leads prioritisation and value tracking; where specialist depth is needed, decide whether to resource it or partner.',
-        phases: [
-          ['1. Telemetry and baseline', 'Month 1', 'Utilization baseline by workload family', 100],
-          ['2. Opportunity design', 'Months 1–2', 'Rightsizing, platform and networking recommendations', 90],
-          ['3. Engineering execution', 'Months 2–4', 'Client engineers implement, Proxima tracks value', 55],
-          ['4. Run-rate lock-in', 'Final weeks', 'Cost-aware design standards and handover', 35],
-        ],
+        phases: vishPhases(lo, hi, ['Utilization baseline by workload family; rightsizing, platform and networking design',
+          'Client engineers implement; Proxima prioritises and tracks value',
+          'Cost-aware design standards and handover'], P.shared.staffing.base / st.total),
+        phasesNote: PHASES_NOTE,
         positioning: 'Follows or runs alongside Rapid Cost Optimization. Delivers the durable, engineering-led run-rate savings; needs client engineering capacity.',
         next: [
           ['rapid-cost-optimization', 'Capture the quick wins and the deal lever first.'],

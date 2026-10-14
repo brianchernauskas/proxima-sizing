@@ -1,6 +1,6 @@
 // Offering 1: Rapid Cost Optimization (2–3 months, any cloud client)
 (function () {
-  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, commercialOpp, r1, fmtM, SPEND_MID, fmtFTE, sumTeam } = PX;
+  const { F, T, SPEND_LABEL, PROV_LABEL, base, oppTable, commercialOpp, r1, fmtM, SPEND_MID, fmtFTE, sumTeam, staffTeam, vishPhases, PHASES_NOTE } = PX;
 
   PX.register({
     slug: 'rapid-cost-optimization', num: 1, name: 'Rapid Cost Optimization', months: '2–3 months', fit: 'Any cloud client',
@@ -21,7 +21,7 @@
     },
     paramMeta: {
       duration: { title: 'Base duration (months, low – high)' },
-      team: { title: 'Proxima team at peak (FTE) by spend tier' },
+      team: { title: 'Exceptional team (case by case) by spend tier', note: 'Shown only when it exceeds the recommended team from the shared staffing formula.' },
       clientEng: { title: 'Client engineering FTE during execution (low – high) by spend tier' },
       levers: { title: 'Cleanup levers (% of spend, low – high)', note: 'Before FinOps maturity scaling and the overlap haircut.' },
       nonprod: { title: 'Non-prod rightsizing lever (% of spend) by non-prod share' },
@@ -42,7 +42,6 @@
           ['low', 'Under 20%', 'Dev/test is a small part of the estate'], ['med', '20–40%', 'Typical for active engineering teams'], ['high', 'Over 40%', 'Large dev/test, always-on environments']] },
         { id: 'licensing', type: 'radio', label: 'Licensing exposure (Windows, SQL, marketplace, BYOL)', options: [
           ['low', 'Low', 'Mostly open-source and native services'], ['some', 'Some', 'Meaningful licensed workloads'], ['heavy', 'Heavy', 'Large licensed estate; BYOL and marketplace in play']] },
-        F.data(),
       ] },
       { title: 'Commercial Position', intro: 'Sets the size of the deal negotiation lever.', fields: [F.commit(), F.disc(), F.renewal(),
         { id: 'leverage', type: 'radio', label: 'Competitive leverage', options: [
@@ -56,7 +55,6 @@
       let [lo, hi] = P.duration;
       if (np >= 2) hi += 0.5;
       if (np >= 3) { lo += 0.5; hi += 0.5; }
-      if (a.data === 'partial') hi += 0.5; if (a.data === 'no') { lo += 0.5; hi += 1; }
       hi = Math.min(hi, 4.5);
 
       // Opportunity (% of annual spend)
@@ -73,7 +71,7 @@
       const opp = oppTable('Opportunity by Workstream', rows, a.spend,
         'Cleanup levers carry an overlap haircut. Deal negotiation is incremental savings moving from the current discount to the planner band, scaled by renewal timing. The one-time forecast is an enabler, not a saving.');
 
-      const team = base(P.team, a.spend);
+      const st = staffTeam(a, { exceptional: base(P.team, a.spend) }), team = st.team;
       const ce = P.clientEng[t];
       const kpis = [
         { label: 'Annual Opportunity', value: `${fmtM(opp.dlo)} – ${fmtM(opp.dhi)}`, color: 'var(--green)', sub: `${r1(opp.plo)}–${r1(opp.phi)}% of ${SPEND_LABEL[a.spend]} spend` },
@@ -85,14 +83,11 @@
           : a.renewal === '18plus' ? { type: 'warn', title: 'Not in a negotiation window', detail: 'Commercial lever is discounted. Lead with cleanup and prepare for the renewal.' }
           : { type: 'ok', title: 'Renewal timing workable', detail: 'Sequence cleanup first, then build leverage ahead of the window.' },
         a.nonprod === 'high' ? { type: 'ok', title: 'Large non-prod footprint', detail: 'Scheduled shutdown is the fastest payback in this estate.' } : { type: 'ok', title: 'Quick wins identified', detail: 'Unused resources and storage lifecycle are available in any estate.' },
-        a.data === 'no' ? { type: 'risk', title: 'No billing data access', detail: 'Adds up to 1 month. The one-time forecast and cleanup both depend on cost exports.' }
-          : a.data === 'partial' ? { type: 'warn', title: 'Data gaps', detail: 'Request exports in week 1 to protect the 2–3 month timeline.' }
-          : { type: 'ok', title: 'Data ready', detail: 'Forecast and cleanup analysis can start immediately.' },
         a.finops === 'mature' ? { type: 'ok', title: 'Governance in place', detail: 'Savings are more likely to persist after the engagement.' }
           : { type: 'warn', title: a.finops === 'poor' ? 'Savings may not stick' : 'Governance only partial', detail: 'Without durable governance, cleanup gains erode. Pair with Spend Governance.' },
       ].filter(Boolean);
       return {
-        duration: [lo, hi], team, kpis, tables: [opp.table], flags,
+        duration: [lo, hi], team, exceptional: st.exceptional, teamNote: st.note, kpis, tables: [opp.table], flags,
         summary: `${SPEND_LABEL[a.spend]} spend · ${a.providers.map(p => PROV_LABEL[p]).join(', ')} · ${a.finops} FinOps control`,
         teamSub: 'Principal Consultant typically at 0.5',
         split: [
@@ -100,12 +95,10 @@
           ['Client engineering', 'Approve and execute cleanup, shutdown schedules and lifecycle policies', `${fmtFTE(ce[0])}–${fmtFTE(ce[1])} FTE during execution`],
           ['Client finance / procurement', 'Forecast inputs, contract access, negotiation sign-off', '0.1–0.25 FTE'],
         ],
-        phases: [
-          ['1. Baseline and forecast', 'Month 1', 'One-time forecast, spend baseline, opportunity validation', 100],
-          ['2. Quick-win execution', 'Months 1–2', 'Unused resources, non-prod shutdown, storage lifecycle, licensing', 85],
-          ['3. Deal negotiation', `Months ${a.renewal === 'under6' ? '1–3' : '2–3'}`, 'Commitment coverage and discount negotiation', 70],
-          ['4. Capture and handover', 'Final weeks', 'Realised-savings tracking and next-step plan', 40],
-        ],
+        phases: vishPhases(lo, hi, ['One-time forecast, opportunity validation, licensing and commitment review',
+          'Unused resources, non-prod shutdown, storage lifecycle, licensing cleanup; commitment and discount negotiation',
+          'Realised-savings tracking and next-step plan'], P.shared.staffing.base / st.total),
+        phasesNote: PHASES_NOTE,
         positioning: 'Standalone, any cloud client. Often the first engagement: it releases cash quickly and funds the structural work that follows.',
         next: [
           ['technical-optimization', 'Engineering-led savings that make the run-rate durable.'],
