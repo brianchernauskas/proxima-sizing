@@ -4,12 +4,13 @@
     "issueNum": 4,
     "date": "2026-10-05",
     "title": "Copilot becomes a meter, GPU rates reset again, and Salesforce repackages its editions",
-    "summary": "September was about AI pricing moving from seats to usage. Microsoft relaunched Copilot with agent features on Copilot Credits, AWS reset GPU Capacity Block rates again, Google removed Code Assist from Gemini Enterprise renewals, Salesforce replaced Enterprise and Unlimited with bundled Core, Advanced and Max editions, and Adobe closed Topaz Labs. Oracle had no primary-sourced change.",
+    "summary": "September was about AI pricing moving from seats to usage. Microsoft relaunched Copilot with agent features on Copilot Credits, AWS reset GPU Capacity Block rates again, Google removed Code Assist from Gemini Enterprise renewals, Salesforce replaced Enterprise and Unlimited with bundled Core, Advanced and Max editions, and Adobe closed Topaz Labs. Oracle had no primary-sourced change. SAP is covered for the first time: its binding EU commitments on on-premises ERP maintenance make third-party support a cheaper alternative to rushing RISE.",
     "highlights": [
       "Copilot agent features bill through Copilot Credits on top of the seat, with no published rates",
       "AWS Capacity Block rates reset effective Oct 7, about 15% above July by our calculation",
       "Salesforce Core, Advanced and Max replace Enterprise and Unlimited, with Flex Credits bundled in",
-      "Adobe closes Topaz Labs; metering inside Creative Cloud is unanswered"
+      "Adobe closes Topaz Labs; metering inside Creative Cloud is unanswered",
+      "SAP: EU commitments let ECC customers split support and return cheaply; RISE and cloud are outside them"
     ]
   },
   {

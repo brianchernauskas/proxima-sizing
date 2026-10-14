@@ -22,8 +22,8 @@
 <div class="masthead">
   <p class="masthead-eyebrow">Proxima Internal — Research Digest</p>
   <h1>Cloud Negotiation<br>Research Digest</h1>
-  <p class="issue-date">Issue 04 · October 5, 2026</p>
-  <p class="standfirst">Where the three hyperscalers, Salesforce, Adobe and Oracle moved this period, what practitioners are reporting, and what it changes about how we advise a renewal.</p>
+  <p class="issue-date">Issue 04 · October 5, 2026 · SAP added October 14</p>
+  <p class="standfirst">Where the three hyperscalers, Salesforce, Adobe, Oracle and SAP moved this period, what practitioners are reporting, and what it changes about how we advise a renewal.</p>
 </div>
 
 <div class="issue">
@@ -33,7 +33,7 @@
     <div class="section-head">
       <h2>What's New</h2>
       <div class="section-rule"></div>
-      <span class="section-note">5 items</span>
+      <span class="section-note">6 items</span>
     </div>
     <ul class="item-list">
 
@@ -65,6 +65,12 @@
         <span class="item-tag">Adobe</span>
         <h3>Adobe closes Topaz Labs, with no word on how it will be metered</h3>
         <p>The acquisition closed September 23. Topaz stays standalone while its capabilities come to Firefly and Photoshop first. Adobe did not say whether integrated features need a separate subscription or draw on generative credits, which matters in its Q4 renewal season. — <a class="src-link" href="https://blog.adobe.com/en/publish/2026/09/23/adobe-completes-acquisition-of-topaz-labs" target="_blank" rel="noopener">Adobe Blog →</a></p>
+      </li>
+
+      <li class="item sap">
+        <span class="item-tag">SAP</span>
+        <h3>EU commitments make leaving ECC maintenance cheaper to reverse</h3>
+        <p>SAP's binding ten-year commitments on on-premises ERP maintenance, accepted July 9, allow landscape splitting between SAP and third-party support, remove reinstatement fees, and cap back-maintenance on return. Cloud and RISE are outside the decision. Terms are as reported by the trade press and SAP, not from the decision text. Source: <a class="src-link" href="https://www.ciodive.com/news/sap-eases-support-services-policy-eu-competition-concerns/824892/" target="_blank" rel="noopener">CIO Dive →</a></p>
       </li>
 
     </ul>
@@ -171,6 +177,26 @@
     </div>
   </section>
 
+  <!-- SAP (added October 14, 2026) -->
+  <section class="section">
+    <div class="section-head">
+      <h2>SAP</h2>
+      <div class="section-rule"></div>
+      <span class="section-note">Added October 14, 2026</span>
+    </div>
+    <div class="provider sap">
+      <p>SAP had no September pricing change that we could verify from a primary source, and this is the first issue to cover it. Two earlier items matter for renewals in flight. On July 9 the European Commission accepted binding ten-year commitments from SAP on on-premises ERP maintenance. As reported, customers can split a landscape between SAP and third-party support, reinstatement fees are removed, and back-maintenance on return is capped at the lower of six months or half the fees for the period away. SAP says the decision does not concern its cloud offerings, so RISE terms are unchanged.</p>
+      <p>ECC mainstream maintenance ends December 31, 2027, about 15 months away, and extended maintenance runs to 2030 at a two-point premium, roughly 9% more. With third-party support now cheaper to leave and return from, ECC customers have three costed paths to put against a RISE proposal framed as urgent. SAP reported Q2 cloud backlog of EUR 22.9B, up 27%, and its Q3 results are due October 21; Q4 is when account teams close the year against that number.</p>
+      <div class="sources">
+        <span class="sources-label">Sources</span>
+        <a href="https://www.ciodive.com/news/sap-eases-support-services-policy-eu-competition-concerns/824892/" target="_blank" rel="noopener">CIO Dive</a> ·
+        <a href="https://erp.today/sap-eu-settlement-on-premise-maintenance-support/" target="_blank" rel="noopener">erp.today</a> ·
+        <a href="https://news.sap.com/2020/06/sap-mainstream-maintenance-commitments/" target="_blank" rel="noopener">SAP Newsroom</a> ·
+        <a href="https://www.sap.com/docs/download/investors/2026/sap-2026-q2-statement.pdf" target="_blank" rel="noopener">SAP Q2 2026 statement</a>
+      </div>
+    </div>
+  </section>
+
   <!-- PRACTITIONER PULSE -->
   <section class="section">
     <div class="section-head">
@@ -206,7 +232,7 @@
     <div class="section-head">
       <h2>Recommended Tool Updates</h2>
       <div class="section-rule"></div>
-      <span class="section-note">Status as of Oct 5, 2026</span>
+      <span class="section-note">Status as of Oct 5, 2026 (SAP rows as of Oct 14)</span>
     </div>
     <div class="backlog-wrap">
       <table class="backlog">
@@ -244,6 +270,21 @@
             <td>Review the August 17, 2026 Technical Support Policies document for changes and add an audit-clause check to the renewal tactics if corroborated.</td>
             <td><span class="status open">Open</span></td>
           </tr>
+          <tr>
+            <td>SAP</td>
+            <td>New planner covering maintenance renewals, RISE with SAP and Cloud ERP Private, ECC extended maintenance, and audit settlements, with an ECC clock and a RISE component checklist.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>SAP</td>
+            <td>Model third-party support as a way to defer RISE, reflecting the July EU commitments, with a deferral saving, decision gates, and an offer-hold term.</td>
+            <td><span class="status shipped">✓ Shipped</span></td>
+          </tr>
+          <tr>
+            <td>SAP</td>
+            <td>Confirm the EU commitment terms against the Commission's decision text, and re-verify the context table after SAP's Q3 results on October 21.</td>
+            <td><span class="status open">Open</span></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -256,21 +297,22 @@
       <div class="section-rule"></div>
     </div>
     <div class="callout">
-      <strong>Figures from secondary sources:</strong> the Salesforce top-edition upgrade rate (about 5%) and the renewal example come from a BNP Paribas analyst note reported by Benzinga, and the example is a single unverified anecdote. The outcome-based pricing comments come from The Register's report of an investor webinar. The Oracle audit-cap claim comes from licensing advisors and is uncorroborated. The roughly 15% Capacity Block increase is our own calculation from AWS's July and October rates, not an AWS figure.
+      <strong>Figures from secondary sources:</strong> the Salesforce top-edition upgrade rate (about 5%) and the renewal example come from a BNP Paribas analyst note reported by Benzinga, and the example is a single unverified anecdote. The outcome-based pricing comments come from The Register's report of an investor webinar. The Oracle audit-cap claim comes from licensing advisors and is uncorroborated. The roughly 15% Capacity Block increase is our own calculation from AWS's July and October rates, not an AWS figure. The SAP commitment terms come from press coverage and SAP's statement, not the Commission's decision text, and the 40 to 50% third-party support savings referenced in the SAP planner are vendor-advertised.
     </div>
   </section>
 
 </div>
 
 <footer class="site-footer">
-  <p>Proxima internal use only — research conducted October 5, 2026</p>
+  <p>Proxima internal use only: research conducted October 5, 2026; SAP section added October 14, 2026</p>
   <div class="footer-links">
     <a href="https://tools.briansavesbillions.com/aws-negotiation-planner/" target="_blank" rel="noopener">AWS Planner</a> ·
     <a href="https://tools.briansavesbillions.com/azure-negotiation-planner/" target="_blank" rel="noopener">Azure Planner</a> ·
     <a href="https://tools.briansavesbillions.com/gcp-negotiation-planner/" target="_blank" rel="noopener">GCP Planner</a> ·
     <a href="https://tools.briansavesbillions.com/salesforce-negotiation-planner/" target="_blank" rel="noopener">Salesforce Planner</a> ·
     <a href="https://tools.briansavesbillions.com/adobe-negotiation-planner/" target="_blank" rel="noopener">Adobe Planner</a> ·
-    <a href="https://tools.briansavesbillions.com/oracle-negotiation-planner/" target="_blank" rel="noopener">Oracle Planner</a>
+    <a href="https://tools.briansavesbillions.com/oracle-negotiation-planner/" target="_blank" rel="noopener">Oracle Planner</a> ·
+    <a href="https://tools.briansavesbillions.com/sap-negotiation-planner/" target="_blank" rel="noopener">SAP Planner</a>
   </div>
   <div class="footer-wordmark">Proxima.</div>
 </footer>
