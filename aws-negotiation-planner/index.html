@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>AWS Renewal Negotiation Planner</title>
-  <link rel="stylesheet" href="src/styles.css?v=20261014a" />
+  <link rel="stylesheet" href="src/styles.css?v=20261016a" />
 </head>
 <body>
   <div id="app">
@@ -293,6 +293,29 @@
               <option value="enterprise">Enterprise (10% with TAM)</option>
             </select>
           </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="buying-channel">How do you buy AWS today?</label>
+              <select id="buying-channel" onchange="toggleResellerDiscount()">
+                <option value="">Select…</option>
+                <option value="direct">Direct from AWS</option>
+                <option value="reseller">Through a reseller or distributor</option>
+                <option value="mixed">Mixed (some accounts direct, some via reseller)</option>
+              </select>
+            </div>
+            <div class="form-group" id="reseller-discount-group" style="display:none">
+              <label for="reseller-discount">Discount your reseller passes on today</label>
+              <select id="reseller-discount">
+                <option value="">Select…</option>
+                <option value="none">None / not sure</option>
+                <option value="under5">Under 5%</option>
+                <option value="5-10">5–10%</option>
+                <option value="10plus">10%+</option>
+              </select>
+            </div>
+          </div>
+          <p class="field-hint" style="margin-top:-8px">Resellers typically stop serving accounts at around $5M a year in AWS spend, at which point the account moves direct.</p>
         </div>
         <div class="step-actions"><button class="btn-secondary btn-sample-fill" onclick="fillSampleStep(2, this)" style="margin-right:auto">✨ Fill Sample Data</button>
           <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
@@ -397,6 +420,17 @@
           </div>
 
           <div class="form-group">
+            <label for="storage-share">Storage Share of AWS Spend (S3, EBS, EFS, FSx, Glacier)</label>
+            <select id="storage-share">
+              <option value="">Select…</option>
+              <option value="unknown">Not sure</option>
+              <option value="under15">Under 15%</option>
+              <option value="15-30">15–30%</option>
+              <option value="30plus">Over 30%</option>
+            </select>
+          </div>
+
+          <div class="form-group">
             <label for="optimization-status">Infrastructure Optimization Status</label>
             <select id="optimization-status">
               <option value="">Select…</option>
@@ -468,6 +502,40 @@
               <label class="checkbox-item"><input type="checkbox" value="divestiture" /> Divestiture / spin-off that reduces spend</label>
               <label class="checkbox-item"><input type="checkbox" value="onprem-exit" /> Exiting on-premises data centers</label>
               <label class="checkbox-item"><input type="checkbox" value="hybrid-cloud" /> Maintaining hybrid cloud long-term</label>
+              <label class="checkbox-item"><input type="checkbox" value="storage-migration" /> Moving on-prem SAN / NAS storage to AWS</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Where are migrating workloads coming from? (if migrating)</label>
+            <div class="checkbox-group" id="migration-source">
+              <label class="checkbox-item"><input type="checkbox" value="onprem" /> On-premises data centers</label>
+              <label class="checkbox-item"><input type="checkbox" value="azure" /> Microsoft Azure</label>
+              <label class="checkbox-item"><input type="checkbox" value="gcp" /> Google Cloud</label>
+              <label class="checkbox-item"><input type="checkbox" value="other-cloud" /> Other cloud or colocation</label>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="migration-spend">Annual AWS Spend From Migrated Workloads</label>
+              <select id="migration-spend">
+                <option value="">Select…</option>
+                <option value="na">Not migrating / not applicable</option>
+                <option value="under1m">Under $1M</option>
+                <option value="1m-5m">$1M–$5M</option>
+                <option value="5m-10m">$5M–$10M</option>
+                <option value="10mplus">$10M+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="migration-complexity">Migration Complexity</label>
+              <select id="migration-complexity">
+                <option value="">Select…</option>
+                <option value="simple">Simple: mostly lift-and-shift</option>
+                <option value="moderate">Moderate: re-platforming, some refactoring</option>
+                <option value="complex">Complex: multiple DCs, mainframe, SAP or large licensed estates, regulated cutover</option>
+              </select>
             </div>
           </div>
 
@@ -505,6 +573,6 @@
     </footer>
   </div>
 
-  <script src="src/app.js?v=20261014a"></script>
+  <script src="src/app.js?v=20261016a"></script>
 </body>
 </html>

@@ -201,6 +201,16 @@
 const ENTRIES = [
 
   {
+    date: '2026-10-16',
+    kind: 'update',
+    cloud: 'aws',
+    title: 'AWS Planner: reseller-to-direct moves, migration funding, GPU price cuts and storage',
+    body: 'Four additions. The planner now asks how a client buys AWS today and, for reseller buyers, what discount the reseller passes on. Clients past the roughly $5M a year where resellers typically stop serving accounts get a reseller-to-direct transition (pricing the direct PPA against the full reseller price, including bundled support, plus a checklist covering payer account, Reserved Instances and Savings Plans, support, billing data, credits and exit terms); fast-growing reseller clients under $5M are told to plan the move early. A new Migration Credits & Funding section separates professional services credits from migration investment, sizes the ask qualitatively from spend moving, complexity and source (moving from Azure or GCP is where funding is most generous; the largest complex estates have seen packages of about $50M), and converts any credit offer into equivalent discount points. GPU price protection is now framed as a ceiling rather than a fixed rate, with a new tactic on making sure price cuts reach the client. Storage now drives output: optimize before committing, and protect against storage-specific minimums. Also fixed: the renewal benchmark for existing PPAs was not appearing.',
+    impact: 'AWS often offers one-time credits instead of a deeper permanent rate, and a fixed GPU rate card hands mid-term price cuts to AWS (only Savings Plans bought after the June 2025 P5 cut of up to 45% got the lower rate). The planner now shows both trade-offs explicitly, and flags the second shortfall exposure that comes with a storage-specific discount.',
+    link: { label: 'Open AWS Planner', url: 'https://tools.briansavesbillions.com/aws-negotiation-planner/' }
+  },
+
+  {
     date: '2026-10-14',
     kind: 'update',
     cloud: 'sap',

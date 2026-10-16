@@ -98,6 +98,8 @@ function collectStep(step) {
     state.commitUtilization = document.getElementById('commit-utilization').value;
     state.currentDiscounts = [...document.querySelectorAll('.current-discounts:checked')].map(i => i.value);
     state.supportTier = document.getElementById('support-tier').value;
+    state.buyingChannel = document.getElementById('buying-channel')?.value || 'direct';
+    state.resellerDiscount = state.buyingChannel === 'direct' ? 'na' : (document.getElementById('reseller-discount')?.value || 'none');
   }
   if (step === 3) {
     state.useCases = [...document.querySelectorAll('#use-cases .selected')].map(c => c.dataset.value);
@@ -105,14 +107,64 @@ function collectStep(step) {
     state.spendConcentration = document.getElementById('spend-concentration').value;
     state.gpuUsage = document.getElementById('gpu-usage')?.value || 'none';
     state.optimizationStatus = document.getElementById('optimization-status').value;
+    state.storageShare = document.getElementById('storage-share')?.value || 'unknown';
   }
   if (step === 4) {
     state.multicloud = document.querySelector('#multicloud .selected')?.dataset.value;
     state.relationshipQuality = document.getElementById('relationship-quality').value;
     state.migrationPlans = [...document.querySelectorAll('#migration-plans input:checked')].map(i => i.value);
     state.awsPrograms = [...document.querySelectorAll('#aws-programs input:checked')].map(i => i.value);
+    state.migrationSource = [...document.querySelectorAll('#migration-source input:checked')].map(i => i.value);
+    state.migrationSpend = document.getElementById('migration-spend')?.value || 'na';
+    state.migrationComplexity = document.getElementById('migration-complexity')?.value || '';
   }
 }
+
+function toggleResellerDiscount() {
+  const channel = document.getElementById('buying-channel')?.value;
+  const group = document.getElementById('reseller-discount-group');
+  if (group) group.style.display = channel === 'reseller' || channel === 'mixed' ? '' : 'none';
+}
+
+// ─── Scenario helpers ─────────────────────────────────────────────────────────
+// Profiles that older saved states (and the sample) may not carry default to
+// the pre-existing behaviour: direct buyer, no migration detail, storage unknown.
+function viaReseller(s) { return s.buyingChannel === 'reseller' || s.buyingChannel === 'mixed'; }
+function isFastGrowth(s) {
+  return ['hypergrowth', 'fast'].includes(s.growthRate) || ['hypergrowth', 'fast'].includes(s.spendGrowth);
+}
+// Resellers typically stop serving accounts at ~$5M/yr; tier 5+ is $5M and up
+function resellerGraduating(s, tier) { return viaReseller(s) && tier >= 5; }
+function resellerApproachingCeiling(s, tier) { return viaReseller(s) && tier === 4 && isFastGrowth(s); }
+const RESELLER_DISCOUNT_LABELS = { none: 'none or unknown', under5: 'under 5%', '5-10': '5–10%', '10plus': '10%+' };
+
+const MIGRATION_SOURCE_LABELS = { onprem: 'on-premises data centers', azure: 'Azure', gcp: 'Google Cloud', 'other-cloud': 'another cloud or colocation' };
+function isMigrating(s) {
+  const plans = s.migrationPlans || [];
+  return plans.includes('migrating-to-aws') || plans.includes('onprem-exit') || plans.includes('storage-migration')
+    || (s.migrationSource || []).length > 0;
+}
+function competitorSources(s) { return (s.migrationSource || []).filter(x => x === 'azure' || x === 'gcp' || x === 'other-cloud'); }
+function competitorLabel(s) {
+  const names = competitorSources(s).map(x => MIGRATION_SOURCE_LABELS[x]);
+  return names.length > 1 ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] : names[0] || 'a competitor';
+}
+
+// Qualitative credit sizing: scales with spend moving, complexity, and whether
+// AWS is winning the workload from a competitor. Deliberately no % formula;
+// the only hard figure is the observed top end (~$50M) for very large estates.
+function creditSizing(s) {
+  const spendPts = { under1m: 0, '1m-5m': 1, '5m-10m': 2, '10mplus': 3 }[s.migrationSpend] ?? 0;
+  const complexPts = { simple: 0, moderate: 1, complex: 2 }[s.migrationComplexity] ?? 0;
+  const score = spendPts + complexPts + (competitorSources(s).length ? 1 : 0);
+  if (score >= 6) return { label: 'Top end', text: 'A large, complex estate moving from a competitor is the profile behind the biggest packages; these have reached about $50M. Expect AWS to open well below that and anchor your ask on a costed migration plan.' };
+  if (score >= 4) return { label: 'Significant', text: 'At this scale expect a real migration investment package, sized in the millions, not just a professional services allowance. Anchor the ask on your actual cost of moving.' };
+  if (score >= 2) return { label: 'Meaningful', text: 'Push for migration investment alongside professional services credits. If AWS offers ProServ hours alone, ask what funding covers parallel running and data transfer.' };
+  return { label: 'Modest', text: 'Expect mainly assessment funding and professional services credits. Tie each ask to a specific migration cost so it is easy for the account team to justify.' };
+}
+
+const STORAGE_HEAVY = ['15-30', '30plus'];
+function hasStorage(s) { return (s.useCases || []).includes('storage') || STORAGE_HEAVY.includes(s.storageShare); }
 
 // ─── Radio Cards & Use Case Cards ────────────────────────────────────────────
 document.querySelectorAll('.radio-cards').forEach(group => {
@@ -255,6 +307,8 @@ function getLeverageScore(s) {
   // Net-new GPU capacity decisions carry the most leverage of all.
   const gpuLeverageMap = { 'evaluating': 5, 'both': 4, 'capacity-blocks': 4, 'ondemand': 2, 'none': 0 };
   score += gpuLeverageMap[s.gpuUsage] ?? 0;
+  // Winning a workload from a competitor cloud is revenue AWS will pay for
+  if (competitorSources(s).length) score += 3;
   // PPA timing — penalize urgency
   const edpTimingMap = { 'under3': -12, '3-6': -5, '6-12': 6, '12plus': 10, 'na': 0 };
   score += edpTimingMap[s.edpMonthsRemaining] ?? 0;
@@ -392,6 +446,8 @@ function buildStrategyHTML(s) {
       </div>
     </div>
 
+    ${buildCreditsHTML(s, tier)}
+
     <div class="strategy-section">
       <div class="section-header">
         <span class="section-icon">📅</span>
@@ -440,6 +496,8 @@ function buildStrategyHTML(s) {
       </div>
     </div>
 
+    ${buildResellerTransitionHTML(s, tier)}
+
     ${buildCommitStructureHTML(s, tier)}
 
   </div>
@@ -479,10 +537,12 @@ function discountBreakdownHTML(s, tier, discount) {
   if (s.awsTenure === '5plus') rows.push(['Long-tenured customer (loyalty)', '+0–1 pt', 'green']);
   if (s.marketplaceSpend === '500kplus') rows.push(['Significant Marketplace spend — counts toward PPA drawdown', '+1–2 pts', 'green']);
   else if (s.marketplaceSpend === '100k-500k') rows.push(['Marketplace spend — can be included in PPA commitment', '+0–1 pt', 'green']);
-  if (tier <= 4) rows.push(['Reseller channel discount available (APN partners)', '+5–15%', 'green']);
+  if (resellerGraduating(s, tier)) rows.push([`Reseller discount (${RESELLER_DISCOUNT_LABELS[s.resellerDiscount] || 'unknown'}) ends when you move direct; compare against the direct rate above`, 'Offset', 'red']);
+  else if (viaReseller(s) && tier <= 4) rows.push([`Current reseller discount (${RESELLER_DISCOUNT_LABELS[s.resellerDiscount] || 'unknown'}): benchmark against the direct rate`, 'Benchmark', 'green']);
+  else if (tier <= 4) rows.push(['Reseller channel discount available (APN partners)', '+5–15%', 'green']);
   const cur = s.currentDiscounts || [];
   if (cur.includes('none') || cur.length === 0) rows.push(['Currently at on-demand list pricing — full range available', 'Baseline', 'green']);
-  else if (cur.includes('edp')) rows.push(['Renewing an existing PPA — benchmark against current rate', 'Baseline', 'green']);
+  else if (cur.includes('edp-discount')) rows.push(['Renewing an existing PPA — benchmark against current rate', 'Baseline', 'green']);
   if ((s.awsPrograms || []).includes('map')) rows.push(['MAP participant — funded credits outside PPA discount', 'Additive', 'green']);
   if (s.workloadType === 'dev-heavy' || s.workloadType === 'batch') rows.push(['Variable workload profile — commit conservatively', '−1–2 pts', 'red']);
   if (s.gpuUsage === 'evaluating') rows.push(['Net-new GPU capacity decision — AWS will bid to win it', 'Leverage', 'green']);
@@ -593,12 +653,32 @@ function buildTactics(s, tier) {
   }
 
   // Credits — only pitch MAP entry if they are not already enrolled
-  if ((s.migrationPlans.includes('migrating-to-aws') || s.migrationPlans.includes('onprem-exit'))
-      && !(s.awsPrograms || []).includes('map')) {
+  if (isMigrating(s) && !(s.awsPrograms || []).includes('map')) {
     tactics.push({
-      title: 'Request Migration Acceleration Program (MAP) Credits',
-      desc: 'AWS MAP provides credits to offset migration costs. If you\'re migrating workloads to AWS, you\'re eligible for substantial MAP credits (often $50K–$500K+ depending on scope). These are separate from PPA discounts — always negotiate them as an add-on, not a substitute for discount.',
+      title: 'Request Migration Funding, Not Just Professional Services Credits',
+      desc: `AWS funds migrations in two forms: professional services credits (ProServ or partner hours) and real migration investment that offsets the cost of moving, such as parallel running, data transfer and re-platforming. Ask for both by name, and watch for ProServ hours presented as if they were investment. Package size scales with the size and complexity of the estate and the opportunity; your profile points to a ${creditSizing(s).label.toLowerCase()} package, and the largest, most complex estates have seen packages of about $50M. Funding is separate from the PPA discount: negotiate it as an add-on, never a substitute.`,
       impact: 'high',
+    });
+  }
+  if (isMigrating(s)) {
+    tactics.push({
+      title: 'Weigh Credits Against Discount, Never Instead of It',
+      desc: 'AWS often offers credits in place of a deeper rate, because a one-time credit costs it less than a permanent discount. Convert every credit offer into equivalent discount points over the term (see Migration Credits & Funding below) before comparing. Take investment for one-time move costs but keep pushing on the rate, and get four terms in writing: credits spread across the years the cost lands, clear expiry dates, whether credits count toward commitment drawdown, and which part is investment versus ProServ hours.',
+      impact: 'high',
+    });
+  }
+  if (competitorSources(s).length) {
+    tactics.push({
+      title: `Make AWS Fund the Exit From ${competitorLabel(s)}`,
+      desc: `Winning a workload from ${competitorLabel(s)} is the revenue AWS most wants, and it is where migration funding is most generous. Build a costed exit plan (parallel running, data transfer, contract overlap with the incumbent, re-platforming) and put it on the table as the basis for the funding ask. Ask the incumbent for its exit egress waiver too, and use any retention offer it makes as a competing number.`,
+      impact: 'high',
+    });
+  }
+  if ((s.migrationPlans || []).includes('hybrid-cloud')) {
+    tactics.push({
+      title: 'Scope Hybrid Funding to What Actually Moves',
+      desc: 'With a long-term hybrid footprint, AWS will fund only the workloads that migrate, so define those waves precisely rather than presenting an open-ended hybrid strategy. The on-prem estate is modest leverage (you have a working fallback), and price AWS Outposts only if specific workloads must stay on-site.',
+      impact: 'medium',
     });
   }
 
@@ -656,8 +736,15 @@ function buildTactics(s, tier) {
 
   if (s.gpuUsage === 'capacity-blocks' || s.gpuUsage === 'both') {
     tactics.push({
-      title: 'Demand Price Protection on Accelerated Compute',
-      desc: 'AWS raised EC2 Capacity Block prices roughly 20% on July 1, 2026 — the second increase that year — across the P6-B300, P6-B200, P5/P5e/P5en, and P4de families. Because your commitment is denominated in dollars rather than in GPU-hours, a list price increase silently reduces the compute your commit buys while still drawing it down on schedule. Two asks follow: size the commit against post-increase rates rather than historical GPU spend, and negotiate explicit price protection or a rate card fixing accelerated-compute pricing for the term. AWS resists blanket price locks but will often fix rates on named instance families where the workload is strategically important.',
+      title: 'Get GPU Price Protection That Works Both Ways',
+      desc: 'AWS raised EC2 Capacity Block prices roughly 20% on July 1, 2026 (the second increase that year) across the P6-B300, P6-B200, P5/P5e/P5en, and P4de families. Because your commitment is denominated in dollars rather than in GPU-hours, a list price increase silently reduces the compute your commit buys while still drawing it down on schedule. Size the commit against current rates rather than historical GPU spend, and negotiate a rate card on named instance families. Structure it as a ceiling, not a fixed price: you pay the lesser of the contracted rate or the current public price less your discount. A fixed rate protects you from increases but locks you out of cuts, and GPU prices fall as each new generation arrives.',
+      impact: 'high',
+    });
+  }
+  if (s.gpuUsage && s.gpuUsage !== 'none') {
+    tactics.push({
+      title: 'Make Sure GPU Price Cuts Reach You',
+      desc: 'GPU prices fall as well as rise: in June 2025 AWS cut On-Demand prices on P5 by up to 45%, P5en by up to 26% and P4d/P4de by up to 33%, but the Savings Plan cut applied only to plans bought after June 4, so existing plans kept paying the old rate. Fixed private rate cards behave the same way. Four protections: (1) a price-down clause that explicitly covers private rate cards, Savings Plans and Capacity Blocks, not just public On-Demand prices; (2) the right to move a committed rate to a newer GPU generation at the same or better price per unit of performance, so you are not tied to aging hardware; (3) an annual GPU repricing review benchmarked against public pricing and Azure, GCP and neocloud quotes; (4) shorter terms on GPU commitments, using 1-year Savings Plans or a separate GPU tranche rather than folding GPUs into a 3–5 year rate.',
       impact: 'high',
     });
   }
@@ -695,8 +782,29 @@ function buildTactics(s, tier) {
     });
   }
 
-  // Reseller channel discount — only available under $5M
-  if (tier <= 4) {
+  // Reseller channel. Resellers typically stop serving accounts around $5M/yr,
+  // so the advice depends on which side of that line the client sits and how
+  // they buy today.
+  if (resellerGraduating(s, tier)) {
+    const std = getDiscountRange(s).standard;
+    tactics.push({
+      title: 'Graduating From Reseller to Direct: Price the Whole Switch',
+      desc: `At your spend level, resellers typically can no longer serve the account, so you will be buying direct from AWS. Direct usually means a better discount${std ? ` (the standard direct rate for your commit and term is about ${std[0]}–${std[1]}%)` : ''}, but compare it against your full reseller price, not just the headline. Your current reseller discount (${RESELLER_DISCOUNT_LABELS[s.resellerDiscount] || 'unknown'}) goes away, and anything the reseller bundled now has to be bought or replaced: support (Enterprise Support is billed as a tiered percentage of monthly spend), billing and FinOps tooling, and partner-funded credits. Ask AWS to guarantee that your year-one effective price direct is no worse than your current reseller price, and line the PPA start date up with your reseller exit so there is no gap at on-demand rates.`,
+      impact: 'high',
+    });
+  } else if (resellerApproachingCeiling(s, tier)) {
+    tactics.push({
+      title: 'Plan the Move to Direct Before You Hit the Reseller Ceiling',
+      desc: 'Your growth will carry you past the ~$5M a year where resellers typically stop serving accounts. Negotiate the direct PPA on your own timeline rather than being moved mid-term: start direct discussions 6–9 months before you expect to cross the line, get a direct quote to benchmark against your reseller price now, and check your reseller contract for notice periods and minimums that would make a mid-term exit expensive.',
+      impact: 'high',
+    });
+  } else if (viaReseller(s) && tier <= 4) {
+    tactics.push({
+      title: 'Benchmark Your Reseller Discount Against Direct Pricing',
+      desc: `You already buy through a reseller (current discount: ${RESELLER_DISCOUNT_LABELS[s.resellerDiscount] || 'unknown'}). Make sure that discount is still competitive: get a direct quote from AWS and at least one competing reseller quote, and ask your reseller to itemise what is bundled (support, billing tooling, FinOps services) so you compare like with like. The reseller layer is valuable at your spend level, but only if it beats what you could get direct after accounting for those services.`,
+      impact: 'high',
+    });
+  } else if (tier <= 4) {
     tactics.push({
       title: 'Explore AWS Reseller Channel for Additional Discount Layer',
       desc: 'AWS resellers (APN partners such as CDW, SHI, TD SYNNEX, Carahsoft, and specialist cloud partners) hold their own volume discount agreements with AWS and can pass a portion of that margin to customers as an incremental discount — typically 5–15% on top of standard AWS pricing. Critically, this discount layer is only available through the channel and cannot be unlocked by going direct to AWS. At your spend level (under $5M), a qualified reseller may deliver better net pricing than a PPA alone. Evaluate reseller quotes in parallel with direct AWS negotiations before committing to either route.',
@@ -719,7 +827,7 @@ function buildTactics(s, tier) {
       impact: 'high',
     });
   }
-  if (cur.includes('edp') && s.edpMonthsRemaining && s.edpMonthsRemaining !== 'na') {
+  if (cur.includes('edp-discount') && s.edpMonthsRemaining && s.edpMonthsRemaining !== 'na') {
     tactics.push({
       title: 'Benchmark Your Renewal Against Your Existing PPA Rate',
       desc: 'You are renewing an existing PPA rather than negotiating a first one, which means you have the single most useful benchmark available: your current effective discount. Calculate it precisely from actual invoices rather than from the contracted headline rate — the two often differ once service mix is accounted for. Any renewal offer below your current effective rate is a step backwards regardless of how the headline number is presented.',
@@ -757,6 +865,23 @@ function buildTactics(s, tier) {
     });
   }
 
+  // Storage: optimize the class mix before committing, and keep any
+  // storage-specific discount from becoming a second shortfall exposure.
+  if (hasStorage(s)) {
+    tactics.push({
+      title: 'Optimize Storage Before You Commit',
+      desc: 'Storage pricing varies widely by class: S3 Standard lists at about $0.023 per GB-month and Glacier Deep Archive at about $0.00099. Before sizing the commit, move EBS gp2 volumes to gp3 (about 20% cheaper per GB), put lifecycle rules or Intelligent-Tiering on buckets with cold data, and clear unattached volumes and old snapshots. Commit on the optimized baseline, otherwise you lock waste into a committed rate. Plan class moves carefully: IA and Glacier classes carry minimum billing periods (30, 90 or 180 days), retrieval fees and per-object charges, and One Zone-IA keeps data in a single Availability Zone, so a badly planned move can cost more than it saves.',
+      impact: ['unoptimized', 'partially'].includes(s.optimizationStatus) ? 'high' : 'medium',
+    });
+  }
+  if (STORAGE_HEAVY.includes(s.storageShare)) {
+    tactics.push({
+      title: 'Negotiate a Storage Discount Without a Storage Trap',
+      desc: `With storage at ${s.storageShare === '30plus' ? 'over 30%' : '15–30%'} of your spend, ask for a storage-specific discount on top of your overall PPA rate. AWS usually attaches a storage minimum to it, which works like a second commitment: miss it and you pay the shortfall even if you hit your overall number. Four protections: cap the minimum at 70–80% of the last twelve months' actual storage usage, not AWS's forecast; get the right to move spend between storage classes and services (S3, EBS, EFS, FSx) without breaching it; refuse cross-default, so a storage miss cannot reprice the whole agreement; and do not set a minimum on storage you plan to move, archive or shrink.`,
+      impact: 'high',
+    });
+  }
+
   // BATNA
   tactics.push({
     title: 'Establish Your BATNA Before the First Meeting',
@@ -772,7 +897,7 @@ function buildTactics(s, tier) {
     .map((t, i) => ({ t, i }))
     .sort((a, b) => (rank[a.t.impact] ?? 1) - (rank[b.t.impact] ?? 1) || a.i - b.i)
     .map(x => x.t)
-    .slice(0, 12);
+    .slice(0, 14);
 }
 
 function buildTimeline(s) {
@@ -878,11 +1003,11 @@ function buildConcessions(s, tier) {
     });
   }
 
-  if (s.migrationPlans.includes('migrating-to-aws') || s.migrationPlans.includes('onprem-exit')) {
+  if (isMigrating(s)) {
     concessions.push({
       icon: '✈️',
-      title: 'MAP Migration Credits',
-      desc: 'AWS credits covering 25–50% of migration project costs via the Migration Acceleration Program.',
+      title: 'Migration Investment Package',
+      desc: 'Funding to offset parallel running, data transfer and re-platforming, kept separate from ProServ hours and sized to your estate and opportunity.',
       priority: 'must',
     });
   }
@@ -930,7 +1055,7 @@ function buildConcessions(s, tier) {
     concessions.push({
       icon: '🎛️',
       title: 'Accelerated Compute Price Protection',
-      desc: 'A fixed rate card for GPU instance families for the term, following the ~20% Capacity Block increase in July 2026.',
+      desc: 'A rate card on named GPU families that acts as a ceiling: you pay the lesser of the contracted rate or the current public price less your discount, so you are protected from increases without missing cuts.',
       priority: s.gpuUsage === 'evaluating' || s.gpuUsage === 'both' ? 'must' : 'should',
     });
   }
@@ -968,8 +1093,10 @@ function buildConcessions(s, tier) {
   concessions.push({
     icon: '📉',
     title: 'Price-Down (MFN) Trigger',
-    desc: "If AWS cuts published pricing on any service you consume, the lower rate applies automatically within 30 days with your PPA discount still stacked on top. AWS reduces prices regularly — without this term, those reductions accrue to AWS rather than to you.",
-    priority: 'should',
+    desc: s.gpuUsage && s.gpuUsage !== 'none'
+      ? "If AWS cuts pricing on any service you consume, the lower rate applies automatically within 30 days with your PPA discount still stacked on top. Name your GPU instance families and make the clause cover private rate cards, Savings Plans and Capacity Blocks, not just public On-Demand prices; GPU prices fall as each new generation arrives."
+      : "If AWS cuts published pricing on any service you consume, the lower rate applies automatically within 30 days with your PPA discount still stacked on top. AWS reduces prices regularly — without this term, those reductions accrue to AWS rather than to you.",
+    priority: s.gpuUsage && s.gpuUsage !== 'none' ? 'must' : 'should',
   });
 
   return concessions;
@@ -1041,6 +1168,28 @@ function buildRisks(s, tier) {
     });
   }
 
+  if (STORAGE_HEAVY.includes(s.storageShare)) {
+    risks.push({
+      level: s.storageShare === '30plus' ? 'high' : 'medium',
+      title: 'Storage Minimum Shortfall',
+      desc: 'A storage-specific discount usually comes with its own minimum. You can meet the overall commitment and still owe a shortfall on storage. Cap it against trailing usage and keep the right to move spend between storage classes and services.',
+    });
+  }
+  if (hasStorage(s)) {
+    risks.push({
+      level: 'medium',
+      title: 'Storage Class Billing Pitfalls',
+      desc: 'Minimum billing periods (30–180 days), retrieval fees, per-object transition charges on small files, and One Zone-IA availability risk can wipe out the savings from a storage class move. Model the move on real access patterns before committing to it.',
+    });
+  }
+  if (resellerGraduating(s, tier)) {
+    risks.push({
+      level: 'high',
+      title: 'Losing the Reseller Layer Without a Net Gain',
+      desc: 'Moving direct removes the reseller discount and anything it bundled (support, tooling, credits). If the direct PPA is priced only against list, your effective price can go up. Compare against your full current reseller price.',
+    });
+  }
+
   risks.push({
     level: 'low',
     title: 'Account Team Turnover',
@@ -1071,18 +1220,29 @@ function buildQuestions(s, tier) {
   }
 
   // Workload-specific asks sit ahead of the generic tail below — the list is
-  // capped at 10, and these are the questions only this client needs to ask.
+  // capped at 12, and these are the questions only this client needs to ask.
+  if (resellerGraduating(s, tier) || resellerApproachingCeiling(s, tier)) {
+    questions.push('If we move from our reseller to a direct PPA, will you guarantee a year-one effective price no worse than our current reseller price, and how do our existing Reserved Instances, Savings Plans and credits transfer?');
+  }
+
   if (s.gpuUsage && s.gpuUsage !== 'none') {
-    questions.push('Capacity Block pricing rose roughly 20% in July 2026 — what price protection can you commit to on GPU instance families for our term, and which families does it cover?');
-    questions.push('If AWS raises accelerated-compute list prices mid-term, does our committed spend simply buy less capacity, or is our drawdown adjusted to compensate?');
+    questions.push('Will you agree a GPU rate card that works as a ceiling, so we pay the lesser of the contracted rate or the current public price less our discount, on the instance families we name?');
+    questions.push('If accelerated-compute prices move mid-term, up or down, how does that flow through to our committed spend, our Savings Plans and any private rates?');
   }
 
   if (s.useCases.includes('ml-ai')) {
     questions.push('What service-specific credits or discounts exist for Bedrock and SageMaker as part of a PPA?');
   }
 
-  if (s.migrationPlans.includes('migrating-to-aws')) {
-    questions.push('We\'re planning to migrate X workloads in the next 12 months — how do we qualify for MAP funding, and is it additive to PPA?');
+  if (isMigrating(s)) {
+    questions.push('Which part of this package is migration investment and which is professional services hours, when does each expire, and do credits count toward our commitment drawdown?');
+  }
+  if ((s.migrationPlans || []).includes('storage-migration')) {
+    questions.push('Does storage we move with AWS Transform, including to FSx for NetApp ONTAP, count toward our MAP funding?');
+  }
+
+  if (STORAGE_HEAVY.includes(s.storageShare)) {
+    questions.push('Is there a storage-specific minimum behind this rate, how is it measured, and can we move spend between storage classes and services without a shortfall?');
   }
 
   questions.push('What are the exact shortfall mechanics — if we miss our annual commitment, how is the shortfall calculated and billed?');
@@ -1099,7 +1259,7 @@ function buildQuestions(s, tier) {
     questions.push('What executive sponsorship from AWS leadership is included at our investment level?');
   }
 
-  return questions.slice(0, 10);
+  return questions.slice(0, 12);
 }
 
 function buildAlerts(s, tier) {
@@ -1145,7 +1305,20 @@ function buildAlerts(s, tier) {
     });
   }
 
-  if (tier <= 4) {
+  if (resellerGraduating(s, tier)) {
+    alerts.push({
+      type: 'warning',
+      icon: '🔀',
+      text: '<strong>Reseller Ceiling: Expect to Move Direct.</strong> You buy through a reseller, and at your spend level resellers typically can no longer serve the account (the usual ceiling is around $5M a year). Treat this cycle as a reseller-to-direct transition: price the direct PPA against your full current reseller price, including any bundled support and tooling, and work through the transition checklist below before your reseller exit date.',
+    });
+  } else if (resellerApproachingCeiling(s, tier)) {
+    alerts.push({
+      type: 'info',
+      icon: '🔀',
+      text: '<strong>Approaching the Reseller Ceiling.</strong> At your growth rate you are likely to pass the ~$5M a year where resellers typically stop serving accounts. Plan the move to a direct PPA now so it happens on your timeline, not mid-term.',
+    });
+  }
+  if (tier <= 4 && !viaReseller(s)) {
     alerts.push({
       type: 'success',
       icon: '🟢',
@@ -1161,7 +1334,10 @@ function buildAlerts(s, tier) {
     alerts.push({ type: 'warning', icon: '🎛️', text: '<strong>GPU Capacity Block Prices Rose ~20% on July 1, 2026.</strong> This was the second increase that year, covering the P6-B300, P6-B200, P5/P5e/P5en, and P4de families. All other EC2 pricing was unchanged. Two consequences for this negotiation: a commit sized on pre-July GPU spend understates what that same capacity now costs, and a dollar-denominated commitment buys less accelerated compute than it did last cycle while still drawing down at the same rate. Size against current rates, and ask for accelerated-compute price protection explicitly — it will not be offered.' });
   }
   if (s.gpuUsage === 'capacity-blocks' || s.gpuUsage === 'both') {
-    alerts.push({ type: 'warning', icon: '📈', text: '<strong>Capacity Block Rates Reset Again on October 7, 2026.</strong> AWS\'s pricing page lists new per-accelerator rates effective October 7 (P6-B300 $16.146, P6-B200 $14.208, P5 $5.970 in US regions), roughly 15% above the July levels by our calculation, and says reservation prices are updated regularly with supply and demand. Treat Capacity Blocks as a variable-price product: size any commitment against current rates, not the July figures, and ask for a fixed rate card on the named GPU families you actually run for the term of the PPA.' });
+    alerts.push({ type: 'warning', icon: '📈', text: '<strong>Capacity Block Rates Reset Again on October 7, 2026.</strong> AWS\'s pricing page lists new per-accelerator rates effective October 7 (P6-B300 $16.146, P6-B200 $14.208, P5 $5.970 in US regions), roughly 15% above the July levels by our calculation, and says reservation prices are updated regularly with supply and demand. Treat Capacity Blocks as a variable-price product: size any commitment against current rates, not the July figures, and ask for a rate card on the named GPU families you actually run that works as a ceiling for the term of the PPA, so later cuts still reach you.' });
+  }
+  if (s.gpuUsage && s.gpuUsage !== 'none') {
+    alerts.push({ type: 'info', icon: '📉', text: '<strong>Fixed GPU Rates Cut Both Ways.</strong> A fixed GPU rate card or a long Savings Plan protects you from increases, but when AWS cuts GPU prices mid-term the saving goes to AWS, not you. In June 2025 AWS cut P5 On-Demand prices by up to 45%, and only Savings Plans bought after the cut got the lower rate. Ask for a rate card that works as a ceiling, a price-down clause that covers private rates and Savings Plans, and the right to move to newer GPU generations.' });
   }
   if (s.databaseSavingsPlans && s.databaseSavingsPlans !== 'none') {
     alerts.push({ type: 'success', icon: '🟢', text: '<strong>Database Savings Plans Opportunity Detected.</strong> AWS launched Database Savings Plans in December 2025 — 12–35% discounts on Aurora Serverless, DocumentDB, Neptune, Keyspaces, and Timestream on 1-year no-upfront terms. These are almost never included in AWS\'s PPA proposal. Raise this as a separate workstream in your negotiation and request they be included in your PPA credit package.' });
@@ -1266,6 +1442,107 @@ function buildCommitStructureHTML(s, tier) {
   </div>`;
 }
 
+function buildResellerTransitionHTML(s, tier) {
+  if (!resellerGraduating(s, tier) && !resellerApproachingCeiling(s, tier)) return '';
+  const items = [
+    ['Payer account', 'Confirm whether the reseller owns the management (payer) account. Plan the AWS Organizations move or account transfer, and who does the work.'],
+    ['Reserved Instances & Savings Plans', 'Commitments bought under the reseller’s payer account are tied to that organization. Confirm in writing how they carry over, or time the exit to when they expire.'],
+    ['Support', 'Price AWS Enterprise Support (or Enterprise On-Ramp) directly to replace partner-led support, and negotiate the support rate inside the PPA, not after it.'],
+    ['Billing data & tooling', 'Secure your Cost and Usage Report history and replace any FinOps or billing tooling the reseller provided before cutover.'],
+    ['Credits & funding', 'List any MAP, partner-funded or promotional credits tied to the reseller relationship and confirm what transfers and what expires.'],
+    ['Reseller exit terms', 'Check notice periods, minimum commitments and termination fees in the reseller contract, and set the exit date to match the PPA start.'],
+    ['Vendor setup', 'Onboard AWS as a direct vendor (billing entity, PO, tax and currency) early; it often takes longer than the commercial negotiation.'],
+  ];
+  return `
+  <div class="strategy-section">
+    <div class="section-header">
+      <span class="section-icon">🔀</span>
+      <h3>Reseller-to-Direct Transition Checklist</h3>
+      <span class="section-badge">${resellerGraduating(s, tier) ? 'Moving direct' : 'Plan ahead'}</span>
+    </div>
+    <div class="section-content">
+      <table style="width:100%;border-collapse:collapse;font-size:.85rem;">
+        <tbody>${items.map(([k, v]) => `<tr style="border-bottom:1px solid var(--surface-3);">
+          <td style="padding:9px 8px;font-weight:600;white-space:nowrap;vertical-align:top;">${k}</td>
+          <td style="padding:9px 8px;color:var(--text-secondary);">${v}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+// Converts a credit offer into equivalent discount points so it can be weighed
+// against the rate. Uses the midpoint of the spend band and the chosen term.
+function creditEquivalentBasis(s) {
+  const band = SPEND_TIERS[s.annualSpend];
+  if (!band) return null;
+  const annual = band.max === Infinity ? band.min * 1.2 : (band.min + band.max) / 2;
+  const years = { '1yr': 1, '2yr': 2, '3yr': 3, '4yr': 4, '5yr': 5 }[s.desiredTerm] || 3;
+  return { annual, years };
+}
+
+function updateCreditEquivalent(input) {
+  const annual = +input.dataset.annual, years = +input.dataset.years;
+  const credit = Math.max(+input.value || 0, 0) * 1e6;
+  const out = document.getElementById('credit-equiv-out');
+  if (!out) return;
+  if (!credit) { out.textContent = 'Enter an offer to see its value in discount points.'; return; }
+  const yr1 = (credit / annual * 100).toFixed(1);
+  const term = (credit / (annual * years) * 100).toFixed(1);
+  out.innerHTML = `≈ <strong>${term} pts</strong> across a ${years}-year commit, or <strong>${yr1} pts</strong> if it all lands in year one and nothing after.`;
+}
+
+function buildCreditsHTML(s, tier) {
+  if (!isMigrating(s)) return '';
+  const sizing = creditSizing(s);
+  const sources = (s.migrationSource || []).map(x => MIGRATION_SOURCE_LABELS[x]);
+  const competitor = competitorSources(s).length > 0;
+  const plans = s.migrationPlans || [];
+  const basis = creditEquivalentBasis(s);
+  const fmt = n => n >= 1e6 ? '$' + (n / 1e6).toFixed(n >= 1e7 ? 0 : 1) + 'M' : '$' + Math.round(n / 1e3) + 'K';
+
+  const angles = [];
+  if (competitor) angles.push(`<strong>Moving from ${competitorLabel(s)}:</strong> AWS is winning revenue from a competitor, which is where funding is most generous. Cost the exit in full (parallel running, data transfer, contract overlap) and ask the incumbent for its exit egress waiver; Google, AWS and Microsoft all introduced these in 2024, on request.`);
+  if ((s.migrationSource || []).includes('onprem') || plans.includes('onprem-exit')) angles.push('<strong>Moving from on-premises:</strong> MAP funding is structured around assess, mobilize and migrate phases. Tie each tranche to a phase milestone so funding arrives when the cost does, and include hardware refresh you avoid as part of the business case.');
+  if (plans.includes('storage-migration')) angles.push('<strong>Storage moving with the workloads:</strong> Amazon FSx is on the MAP included services list (updated October 13, 2026), and since September 3, 2026 AWS Transform can migrate attached block storage straight to FSx for NetApp ONTAP in the same wave as compute. Include the storage move in the same funding package; there is no separate storage funding program to rely on.');
+  if (plans.includes('hybrid-cloud')) angles.push('<strong>Staying hybrid long-term:</strong> AWS funds what actually moves, so scope funded waves to those workloads. Keeping an on-prem footprint is modest leverage (a working fallback), and AWS Outposts is worth pricing only if some workloads must stay on-site.');
+
+  return `
+  <div class="strategy-section">
+    <div class="section-header">
+      <span class="section-icon">🏦</span>
+      <h3>Migration Credits & Funding</h3>
+      <span class="section-badge green">${sizing.label} package</span>
+    </div>
+    <div class="section-content" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="concessions-grid">
+        <div class="concession-card">
+          <div class="cc-icon">👩‍💻</div>
+          <div class="cc-title">Professional Services Credits</div>
+          <div class="cc-desc">AWS ProServ or partner hours for design, migration factory work, Well-Architected reviews and training. Valuable only if you would otherwise have paid for that work.</div>
+        </div>
+        <div class="concession-card">
+          <div class="cc-icon">💵</div>
+          <div class="cc-title">Migration Investment</div>
+          <div class="cc-desc">Funding that offsets the cost of moving: running both environments during cutover, data transfer, re-platforming and exit costs. The bigger lever, and the one AWS sizes to the opportunity.</div>
+        </div>
+      </div>
+      <div class="alert alert-success"><span class="alert-icon">📐</span>
+        <div><strong>Size of the ask: ${sizing.label}.</strong> ${sizing.text}${sizing.label === 'Top end' ? '' : ' Packages depend on the size and complexity of the existing estate and of the AWS opportunity; at the top end they have reached about $50M.'}${sources.length ? ` <span style="color:var(--text-muted)">(Moving from ${sources.join(', ')}${s.migrationSpend && s.migrationSpend !== 'na' ? '; ' + ({ under1m: 'under $1M', '1m-5m': '$1M–$5M', '5m-10m': '$5M–$10M', '10mplus': '$10M+' }[s.migrationSpend]) + ' a year moving' : ''}${s.migrationComplexity ? '; ' + s.migrationComplexity + ' migration' : ''}.)</span>` : ''}</div>
+      </div>
+      ${angles.length ? `<div class="alerts-list">${angles.map(a => `<div class="alert alert-info"><span class="alert-icon">➜</span><div>${a}</div></div>`).join('')}</div>` : ''}
+      ${basis ? `<div style="padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:.85rem;">
+        <div style="font-weight:700;margin-bottom:6px;">Credits vs. discount</div>
+        <div style="color:var(--text-secondary);margin-bottom:8px;">Credits are one-time; discount points last the whole term. At the midpoint of your spend band (${fmt(basis.annual)} a year) on a ${basis.years}-year commit, every $1M of credits is worth about <strong>${(1e6 / (basis.annual * basis.years) * 100).toFixed(1)} pts</strong> of discount spread over the term.</div>
+        <label style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">Credit offer ($M):
+          <input type="number" min="0" step="0.5" style="width:100px;padding:4px 8px;" data-annual="${basis.annual}" data-years="${basis.years}" oninput="updateCreditEquivalent(this)" />
+          <span id="credit-equiv-out" style="color:var(--text-muted);">Enter an offer to see its value in discount points.</span>
+        </label>
+      </div>` : ''}
+    </div>
+  </div>`;
+}
+
 // ─── Export / Print ───────────────────────────────────────────────────────────
 function printStrategy() {
   window.print();
@@ -1301,6 +1578,9 @@ const SAMPLE_STATE = {
     "savings-plans"
   ],
   "supportTier": "enterprise",
+  "buyingChannel": "direct",
+  "resellerDiscount": "",
+  "storageShare": "under15",
   "useCases": [
     "compute",
     "containers",
@@ -1315,7 +1595,10 @@ const SAMPLE_STATE = {
   ],
   "awsPrograms": [
     "none"
-  ]
+  ],
+  "migrationSource": [],
+  "migrationSpend": "na",
+  "migrationComplexity": ""
 };
 
 function sampleBannerHTML(fromForm) {
