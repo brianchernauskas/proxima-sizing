@@ -1,0 +1,3773 @@
+{
+  "schema": "prices-1",
+  "providers": {
+    "azure": {
+      "australiacentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.24
+        },
+        "disk_gb_month": null,
+        "egress_1tb": 110.88,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "australiacentral2": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.24
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 110.88,
+        "general_monthly": 334.26,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "australiaeast": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.24
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 110.88,
+        "general_monthly": 326.23,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 17.825
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 39.21
+          }
+        }
+      },
+      "australiasoutheast": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.25
+        },
+        "disk_gb_month": 0.1124,
+        "egress_1tb": 110.88,
+        "general_monthly": 349.59,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 37.86
+          }
+        }
+      },
+      "austriaeast": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.23
+        },
+        "disk_gb_month": 0.0949,
+        "egress_1tb": 80.39,
+        "general_monthly": 295.74,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "belgiumcentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.23
+        },
+        "disk_gb_month": 0.0949,
+        "egress_1tb": 80.39,
+        "general_monthly": 295.74,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "brazilsouth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.306
+        },
+        "disk_gb_month": 0.1518,
+        "egress_1tb": 167.24,
+        "general_monthly": 466.54,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 54.08
+          }
+        }
+      },
+      "brazilsoutheast": {
+        "egress_routing": null,
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.398
+        },
+        "disk_gb_month": 0.1847,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "canadacentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.214
+        },
+        "disk_gb_month": 0.0883,
+        "egress_1tb": 80.39,
+        "general_monthly": 280.77,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 14.748
+          },
+          "blackwell": null
+        }
+      },
+      "canadaeast": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.214
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 80.39,
+        "general_monthly": 284.79,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 32.45
+          }
+        }
+      },
+      "centralindia": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.202
+        },
+        "disk_gb_month": 0.0912,
+        "egress_1tb": 110.88,
+        "general_monthly": 303.97,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "centralus": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.217
+        },
+        "disk_gb_month": 0.0905,
+        "egress_1tb": 80.39,
+        "general_monthly": 284.06,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 15.1167
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 33.2593
+          }
+        }
+      },
+      "chilecentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.269
+        },
+        "disk_gb_month": 0.1117,
+        "egress_1tb": 80.39,
+        "general_monthly": 332.61,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "denmarkeast": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.23
+        },
+        "disk_gb_month": 0.0949,
+        "egress_1tb": 80.39,
+        "general_monthly": 295.74,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eastasia": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.264
+        },
+        "disk_gb_month": 0.1058,
+        "egress_1tb": 110.88,
+        "general_monthly": 356.52,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eastus": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.192
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 80.39,
+        "general_monthly": 260.7,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 12.29
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 27.04
+          }
+        }
+      },
+      "eastus2": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.192
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 80.39,
+        "general_monthly": 260.7,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 12.29
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 27.04
+          }
+        }
+      },
+      "francecentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.224
+        },
+        "disk_gb_month": 0.0927,
+        "egress_1tb": 80.39,
+        "general_monthly": 290.26,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "francesouth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.291
+        },
+        "disk_gb_month": null,
+        "egress_1tb": 80.39,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "germanynorth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.299
+        },
+        "disk_gb_month": 0.1358,
+        "egress_1tb": 80.39,
+        "general_monthly": 366.55,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "germanywestcentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.23
+        },
+        "disk_gb_month": 0.0949,
+        "egress_1tb": 80.39,
+        "general_monthly": 295.74,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 35.15
+          }
+        }
+      },
+      "indiasouthcentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.202
+        },
+        "disk_gb_month": 0.1124,
+        "egress_1tb": 110.88,
+        "general_monthly": 314.55,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "indonesiacentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.216
+        },
+        "disk_gb_month": 0.0869,
+        "egress_1tb": 110.88,
+        "general_monthly": 312.0,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 31.635
+          }
+        }
+      },
+      "israelcentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.224
+        },
+        "disk_gb_month": 0.0971,
+        "egress_1tb": 80.39,
+        "general_monthly": 292.45,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "italynorth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.224
+        },
+        "disk_gb_month": 0.0927,
+        "egress_1tb": 80.39,
+        "general_monthly": 290.26,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 35.15
+          }
+        }
+      },
+      "japaneast": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.248
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 110.88,
+        "general_monthly": 340.1,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 17.8205
+          },
+          "blackwell": null
+        }
+      },
+      "japanwest": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.248
+        },
+        "disk_gb_month": 0.1248,
+        "egress_1tb": 110.88,
+        "general_monthly": 354.33,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 19.0495
+          },
+          "blackwell": null
+        }
+      },
+      "koreacentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.236
+        },
+        "disk_gb_month": 0.0912,
+        "egress_1tb": 110.88,
+        "general_monthly": 328.78,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 16.5915
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 36.5
+          }
+        }
+      },
+      "koreasouth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.221
+        },
+        "disk_gb_month": null,
+        "egress_1tb": 110.88,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 31.1
+          }
+        }
+      },
+      "malaysiawest": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.216
+        },
+        "disk_gb_month": 0.0869,
+        "egress_1tb": 110.88,
+        "general_monthly": 312.0,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "mexicocentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.211
+        },
+        "disk_gb_month": 0.0876,
+        "egress_1tb": 80.39,
+        "general_monthly": 278.22,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "newzealandnorth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.252
+        },
+        "disk_gb_month": 0.0847,
+        "egress_1tb": 110.88,
+        "general_monthly": 337.18,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "northcentralus": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.192
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 80.39,
+        "general_monthly": 260.7,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 14.748
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 32.45
+          }
+        }
+      },
+      "northeurope": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.214
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 80.39,
+        "general_monthly": 276.76,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "norwayeast": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.253
+        },
+        "disk_gb_month": 0.1146,
+        "egress_1tb": 80.39,
+        "general_monthly": 322.38,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "norwaywest": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.329
+        },
+        "disk_gb_month": 0.1489,
+        "egress_1tb": 80.39,
+        "general_monthly": 395.02,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "polandcentral": {
+        "egress_routing": "internet",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.23
+        },
+        "disk_gb_month": 0.0949,
+        "egress_1tb": 73.92,
+        "general_monthly": 289.27,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 15.977
+          },
+          "blackwell": null
+        }
+      },
+      "qatarcentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.235
+        },
+        "disk_gb_month": 0.1146,
+        "egress_1tb": 110.88,
+        "general_monthly": 339.73,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "southafricanorth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.254
+        },
+        "disk_gb_month": 0.1044,
+        "egress_1tb": 167.24,
+        "general_monthly": 404.86,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 21.084
+          },
+          "blackwell": null
+        }
+      },
+      "southafricawest": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.33
+        },
+        "disk_gb_month": 0.146,
+        "egress_1tb": 167.24,
+        "general_monthly": 481.14,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 23.326
+          },
+          "blackwell": null
+        }
+      },
+      "southcentralus": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.23
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 80.39,
+        "general_monthly": 288.44,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 14.746
+          },
+          "blackwell": null
+        }
+      },
+      "southindia": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.271
+        },
+        "disk_gb_month": 0.1212,
+        "egress_1tb": 110.88,
+        "general_monthly": 369.3,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 40.83
+          }
+        }
+      },
+      "southeastasia": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.24
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 110.88,
+        "general_monthly": 334.26,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "spaincentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.214
+        },
+        "disk_gb_month": 0.0949,
+        "egress_1tb": 80.39,
+        "general_monthly": 284.06,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 15.977
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 35.15
+          }
+        }
+      },
+      "swedencentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.204
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 80.39,
+        "general_monthly": 269.46,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 15.977
+          },
+          "blackwell": null
+        }
+      },
+      "switzerlandnorth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.253
+        },
+        "disk_gb_month": 0.1146,
+        "egress_1tb": 80.39,
+        "general_monthly": 322.38,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 17.5748
+          },
+          "blackwell": null
+        }
+      },
+      "switzerlandwest": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.329
+        },
+        "disk_gb_month": 0.1489,
+        "egress_1tb": 80.39,
+        "general_monthly": 395.02,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "uaecentral": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.306
+        },
+        "disk_gb_month": 0.1497,
+        "egress_1tb": 167.24,
+        "general_monthly": 465.44,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 50.29
+          }
+        }
+      },
+      "uaenorth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.235
+        },
+        "disk_gb_month": 0.0971,
+        "egress_1tb": 167.24,
+        "general_monthly": 387.33,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 17.5748
+          },
+          "blackwell": null
+        }
+      },
+      "uksouth": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.222
+        },
+        "disk_gb_month": 0.0927,
+        "egress_1tb": 80.39,
+        "general_monthly": 288.81,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 15.3625
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 33.8
+          }
+        }
+      },
+      "ukwest": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.232
+        },
+        "disk_gb_month": 0.0971,
+        "egress_1tb": 80.39,
+        "general_monthly": 298.3,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "westcentralus": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.23
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 80.39,
+        "general_monthly": 296.47,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 14.748
+          },
+          "blackwell": null
+        }
+      },
+      "westeurope": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.23
+        },
+        "disk_gb_month": 0.0949,
+        "egress_1tb": 80.39,
+        "general_monthly": 295.74,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 15.977
+          },
+          "blackwell": null
+        }
+      },
+      "westindia": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.246
+        },
+        "disk_gb_month": null,
+        "egress_1tb": 110.88,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "westus": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.224
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 80.39,
+        "general_monthly": 292.09,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 15.977
+          },
+          "blackwell": null
+        }
+      },
+      "westus2": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.192
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 80.39,
+        "general_monthly": 260.7,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 12.29
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 27.04
+          }
+        }
+      },
+      "westus3": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.192
+        },
+        "disk_gb_month": 0.0803,
+        "egress_1tb": 80.39,
+        "general_monthly": 260.7,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 12.29
+          },
+          "blackwell": {
+            "sku": "Standard_ND128isr_NDR_GB200_v6",
+            "gpus": 4,
+            "per_gpu_hour": 27.04
+          }
+        }
+      },
+      "usgovarizona": {
+        "egress_routing": "internet",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.242
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 108.54,
+        "general_monthly": 333.38,
+        "gpu": {
+          "h100": {
+            "sku": "Standard_ND96isr_H100_v5",
+            "gpus": 8,
+            "per_gpu_hour": 15.3625
+          },
+          "blackwell": null
+        }
+      },
+      "usgovtexas": {
+        "egress_routing": "internet",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.24
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 108.54,
+        "general_monthly": 331.92,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "usgovvirginia": {
+        "egress_routing": "microsoft",
+        "vm": {
+          "sku": "Standard_D4s_v5",
+          "hourly": 0.242
+        },
+        "disk_gb_month": 0.0964,
+        "egress_1tb": 100.72,
+        "general_monthly": 325.56,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "chinaeast": {
+        "egress_routing": null,
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "chinaeast2": {
+        "egress_routing": null,
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "chinaeast3": {
+        "egress_routing": null,
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "chinanorth": {
+        "egress_routing": null,
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "chinanorth2": {
+        "egress_routing": null,
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "chinanorth3": {
+        "egress_routing": null,
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      }
+    },
+    "oracle": {
+      "ap-sydney-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-melbourne-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "sa-saopaulo-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "sa-vinhedo-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ca-montreal-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ca-toronto-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "sa-santiago-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "sa-valparaiso-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "sa-bogota-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-paris-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-marseille-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-frankfurt-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-hyderabad-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-mumbai-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-batam-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "il-jerusalem-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-milan-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-turin-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-osaka-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-tokyo-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-kulai-2": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "mx-queretaro-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "mx-monterrey-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "af-casablanca-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-amsterdam-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "me-riyadh-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "me-jeddah-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-jovanovac-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-singapore-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-singapore-2": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "af-johannesburg-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-seoul-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-chuncheon-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-madrid-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-madrid-3": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-stockholm-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-zurich-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "me-abudhabi-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "me-dubai-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "uk-london-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "uk-cardiff-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-ashburn-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-chicago-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-phoenix-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-sanjose-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-langley-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-luke-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-gov-ashburn-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-gov-chicago-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "us-gov-phoenix-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "uk-gov-london-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "uk-gov-cardiff-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "ap-dcc-canberra-1": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-frankfurt-2": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      },
+      "eu-madrid-2": {
+        "vm": {
+          "sku": "VM.Standard.E5.Flex (2 OCPU, 16 GB)",
+          "hourly": 0.092
+        },
+        "disk_gb_month": 0.0425,
+        "egress_1tb": 0.0,
+        "general_monthly": 88.41,
+        "gpu": {
+          "h100": {
+            "sku": "BM.GPU.H100.8",
+            "gpus": 8,
+            "per_gpu_hour": 10
+          },
+          "blackwell": {
+            "sku": "BM.GPU.B200.8",
+            "gpus": 8,
+            "per_gpu_hour": 14
+          }
+        },
+        "gpu_availability": "not published"
+      }
+    },
+    "aws": {
+      "us-east-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2016,
+          "fallback": false
+        },
+        "disk_gb_month": 0.08,
+        "egress_1tb": 83.16,
+        "general_monthly": 270.33,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 6.88
+          },
+          "blackwell": {
+            "sku": "p6-b200.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 14.2416
+          }
+        }
+      },
+      "us-east-2": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2016,
+          "fallback": false
+        },
+        "disk_gb_month": 0.08,
+        "egress_1tb": 83.16,
+        "general_monthly": 270.33,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 6.88
+          },
+          "blackwell": {
+            "sku": "p6-b200.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 14.2416
+          }
+        }
+      },
+      "us-west-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2352,
+          "fallback": false
+        },
+        "disk_gb_month": 0.096,
+        "egress_1tb": 83.16,
+        "general_monthly": 302.86,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 8.6
+          },
+          "blackwell": null
+        }
+      },
+      "us-west-2": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2016,
+          "fallback": false
+        },
+        "disk_gb_month": 0.08,
+        "egress_1tb": 83.16,
+        "general_monthly": 270.33,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 6.88
+          },
+          "blackwell": {
+            "sku": "p6-b200.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 14.2416
+          }
+        }
+      },
+      "af-south-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2667,
+          "fallback": false
+        },
+        "disk_gb_month": 0.1047,
+        "egress_1tb": 142.3,
+        "general_monthly": 389.34,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ap-east-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2772,
+          "fallback": false
+        },
+        "disk_gb_month": 0.1056,
+        "egress_1tb": 110.88,
+        "general_monthly": 366.04,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ap-east-2": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.23436,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0864,
+        "egress_1tb": 100.07,
+        "general_monthly": 314.35,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ap-south-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2121,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0912,
+        "egress_1tb": 100.99,
+        "general_monthly": 301.42,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 8.256
+          },
+          "blackwell": {
+            "sku": "p6-b200.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 20.0807
+          }
+        }
+      },
+      "ap-south-2": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2121,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0912,
+        "egress_1tb": 100.99,
+        "general_monthly": 301.42,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "p6-b200.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 20.0813
+          }
+        }
+      },
+      "ap-northeast-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2604,
+          "fallback": false
+        },
+        "disk_gb_month": 0.096,
+        "egress_1tb": 105.34,
+        "general_monthly": 343.43,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 8.6
+          },
+          "blackwell": null
+        }
+      },
+      "ap-northeast-2": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2478,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0912,
+        "egress_1tb": 116.42,
+        "general_monthly": 342.91,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 9.4944
+          },
+          "blackwell": null
+        }
+      },
+      "ap-northeast-3": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2604,
+          "fallback": false
+        },
+        "disk_gb_month": 0.096,
+        "egress_1tb": 105.34,
+        "general_monthly": 343.43,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ap-southeast-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.252,
+          "fallback": false
+        },
+        "disk_gb_month": 0.096,
+        "egress_1tb": 110.88,
+        "general_monthly": 342.84,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ap-southeast-2": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.252,
+          "fallback": false
+        },
+        "disk_gb_month": 0.096,
+        "egress_1tb": 105.34,
+        "general_monthly": 337.3,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 8.944
+          },
+          "blackwell": null
+        }
+      },
+      "ap-southeast-3": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.252,
+          "fallback": false
+        },
+        "disk_gb_month": 0.096,
+        "egress_1tb": 121.97,
+        "general_monthly": 353.93,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 9.4944
+          },
+          "blackwell": null
+        }
+      },
+      "ap-southeast-4": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.252,
+          "fallback": false
+        },
+        "disk_gb_month": 0.096,
+        "egress_1tb": 105.34,
+        "general_monthly": 337.3,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ap-southeast-5": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2142,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0864,
+        "egress_1tb": 99.79,
+        "general_monthly": 299.36,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ap-southeast-6": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2646,
+          "fallback": false
+        },
+        "disk_gb_month": 0.1008,
+        "egress_1tb": 105.34,
+        "general_monthly": 348.9,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ap-southeast-7": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2142,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0864,
+        "egress_1tb": 99.79,
+        "general_monthly": 299.36,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "ca-central-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2247,
+          "fallback": false
+        },
+        "disk_gb_month": 0.088,
+        "egress_1tb": 83.16,
+        "general_monthly": 291.19,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 7.912
+          },
+          "blackwell": null
+        }
+      },
+      "ca-west-1": {
+        "vm": {
+          "sku": "m6i.xlarge",
+          "hourly": 0.214,
+          "fallback": true
+        },
+        "disk_gb_month": 0.088,
+        "egress_1tb": 83.16,
+        "general_monthly": 283.38,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eu-central-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2415,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0952,
+        "egress_1tb": 83.16,
+        "general_monthly": 307.05,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eu-central-2": {
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": 83.16,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eu-west-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2247,
+          "fallback": false
+        },
+        "disk_gb_month": 0.088,
+        "egress_1tb": 83.16,
+        "general_monthly": 291.19,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eu-west-2": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2331,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0928,
+        "egress_1tb": 83.16,
+        "general_monthly": 299.72,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 8.944
+          },
+          "blackwell": null
+        }
+      },
+      "eu-west-3": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2352,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0928,
+        "egress_1tb": 83.16,
+        "general_monthly": 301.26,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "p6-b200.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 21.7896
+          }
+        }
+      },
+      "eu-south-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2352,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0924,
+        "egress_1tb": 83.16,
+        "general_monthly": 301.06,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eu-south-2": {
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": 83.16,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eu-north-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2142,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0836,
+        "egress_1tb": 83.16,
+        "general_monthly": 281.33,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 7.3616
+          },
+          "blackwell": {
+            "sku": "p6-b200.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 17.9053
+          }
+        }
+      },
+      "il-central-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.23594,
+          "fallback": false
+        },
+        "disk_gb_month": 0.1056,
+        "egress_1tb": 101.64,
+        "general_monthly": 326.68,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "mx-central-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.21168,
+          "fallback": false
+        },
+        "disk_gb_month": 0.084,
+        "egress_1tb": 83.16,
+        "general_monthly": 279.69,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "me-south-1": {
+        "vm": {
+          "sku": "m6i.xlarge",
+          "hourly": 0.264,
+          "fallback": true
+        },
+        "disk_gb_month": 0.0968,
+        "egress_1tb": 108.11,
+        "general_monthly": 349.23,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "me-central-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.24718,
+          "fallback": false
+        },
+        "disk_gb_month": 0.0968,
+        "egress_1tb": 101.64,
+        "general_monthly": 330.48,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "sa-east-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.3213,
+          "fallback": false
+        },
+        "disk_gb_month": 0.152,
+        "egress_1tb": 138.6,
+        "general_monthly": 449.15,
+        "gpu": {
+          "h100": {
+            "sku": "p5.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 11.5584
+          },
+          "blackwell": null
+        }
+      },
+      "us-gov-west-1": {
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": 143.22,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "us-gov-east-1": {
+        "vm": {
+          "sku": "m7i.xlarge",
+          "hourly": 0.2541,
+          "fallback": false
+        },
+        "disk_gb_month": 0.096,
+        "egress_1tb": 143.22,
+        "general_monthly": 376.71,
+        "gpu": {
+          "h100": null,
+          "blackwell": {
+            "sku": "p6-b200.48xlarge",
+            "gpus": 8,
+            "per_gpu_hour": 17.0899
+          }
+        }
+      },
+      "cn-north-1": {
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "cn-northwest-1": {
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "eusc-de-east-1": {
+        "vm": null,
+        "disk_gb_month": null,
+        "egress_1tb": null,
+        "general_monthly": null,
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      }
+    },
+    "gcp": {
+      "africa-south1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.213668
+        },
+        "disk_gb_month": 0.109788,
+        "egress_1tb": 153.6,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 364.47,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 14.3606
+          },
+          "blackwell": null
+        }
+      },
+      "asia-east1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.224904
+        },
+        "disk_gb_month": 0.1,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 337.06,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.7127
+          },
+          "blackwell": null
+        }
+      },
+      "asia-east2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.271772
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 376.27,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 15.3586
+          },
+          "blackwell": null
+        }
+      },
+      "asia-northeast1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.249176
+        },
+        "disk_gb_month": 0.13,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 369.78,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 15.7236
+          },
+          "blackwell": null
+        }
+      },
+      "asia-northeast2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.249436
+        },
+        "disk_gb_month": 0.13,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 369.97,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 14.0993
+          },
+          "blackwell": null
+        }
+      },
+      "asia-northeast3": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.249436
+        },
+        "disk_gb_month": 0.13,
+        "egress_1tb": 194.56,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 441.65,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 14.0993
+          },
+          "blackwell": null
+        }
+      },
+      "asia-south1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.233288
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 353.18,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 11.4182
+          },
+          "blackwell": null
+        }
+      },
+      "asia-south2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.233288
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 353.18,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 13.1869
+          },
+          "blackwell": null
+        }
+      },
+      "asia-southeast1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.239612
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 352.8,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 14.1944
+          },
+          "blackwell": {
+            "sku": "a4-highgpu-8g (B200)",
+            "gpus": 8,
+            "per_gpu_hour": 19.332
+          }
+        }
+      },
+      "asia-southeast2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.261177
+        },
+        "disk_gb_month": 0.13,
+        "egress_1tb": 194.56,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 450.22,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 14.7635
+          },
+          "blackwell": null
+        }
+      },
+      "asia-southeast3": {
+        "vm": null,
+        "disk_gb_month": 0.105,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": null,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "australia-southeast1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.2756
+        },
+        "disk_gb_month": 0.135,
+        "egress_1tb": 194.56,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 463.25,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 13.7238
+          },
+          "blackwell": null
+        }
+      },
+      "australia-southeast2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.234256
+        },
+        "disk_gb_month": 0.135,
+        "egress_1tb": 194.56,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 433.07,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 14.2728
+          },
+          "blackwell": null
+        }
+      },
+      "europe-central2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.235032
+        },
+        "disk_gb_month": 0.13,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 359.45,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 14.1454
+          },
+          "blackwell": null
+        }
+      },
+      "europe-north1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.213848
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 333.99,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.089
+          },
+          "blackwell": null
+        }
+      },
+      "europe-north2": {
+        "vm": null,
+        "disk_gb_month": 0.1,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": null,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "europe-southwest1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.229198
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 350.19,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.9553
+          },
+          "blackwell": null
+        }
+      },
+      "europe-west1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.213668
+        },
+        "disk_gb_month": 0.1,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 328.86,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.089
+          },
+          "blackwell": null
+        }
+      },
+      "europe-west2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.250248
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 365.56,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.5161
+          },
+          "blackwell": null
+        }
+      },
+      "europe-west3": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.250248
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 365.56,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.9553
+          },
+          "blackwell": null
+        }
+      },
+      "europe-west4": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.213832
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 333.98,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 13.9771
+          },
+          "blackwell": {
+            "sku": "a4-highgpu-8g (B200)",
+            "gpus": 8,
+            "per_gpu_hour": 17.721
+          }
+        }
+      },
+      "europe-west6": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.254452
+        },
+        "disk_gb_month": 0.13,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 373.63,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 15.3586
+          },
+          "blackwell": null
+        }
+      },
+      "europe-west8": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.225314
+        },
+        "disk_gb_month": 0.116,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 345.36,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.7357
+          },
+          "blackwell": null
+        }
+      },
+      "europe-west9": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.225314
+        },
+        "disk_gb_month": 0.116,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 345.36,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.7357
+          },
+          "blackwell": null
+        }
+      },
+      "europe-west10": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.250256
+        },
+        "disk_gb_month": 0.154,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 382.57,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 16.9078
+          },
+          "blackwell": null
+        }
+      },
+      "europe-west12": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.250564
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 365.79,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 14.163
+          },
+          "blackwell": null
+        }
+      },
+      "me-central1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.235997
+        },
+        "disk_gb_month": 0.1215,
+        "egress_1tb": 153.6,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 386.63,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 13.3396
+          },
+          "blackwell": null
+        }
+      },
+      "me-central2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.310778
+        },
+        "disk_gb_month": 0.16,
+        "egress_1tb": 194.56,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 501.43,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 17.5665
+          },
+          "blackwell": null
+        }
+      },
+      "me-west1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.21366
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 153.6,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 364.57,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.077
+          },
+          "blackwell": null
+        }
+      },
+      "northamerica-northeast1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.213832
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 333.98,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.089
+          },
+          "blackwell": null
+        }
+      },
+      "northamerica-northeast2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.213832
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 333.98,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.089
+          },
+          "blackwell": null
+        }
+      },
+      "northamerica-south1": {
+        "vm": null,
+        "disk_gb_month": 0.109,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": null,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": null,
+          "blackwell": null
+        }
+      },
+      "southamerica-east1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.30832
+        },
+        "disk_gb_month": 0.15,
+        "egress_1tb": 194.56,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 494.63,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 17.4336
+          },
+          "blackwell": null
+        }
+      },
+      "southamerica-west1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.277757
+        },
+        "disk_gb_month": 0.143,
+        "egress_1tb": 194.56,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 468.82,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 15.7001
+          },
+          "blackwell": null
+        }
+      },
+      "us-central1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.194236
+        },
+        "disk_gb_month": 0.1,
+        "egress_1tb": 122.76,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 314.55,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 10.9791
+          },
+          "blackwell": {
+            "sku": "a4-highgpu-8g (B200)",
+            "gpus": 8,
+            "per_gpu_hour": 16.11
+          }
+        }
+      },
+      "us-east1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.194236
+        },
+        "disk_gb_month": 0.1,
+        "egress_1tb": 122.76,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 314.55,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 10.9791
+          },
+          "blackwell": {
+            "sku": "a4-highgpu-8g (B200)",
+            "gpus": 8,
+            "per_gpu_hour": 16.11
+          }
+        }
+      },
+      "us-east4": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.218756
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 337.57,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 10.9791
+          },
+          "blackwell": null
+        }
+      },
+      "us-east5": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.194236
+        },
+        "disk_gb_month": 0.1,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 314.67,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.3657
+          },
+          "blackwell": null
+        }
+      },
+      "us-south1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.229198
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.76,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 350.07,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.9553
+          },
+          "blackwell": null
+        }
+      },
+      "us-west1": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.194236
+        },
+        "disk_gb_month": 0.1,
+        "egress_1tb": 122.76,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 314.55,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 10.9791
+          },
+          "blackwell": {
+            "sku": "a4-highgpu-8g (B200)",
+            "gpus": 8,
+            "per_gpu_hour": 16.11
+          }
+        }
+      },
+      "us-west2": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.233304
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.76,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 353.07,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 13.1979
+          },
+          "blackwell": null
+        }
+      },
+      "us-west3": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.233304
+        },
+        "disk_gb_month": 0.12,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 353.19,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 13.1979
+          },
+          "blackwell": null
+        }
+      },
+      "us-west4": {
+        "vm": {
+          "sku": "n2-standard-4",
+          "hourly": 0.218748
+        },
+        "disk_gb_month": 0.11,
+        "egress_1tb": 122.88,
+        "egress_basis": "premium tier, destination Americas",
+        "general_monthly": 337.57,
+        "gpu_availability": "not confirmed",
+        "gpu": {
+          "h100": {
+            "sku": "a3-highgpu-8g",
+            "gpus": 8,
+            "per_gpu_hour": 12.3657
+          },
+          "blackwell": null
+        }
+      }
+    }
+  },
+  "sources": {
+    "azure-retail-prices": {
+      "title": "Azure Retail Prices API",
+      "url": "https://prices.azure.com/api/retail/prices",
+      "accessed": "2026-10-16",
+      "tier": "A",
+      "note": "D4s_v5, ND96isr H100 v5 and ND128isr GB200 v6 (Linux, pay-as-you-go), Premium SSD v2 capacity (baseline IOPS and throughput included), Standard data transfer out over the Microsoft network (the default routing), tiered with the first 100 GB free."
+    },
+    "oci-price-list": {
+      "title": "Oracle Cloud price list API",
+      "url": "https://apexapps.oracle.com/pls/apex/cetools/api/v1/products/?currencyCode=USD",
+      "accessed": "2026-10-16",
+      "tier": "A",
+      "note": "Oracle publishes one price list for every commercial region. E5 Flex OCPU and memory, Block Volume at Balanced performance (10 VPU/GB), outbound transfer with the first 10 TB a month free, H100 and B200 per GPU-hour. The price list does not say which regions offer GPU shapes."
+    },
+    "aws-prices-ec2": {
+      "title": "AWS EC2 on-demand pricing data (the feed behind aws.amazon.com/ec2/pricing)",
+      "url": "https://aws.amazon.com/ec2/pricing/on-demand/",
+      "accessed": "2026-10-16",
+      "tier": "A",
+      "note": "m7i.xlarge (m6i.xlarge where m7i is not offered), p5.48xlarge and p6-b200.48xlarge, Linux, per region."
+    },
+    "aws-prices-ebs": {
+      "title": "AWS EBS pricing data",
+      "url": "https://aws.amazon.com/ebs/pricing/",
+      "accessed": "2026-10-16",
+      "tier": "A",
+      "note": "gp3 storage per GB-month, per region."
+    },
+    "aws-prices-egress": {
+      "title": "AWS Price List API: AWSDataTransfer offer",
+      "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSDataTransfer/current/region_index.json",
+      "accessed": "2026-10-16",
+      "tier": "A",
+      "note": "Data transfer out to the internet, tiered, per region; first 100 GB a month free."
+    },
+    "gcp-billing-catalog": {
+      "title": "Google Cloud Billing Catalog API: Compute Engine SKUs",
+      "url": "https://cloud.google.com/billing/docs/reference/rest/v1/services.skus/list",
+      "accessed": "2026-10-16",
+      "tier": "A",
+      "note": "On-demand N2 core and RAM (n2-standard-4 = 4 vCPU + 16 GB), Balanced persistent disk, premium-tier internet egress to the Americas (Google prices egress by destination), H100 GPU plus A3 core and RAM for a3-highgpu-8g, and the A4 B200 one-GPU slice, per region."
+    }
+  },
+  "as_of": "2026-10-16",
+  "currency": "USD",
+  "basket": {
+    "general": "Per month: a 4 vCPU / 16 GiB Linux VM for 730 hours on demand, 500 GB of general-purpose SSD block storage, and 1 TB (1,024 GB) of internet egress at tiered list rates with free allowances.",
+    "gpu": "On-demand list price per GPU-hour: an 8 x H100 node, and a Blackwell node (B200, or GB200 where that is the provider's offering), divided by the GPUs in the node."
+  }
+}

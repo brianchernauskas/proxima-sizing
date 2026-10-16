@@ -26,6 +26,23 @@ digest's reviewed proposals (2026-10-16) carry their digest source and tier.
 | `data/anthropic.json` | Anthropic as a captive tenant: leases for its own use, sells no cloud |
 | `sites[]` in `aws.json`, `gcp.json` | Hyperscaler campuses named in planning and utility filings (AWS and Google publish none) |
 | `SCHEMA.md` | The contract every provider file must satisfy |
+| `data/prices.json` | List prices per region for the Placement view (written by `prices/fetch_prices.py`) |
+| `prices/fetch_prices.py` | Pulls AWS, Azure, Google and Oracle list prices from each provider's own price data |
+
+## Placement: where new capacity is cheapest
+
+The Placement section ranks eligible regions by list price for one of three baskets: general
+compute (a 4 vCPU / 16 GiB VM, 500 GB SSD and 1 TB egress per month), an H100 GPU-hour, or a
+Blackwell (B200/GB200) GPU-hour. Each region is shown against its own provider's cheapest region,
+because enterprise discounts usually apply evenly across a provider's regions: the ratio survives
+negotiation, the dollar figure does not. Alongside price it shows the named committed MW arriving
+on the same grid (US only) and the Grid-Headroom leverage score.
+
+Refresh with `python prices/fetch_prices.py` (monthly is plenty). Google's catalog needs an API
+key, read from `GCP_PRICING_KEY` or `~/.config/proxima/gcp-pricing-key.txt`. The key lives
+outside the repo and must never be committed. Oracle charges one price in every region and does
+not publish which regions offer GPU shapes; Google prices GPUs by pricing zone, so its GPU rows
+are a listed price, not confirmed availability.
 
 Served locally on port 3120 (`dc-capacity-map` in the workspace `.claude/launch.json`).
 The page fetches JSON, so it needs HTTP — opening `index.html` off disk will not work.

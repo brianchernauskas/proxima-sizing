@@ -120,6 +120,13 @@ const COLOR_MODES = {
     scale: { yes: '#34A853', no: '#94A3B8', 'not published': '#475569' },
     names: { yes: 'Low CO₂ (Google)', no: 'Not low CO₂', 'not published': 'Not published' }
   },
+  price: {
+    label: 'Price index',
+    legend: 'List price of the basket chosen under Placement, against the same provider\'s cheapest region (= 100). Oracle charges one price in every region.',
+    key: r => { const i = priceIndex(r); return i == null ? 'none' : i <= 102 ? 'low' : i <= 110 ? 'mid' : i <= 125 ? 'high' : 'top'; },
+    scale: { low: '#10B981', mid: '#A3E635', high: '#F59E0B', top: '#EF4444', none: '#5A6B85' },
+    names: { low: '100-102 (cheapest)', mid: '103-110', high: '111-125', top: 'Over 125', none: 'Not priced' }
+  },
   leverage: {
     label: 'Grid leverage', sites: true,
     legend: 'Buyer leverage on delivery timing, from the Grid-Headroom Map. US markets only.',
@@ -178,7 +185,9 @@ const state = {
   colorBy: 'provider',
   selected: null,
   sort: { key: 'azs', dir: -1 },
-  siteSort: { key: 'live', dir: -1 }
+  siteSort: { key: 'live', dir: -1 },
+  prices: null,             // data/prices.json, if present
+  placement: { basket: 'general', zones3: false, open: true, lowco2: false, sort: { key: 'price', dir: 1 } }
 };
 
 /* ── helpers ───────────────────────────────────────────────── */
@@ -226,6 +235,118 @@ function sumMW(entries) {
   const total = xs.reduce((a, p) => a + p.mw, 0);
   const bases = [...new Set(xs.map(p => p.basis))];
   return { total, n: xs.length, bases, mixed: bases.length > 1 };
+}
+
+/* ── placement ─────────────────────────────────────────────── */
+
+/* List prices for two baskets (see prices/fetch_prices.py). A region is compared with its own
+ * provider's cheapest region, because enterprise discounts usually apply evenly across a
+ * provider's regions: the ratio survives negotiation, the dollar figure does not. */
+const BASKETS = {
+  general:   { label: 'General compute', unit: '/mo',     get: p => p.general_monthly },
+  h100:      { label: 'H100 GPU',        unit: '/GPU-hr', get: p => p.gpu && p.gpu.h100 && p.gpu.h100.per_gpu_hour },
+  blackwell: { label: 'Blackwell GPU',   unit: '/GPU-hr', get: p => p.gpu && p.gpu.blackwell && p.gpu.blackwell.per_gpu_hour }
+};
+const PRICE_SRC = { aws: 'aws-prices-ec2', azure: 'azure-retail-prices', oracle: 'oci-price-list', gcp: 'gcp-billing-catalog' };
+
+function priceOf(r, basket = state.placement.basket) {
+  const v = r._price ? BASKETS[basket].get(r._price) : null;
+  return v == null ? null : v;
+}
+function priceIndex(r, basket = state.placement.basket) {
+  const v = priceOf(r, basket);
+  if (v == null) return null;
+  const floor = Math.min(...state.regions.filter(x => x._p.id === r._p.id).map(x => priceOf(x, basket)).filter(x => x != null));
+  return Math.round(v / floor * 100);
+}
+const fmtPrice = (v, basket) => v == null ? '—' :
+  '$' + (basket === 'general' ? Math.round(v).toLocaleString() : v.toFixed(2)) + BASKETS[basket].unit;
+
+/* Named pipeline MW in each grid market: capacity arriving where a region draws its power. */
+function marketPipeline() {
+  const m = {};
+  state.sites.forEach(s => {
+    const p = pipeOf(s);
+    if (!s.grid || !p) return;
+    const e = m[s.grid.market] || (m[s.grid.market] = { mw: 0, n: 0 });
+    e.mw += p.mw; e.n++;
+  });
+  return m;
+}
+
+function priceNotes(r, basket) {
+  const p = r._price || {};
+  const notes = [];
+  if (basket === 'general' && p.vm && p.vm.fallback) notes.push(`${p.vm.sku}: newer generation not offered here`);
+  if (basket === 'general' && p.egress_routing === 'internet') notes.push('egress priced on internet routing');
+  if (basket !== 'general' && p.gpu_availability === 'not published') notes.push('uniform price; regional GPU availability not published');
+  if (basket !== 'general' && p.gpu_availability === 'not confirmed') notes.push('price listed for this region; machine availability not confirmed');
+  if (basket !== 'general' && p.gpu && p.gpu[basket]) notes.push(p.gpu[basket].sku);
+  return notes.join(' · ') || '—';
+}
+
+const PLACEMENT_COLUMNS = [
+  { key: 'rank',     label: '#',              get: r => r._rank,     sort: r => r._rank,     type: 'num' },
+  { key: 'name',     label: 'Region',         get: r => r.name,      sort: r => r.name,      type: 'text', swatch: true },
+  { key: 'provider', label: 'Provider',       get: r => r._p.short,  sort: r => r._p.short,  type: 'text' },
+  { key: 'metro',    label: 'Location',       get: r => r.metro || '—', sort: r => r.metro || '', type: 'text' },
+  { key: 'price',    label: 'List price',     get: r => fmtPrice(r._pp, state.placement.basket), sort: r => r._pp, type: 'num' },
+  { key: 'index',    label: 'vs provider\'s cheapest', get: r => r._idx, sort: r => r._idx, type: 'num' },
+  { key: 'gap',      label: 'vs cheapest shown', get: r => r._gap ? '+' + r._gap + '%' : 'cheapest', sort: r => r._gap, type: 'num' },
+  { key: 'azs',      label: 'Zones',          get: azLabel,          sort: r => r.azs,       type: 'num' },
+  { key: 'supply',   label: 'Pipeline in grid market', get: r => r._supply ? `${r._supply.mw.toLocaleString()} MW (${r._supply.n})` : '—',
+    sort: r => r._supply ? r._supply.mw : -1, type: 'num' },
+  { key: 'leverage', label: 'Grid leverage',  get: r => (r.grid && r.grid.leverage) || '—', sort: r => (r.grid && r.grid.constraint_index) || 0, type: 'text' },
+  { key: 'notes',    label: 'Notes',          get: r => priceNotes(r, state.placement.basket), sort: r => priceNotes(r, state.placement.basket), type: 'text' }
+];
+
+function placementRows() {
+  const pl = state.placement, b = pl.basket;
+  const rows = visibleRegions().filter(r => priceOf(r, b) != null
+    && (!pl.zones3 || r.azs >= 3)
+    && (!pl.open || (r.access === 'general' && r.partition === 'commercial'))
+    && (!pl.lowco2 || r.low_co2 === 'yes'));
+  const supply = marketPipeline();
+  const min = Math.min(...rows.map(r => priceOf(r, b)));
+  rows.slice().sort((a, c) => priceOf(a, b) - priceOf(c, b)).forEach((r, i) => {
+    r._rank = i + 1;
+    r._pp = priceOf(r, b);
+    r._idx = priceIndex(r, b);
+    r._gap = Math.round((r._pp / min - 1) * 100);
+    r._supply = r.grid ? supply[r.grid.market] || null : null;
+  });
+  return rows;
+}
+
+function renderPlacement() {
+  const sec = $('placement-section');
+  if (!state.prices) { sec.style.display = 'none'; return; }
+  const pl = state.placement;
+  const toggle = (k, label) => `<button data-toggle="${k}" aria-pressed="${pl[k]}">${esc(label)}</button>`;
+  $('placement-controls').innerHTML =
+    `<div class="ctrl-group"><span class="ctrl-label">Basket</span><div class="seg">` +
+      Object.entries(BASKETS).map(([k, v]) => `<button data-basket="${k}" aria-pressed="${k === pl.basket}">${esc(v.label)}</button>`).join('') +
+    `</div></div><div class="ctrl-group"><span class="ctrl-label">Require</span><div class="seg">` +
+      toggle('open', 'Open commercial access') + toggle('zones3', '3+ zones') + toggle('lowco2', 'Low CO₂ (Google)') +
+    `</div></div>`;
+  $('placement-controls').onclick = e => {
+    const btn = e.target.closest('button'); if (!btn) return;
+    if (btn.dataset.basket) pl.basket = btn.dataset.basket;
+    if (btn.dataset.toggle) pl[btn.dataset.toggle] = !pl[btn.dataset.toggle];
+    renderAll();
+  };
+  const rows = placementRows();
+  renderTable({ rows, columns: PLACEMENT_COLUMNS, sort: pl.sort, noun: 'eligible region',
+                wrap: 'placement-section', thead: 'placement-thead-row', tbody: 'placement-tbody', count: 'placement-count' });
+  sec.style.display = '';
+  if (!rows.length) $('placement-tbody').innerHTML = '<tr><td colspan="11" class="muted">No priced region meets these requirements in the current view.</td></tr>';
+  const priced = Object.keys(state.prices.providers);
+  const missing = state.providers.filter(p => p.type === 'hyperscaler' && !priced.includes(p.id)).map(p => p.short);
+  $('placement-note').innerHTML = esc(`List prices as of ${state.prices.as_of}, from each provider's own price data. ` +
+    `${BASKETS[pl.basket].label}: ${state.prices.basket[pl.basket === 'general' ? 'general' : 'gpu']} ` +
+    'Negotiated prices differ, but discounts usually apply evenly across a provider\'s regions, so "vs provider\'s cheapest" is the figure that survives a deal. ' +
+    '"Pipeline in grid market" is named committed MW at sites on the same grid (US only): capacity arriving that a provider must fill. ' +
+    (missing.length ? `Not yet priced: ${missing.join(', ')}.` : ''));
 }
 
 /* ── stats ─────────────────────────────────────────────────── */
@@ -700,6 +821,12 @@ function renderDetail() {
       { label: 'Constraint index', val: r.grid && r.grid.constraint_index, src: r.grid && r.grid.src },
       { label: 'Buyer leverage',   val: r.grid && r.grid.leverage, src: r.grid && r.grid.src }
     ];
+    if (state.prices) Object.keys(BASKETS).forEach(b => {
+      const v = priceOf(r, b);
+      fields.push({ label: `List price: ${BASKETS[b].label}`, val: v == null ? null : fmtPrice(v, b), src: PRICE_SRC[r._p.id],
+        missing: r._price ? 'not offered in this region' : 'not priced',
+        hint: v == null ? null : [`index ${priceIndex(r, b)} against ${r._p.short}'s cheapest region`, priceNotes(r, b)].filter(n => n && n !== '—').join(' · ') });
+    });
   }
 
   const dot = colorOf(r) === NA_COLOR ? r._p.color : colorOf(r);
@@ -899,6 +1026,7 @@ function renderAll() {
   renderControls();
   renderMap();
   renderDetail();
+  renderPlacement();
   renderTables();
   renderDataQuality();
   renderSources();
@@ -909,10 +1037,13 @@ const getJSON = u => fetch(u).then(r => { if (!r.ok) throw new Error(u + ' → '
 getJSON('data/providers.json')
   .then(man => Promise.all([
     Promise.all(man.providers.map(id => getJSON(`data/${id}.json`).then(f => [id, f]))),
-    getJSON(WORLD_URL)
+    getJSON(WORLD_URL),
+    getJSON('data/prices.json').catch(() => null)     // optional: the page works without prices
   ]))
-  .then(([files, world]) => {
+  .then(([files, world, prices]) => {
     state.world = world;
+    state.prices = prices;
+    if (prices) Object.assign(state.sources, prices.sources);
     const seen = {};
     files.forEach(([fid, f]) => {
       const p = Object.assign({}, f.provider, { _totals: f.totals || {}, _asOf: f.as_of, _notes: f.provider_notes || [] });
@@ -927,7 +1058,11 @@ getJSON('data/providers.json')
         seen[id] = { s, file: fid };
         state.sources[id] = s;
       });
-      const tag = kind => r => { r._p = p; r._kind = kind; r.uid = p.id + ':' + r.id; return r; };
+      const tag = kind => r => {
+        r._p = p; r._kind = kind; r.uid = p.id + ':' + r.id;
+        if (kind === 'region' && prices && prices.providers[p.id]) r._price = prices.providers[p.id][r.id] || null;
+        return r;
+      };
       (f.regions  || []).map(tag('region')).forEach(r => state.regions.push(r));
       (f.sites    || []).map(tag('site')).forEach(r => state.sites.push(r));
       (f.pipeline || []).map(tag('pipeline')).forEach(r => state.pipeline.push(r));

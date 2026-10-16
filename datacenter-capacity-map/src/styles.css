@@ -316,3 +316,8 @@ footer { max-width: 1320px; margin: 0 auto; padding: 8px 24px 40px; color: var(-
   .controls { gap: 12px; }
   .dq-row { grid-template-columns: 76px 1fr auto; }
 }
+
+/* Placement: cheapest eligible regions */
+#placement-section { margin-bottom: 24px; }
+.placement-controls { margin-bottom: 12px; }
+.placement-note { font-size: .76rem; color: var(--text-secondary); line-height: 1.5; margin-top: 10px; max-width: 980px; }
