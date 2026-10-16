@@ -1,6 +1,6 @@
 {
   "schema_version": "1.3",
-  "as_of": "2026-09-18",
+  "as_of": "2026-10-16",
   "provider": {
     "id": "gcp",
     "name": "Google Cloud",
@@ -45,6 +45,34 @@
       "accessed": "2026-09-18",
       "tier": "C",
       "note": "Placeholder provenance. Every field carrying this source id must be replaced with a cited value before publication."
+    },
+    "google-fortwayne": {
+      "title": "Journal Gazette: Google seeks 228 more emergency generators for Fort Wayne data center campus (Sep 2026)",
+      "url": "https://www.journalgazette.net/local/google-seeks-228-more-emergency-generators-for-fort-wayne-data-center-campus/article_08ea947a-a010-4b84-89d7-34e18d6fff57.html",
+      "accessed": "2026-09-22",
+      "tier": "B",
+      "note": "Local press reporting IDEM air-permit filings. 892 acres, 12 planned buildings, about $2B stated investment, operating since December; about 398 backup diesel generators across three filings."
+    },
+    "google-vanburen-veto": {
+      "title": "Crain's Detroit: Wayne County executive vetoes Google data centre tax breaks (25 Sep 2026)",
+      "url": "https://www.crainsdetroit.com/technology/cdb-data-center-van-buren-google-20260925/",
+      "accessed": "2026-09-29",
+      "tier": "B",
+      "note": "Wayne County executive vetoed $125M of county tax incentives for 'Project Cannoli'."
+    },
+    "google-vanburen-dte": {
+      "title": "Planet Detroit: Michigan regulators approve DTE contracts for Google data centre (Oct 2026)",
+      "url": "https://planetdetroit.org/2026/10/dte-google-data-center-contract-approval/",
+      "accessed": "2026-10-02",
+      "tier": "B",
+      "note": "MPSC approved DTE's 20-year contracts on 1 Oct 2026: 1 GW, service from December 2027, maximum load December 2028."
+    },
+    "google-cheyenne-bkh": {
+      "title": "Black Hills Corp. 8-K exhibit 99.1: agreements to serve Google's Cheyenne data centre (Oct 2026)",
+      "url": "https://www.sec.gov/Archives/edgar/data/0001130464/000119312526415597/bkh-ex99_1.htm",
+      "accessed": "2026-10-07",
+      "tier": "B",
+      "note": "Primary filing, held as Estimate until the MW basis is confirmed. Up to 590 MW grid-connected service plus 2.1 GW of third-party microgrid resources; 564 MW nameplate Black Hills gas; service from late 2027, peak load 2030."
     }
   },
   "totals": {
@@ -1331,5 +1359,138 @@
   "capex": {
     "note": "UNPOPULATED. Fill from GOOGL 10-Q/10-K and earnings calls. Alphabet reports group capex, not GCP-only.",
     "series": []
-  }
+  },
+  "sites": [
+    {
+      "id": "gcp-fortwayne",
+      "name": "Fort Wayne / New Haven campus",
+      "metro": "New Haven, Indiana",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -85.0173,
+        41.0733
+      ],
+      "coords_precision": "campus",
+      "coords_src": "google-fortwayne",
+      "status": "operational",
+      "status_src": "google-fortwayne",
+      "online": "operating since December (per local press)",
+      "delivery": "self-built",
+      "host": null,
+      "delivery_src": "google-fortwayne",
+      "power": [],
+      "gpus": null,
+      "anchor": null,
+      "grid": {
+        "market": "PJM — rest of footprint",
+        "constraint_index": 3.35,
+        "leverage": "Moderate",
+        "src": "grid-headroom-map"
+      },
+      "investment": {
+        "text": "about $2 billion",
+        "amount_bn": 2,
+        "currency": "USD",
+        "basis": "stated investment, as reported",
+        "src": "google-fortwayne"
+      },
+      "notes": "892 acres, 12 planned buildings. Air-permit filings with IDEM cover about 398 backup diesel generators across three applications. Google states no MW."
+    },
+    {
+      "id": "gcp-vanburen",
+      "name": "Project Cannoli",
+      "metro": "Van Buren Township, Michigan",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -83.4841,
+        42.2208
+      ],
+      "coords_precision": "campus",
+      "coords_src": "google-vanburen-dte",
+      "status": "announced",
+      "status_src": "google-vanburen-dte",
+      "online": "service from December 2027; maximum load December 2028",
+      "delivery": null,
+      "host": null,
+      "delivery_src": null,
+      "power": [
+        {
+          "stage": "contracted",
+          "mw": 1000,
+          "basis": "unspecified",
+          "src": "google-vanburen-dte",
+          "as_of": "2026-10-01",
+          "note": "1 GW DTE contract, approved by the MPSC on 1 Oct 2026"
+        }
+      ],
+      "gpus": null,
+      "anchor": null,
+      "grid": {
+        "market": "MISO — Midwest",
+        "constraint_index": 3.35,
+        "leverage": "Moderate",
+        "src": "grid-headroom-map"
+      },
+      "notes": "Wayne County's executive vetoed $125M of county tax incentives on 25 Sep 2026 (Crain's Detroit), so local support is contested."
+    },
+    {
+      "id": "gcp-cheyenne",
+      "name": "Cheyenne campus (Project Tembo)",
+      "metro": "Cheyenne, Wyoming",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -104.8202,
+        41.14
+      ],
+      "coords_precision": "campus",
+      "coords_src": "google-cheyenne-bkh",
+      "status": "announced",
+      "status_src": "google-cheyenne-bkh",
+      "online": "service from late 2027; peak load 2030",
+      "delivery": null,
+      "host": null,
+      "delivery_src": null,
+      "power": [
+        {
+          "stage": "contracted",
+          "mw": 590,
+          "basis": "unspecified",
+          "src": "google-cheyenne-bkh",
+          "as_of": "2026-10-07",
+          "note": "'up to' 590 MW grid-connected service from Black Hills; basis not stated"
+        },
+        {
+          "stage": "planned",
+          "mw": 564,
+          "basis": "generation",
+          "src": "google-cheyenne-bkh",
+          "as_of": "2026-10-07",
+          "note": "Black Hills gas generation, nameplate"
+        },
+        {
+          "stage": "potential",
+          "mw": 2100,
+          "basis": "generation",
+          "src": "google-cheyenne-bkh",
+          "as_of": "2026-10-07",
+          "note": "third-party microgrid resources"
+        }
+      ],
+      "gpus": null,
+      "anchor": null,
+      "grid": {
+        "market": "Non-ISO West (ex-AZ)",
+        "constraint_index": 2.3,
+        "leverage": "Low",
+        "src": "grid-headroom-map"
+      }
+    }
+  ],
+  "provider_notes": [
+    "Google publishes regions, not campuses. The sites here come from utility filings and local press, and Google itself states no MW for them.",
+    "Google's Armstrong County, Texas campus is recorded once, under its developer Crusoe, with Google as the anchor."
+  ]
 }

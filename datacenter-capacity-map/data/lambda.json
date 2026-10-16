@@ -1,6 +1,6 @@
 {
   "schema_version": "1.4",
-  "as_of": "2026-09-21",
+  "as_of": "2026-10-16",
   "provider": {
     "id": "lambda",
     "name": "Lambda",
@@ -24,6 +24,13 @@
       "accessed": "2026-08-01",
       "tier": "B",
       "note": "Expert-judgment constraint index, 1-5, anchored to cited queue and capacity figures."
+    },
+    "lambda-mayes": {
+      "title": "Lambda: New Lambda data center in Oklahoma (27 Sep 2026)",
+      "url": "https://lambda.ai/blog/new-lambda-data-center-in-oklahoma",
+      "accessed": "2026-09-28",
+      "tier": "A",
+      "note": "MidAmerica Industrial Park (south section), Mayes County; utility Grand River Dam Authority; flexible-load design; no MW or investment stated."
     }
   },
   "totals": {
@@ -83,6 +90,35 @@
         "src": "grid-headroom-map"
       },
       "notes": "Retrofit of an existing 2009-built facility. A street address circulates in press but is not in the government release, so the site is placed at metro level."
+    },
+    {
+      "id": "lambda-mayes",
+      "name": "MidAmerica Industrial Park",
+      "metro": "Chouteau, Oklahoma (Mayes County)",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -95.343,
+        36.1859
+      ],
+      "coords_precision": "campus",
+      "coords_src": "lambda-mayes",
+      "status": "announced",
+      "status_src": "lambda-mayes",
+      "online": null,
+      "delivery": null,
+      "host": null,
+      "delivery_src": null,
+      "power": [],
+      "gpus": null,
+      "anchor": null,
+      "grid": {
+        "market": "SPP — Central",
+        "constraint_index": 2.6,
+        "leverage": "Some",
+        "src": "grid-headroom-map"
+      },
+      "notes": "Utility: Grand River Dam Authority. Lambda states a flexible-load design but no MW or investment."
     }
   ],
   "pipeline": [],

@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.5",
+  "as_of": "2026-10-16",
+  "provider": {
+    "id": "valara",
+    "name": "Valara (NorthMark Strategies)",
+    "short": "Valara",
+    "type": "colo",
+    "color": "#94A3B8",
+    "parent": "NorthMark Strategies",
+    "ticker": null
+  },
+  "sources": {
+    "valara-spartanburg": {
+      "title": "Post and Courier: Spartanburg Valara data center permitted for 457 megawatts (Sep 2026)",
+      "url": "https://www.postandcourier.com/spartanburg/news/spartanburg-valara-data-center-permitted-457-megawatt/article_0e421eae-f5a3-4967-811e-3b1565520935.html",
+      "accessed": "2026-09-22",
+      "tier": "B",
+      "note": "SC DES approved on 18 Sep 2026 457 MW of on-site gas-turbine generation (48 MW existing + 408 MW new); about $2.8B stated investment; tax breaks granted April 2025."
+    }
+  },
+  "totals": {
+    "power": []
+  },
+  "regions": [],
+  "sites": [
+    {
+      "id": "valara-spartanburg",
+      "name": "Pine Street data centre",
+      "metro": "Spartanburg, South Carolina",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -81.932,
+        34.9498
+      ],
+      "coords_precision": "campus",
+      "coords_src": "valara-spartanburg",
+      "status": "announced",
+      "status_src": "valara-spartanburg",
+      "online": null,
+      "delivery": "self-built",
+      "host": null,
+      "delivery_src": "valara-spartanburg",
+      "power": [
+        {
+          "stage": "planned",
+          "mw": 457,
+          "basis": "generation",
+          "src": "valara-spartanburg",
+          "as_of": "2026-09-18",
+          "note": "permitted on-site gas-turbine generation (48 MW existing + 408 MW new); not IT load"
+        }
+      ],
+      "gpus": null,
+      "anchor": null,
+      "grid": null,
+      "investment": {
+        "text": "about $2.8 billion",
+        "amount_bn": 2.8,
+        "currency": "USD",
+        "basis": "stated investment, as reported",
+        "src": "valara-spartanburg"
+      }
+    }
+  ],
+  "pipeline": [],
+  "provider_notes": [
+    "Developer named in local reporting as NorthMark Strategies / Valara. Builds for lease; tenant not disclosed."
+  ]
+}

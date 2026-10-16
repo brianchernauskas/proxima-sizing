@@ -1,6 +1,6 @@
 {
   "schema_version": "1.4",
-  "as_of": "2026-09-21",
+  "as_of": "2026-10-16",
   "provider": {
     "id": "coreweave",
     "name": "CoreWeave",
@@ -52,6 +52,13 @@
       "accessed": "2026-08-01",
       "tier": "B",
       "note": "Expert-judgment constraint index, 1-5, anchored to cited queue and capacity figures."
+    },
+    "cw-navi-mumbai": {
+      "title": "CoreWeave enters India with AdaniConneX (release via StockTitan, Oct 2026)",
+      "url": "https://www.stocktitan.net/news/CRWV/core-weave-enters-india-expanding-ai-cloud-platform-with-adani-conne-tgwshdiwbe4w.html",
+      "accessed": "2026-10-07",
+      "tier": "B",
+      "note": "Release text read via a reproduction, not CoreWeave's own page. 240 MW planned in three 80 MW buildings at AdaniConneX Taloja, option for up to 240 MW more, first phase mid-2028, Nvidia Vera Rubin."
     }
   },
   "totals": {
@@ -197,6 +204,46 @@
         "leverage": "Moderate",
         "src": "grid-headroom-map"
       }
+    },
+    {
+      "id": "cw-navi-mumbai",
+      "name": "Navi Mumbai (AdaniConneX Taloja)",
+      "metro": "Navi Mumbai, India",
+      "country": "India",
+      "geo": "Asia Pacific",
+      "coords": [
+        73.0981,
+        19.0721
+      ],
+      "coords_precision": "campus",
+      "coords_src": "cw-navi-mumbai",
+      "status": "contracted",
+      "status_src": "cw-navi-mumbai",
+      "online": "first phase expected mid-2028",
+      "delivery": "leased",
+      "host": "AdaniConneX",
+      "delivery_src": "cw-navi-mumbai",
+      "power": [
+        {
+          "stage": "planned",
+          "mw": 240,
+          "basis": "unspecified",
+          "src": "cw-navi-mumbai",
+          "as_of": "2026-10-07",
+          "note": "three 80 MW buildings, CoreWeave sole tenant"
+        },
+        {
+          "stage": "potential",
+          "mw": 480,
+          "basis": "unspecified",
+          "src": "cw-navi-mumbai",
+          "as_of": "2026-10-07",
+          "note": "with the option for up to 240 MW more"
+        }
+      ],
+      "gpus": null,
+      "anchor": null,
+      "grid": null
     }
   ],
   "pipeline": [],

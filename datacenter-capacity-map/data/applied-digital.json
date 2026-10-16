@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.5",
+  "as_of": "2026-10-16",
+  "provider": {
+    "id": "applied-digital",
+    "name": "Applied Digital",
+    "short": "Applied Digital",
+    "type": "colo",
+    "color": "#FB923C",
+    "parent": "Applied Digital Corporation",
+    "ticker": "APLD"
+  },
+  "sources": {
+    "apld-df2": {
+      "title": "Applied Digital: signs 210 MW lease at Delta Forge 2 (8 Jun 2026)",
+      "url": "https://ir.applieddigital.com/news-events/press-releases/detail/154/applied-digital-signs-210-mw-lease-at-delta-forge-2",
+      "accessed": "2026-09-25",
+      "tier": "A",
+      "note": "210 MW critical IT, 15-year take-or-pay lease with an unnamed US investment-grade hyperscaler; initial operations anticipated Q1 2028."
+    },
+    "apld-df2-site": {
+      "title": "WBRC: Applied Digital confirms $3.2 billion data center campus in Brookwood (24 Sep 2026)",
+      "url": "https://www.wbrc.com/2026/09/24/applied-digital-confirms-32-billion-data-center-campus-brookwood/",
+      "accessed": "2026-09-25",
+      "tier": "B",
+      "note": "Local report: Tuscaloosa County incentives approved 24 Sep for a $3.2B campus near Brookwood, identified as Delta Forge 2."
+    },
+    "apld-finland": {
+      "title": "Applied Digital: secures up to 1 GW of potential power in Finland (Oct 2026)",
+      "url": "https://ir.applieddigital.com/news-events/press-releases/detail/162/applied-digital-secures-up-to-1-gw-of-potential-power",
+      "accessed": "2026-10-06",
+      "tier": "A",
+      "note": "Up to 1 GW of potential power for its first non-US campus; initial availability from 2028; no tenant named; location not disclosed."
+    }
+  },
+  "totals": {
+    "power": []
+  },
+  "regions": [],
+  "sites": [
+    {
+      "id": "apld-delta-forge-2",
+      "name": "Delta Forge 2",
+      "metro": "Brookwood, Alabama (Tuscaloosa County)",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -87.3208,
+        33.2557
+      ],
+      "coords_precision": "campus",
+      "coords_src": "apld-df2-site",
+      "status": "contracted",
+      "status_src": "apld-df2",
+      "online": "initial operations anticipated Q1 2028",
+      "delivery": "self-built",
+      "host": null,
+      "delivery_src": "apld-df2",
+      "power": [
+        {
+          "stage": "contracted",
+          "mw": 210,
+          "basis": "IT",
+          "src": "apld-df2",
+          "as_of": "2026-06-08",
+          "note": "15-year lease"
+        }
+      ],
+      "gpus": null,
+      "anchor": {
+        "name": "Unnamed US investment-grade hyperscaler",
+        "src": "apld-df2"
+      },
+      "grid": null,
+      "investment": {
+        "text": "$3.2 billion",
+        "amount_bn": 3.2,
+        "currency": "USD",
+        "basis": "county incentive approval, as reported",
+        "src": "apld-df2-site"
+      },
+      "notes": "Lease terms are from Applied Digital's release; the Brookwood location and $3.2B come from local reporting."
+    },
+    {
+      "id": "apld-finland",
+      "name": "Finland campus",
+      "metro": "Finland (location undisclosed)",
+      "country": "Finland",
+      "geo": "Europe",
+      "coords": [
+        25.9209,
+        63.2468
+      ],
+      "coords_precision": "region-centroid",
+      "coords_src": "apld-finland",
+      "coords_note": "Location undisclosed. The point marks the country only, not a site.",
+      "status": "announced",
+      "status_src": "apld-finland",
+      "online": "initial availability from 2028",
+      "delivery": null,
+      "host": null,
+      "delivery_src": null,
+      "power": [
+        {
+          "stage": "potential",
+          "mw": 1000,
+          "basis": "unspecified",
+          "src": "apld-finland",
+          "as_of": "2026-10-06",
+          "note": "'up to 1 GW of potential power'"
+        }
+      ],
+      "gpus": null,
+      "anchor": null,
+      "grid": null
+    }
+  ],
+  "pipeline": [],
+  "provider_notes": [
+    "Applied Digital builds and leases AI campuses rather than selling cloud. Its Ellendale, North Dakota campus (Polaris Forge 1) is recorded once, under its tenant CoreWeave, with Applied Digital as host."
+  ]
+}

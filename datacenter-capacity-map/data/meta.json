@@ -1,6 +1,6 @@
 {
   "schema_version": "1.5",
-  "as_of": "2026-09-21",
+  "as_of": "2026-10-16",
   "provider": {
     "id": "meta",
     "name": "Meta",
@@ -24,6 +24,13 @@
       "accessed": "2026-08-01",
       "tier": "B",
       "note": "Expert-judgment constraint index, 1-5, anchored to cited queue and capacity figures."
+    },
+    "meta-elpaso-mccloud": {
+      "title": "Inside Climate News: El Paso Electric only considered gas to power Meta data centre (24 Sep 2026)",
+      "url": "https://insideclimatenews.org/news/24092026/el-paso-electric-only-considered-gas-to-power-meta-data-center/",
+      "accessed": "2026-09-25",
+      "tier": "B",
+      "note": "El Paso Electric seeks a CCN for the 366 MW, $499M McCloud gas plant to serve the 1 GW campus; SOAH proposal recommends approval only if costs are not passed to ratepayers."
     }
   },
   "totals": {
@@ -1016,7 +1023,8 @@
       "broke_ground": {
         "year": 2025,
         "src": "meta-fleet"
-      }
+      },
+      "notes": "Power: El Paso Electric is seeking approval for the 366 MW, $499M McCloud gas plant to serve the 1 GW campus. The judges' proposed decision recommends approval only if costs are not passed to ratepayers; the PUCT vote is not yet scheduled (Inside Climate News)."
     },
     {
       "id": "meta-fortworth",

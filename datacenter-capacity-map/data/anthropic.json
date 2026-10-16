@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.5",
+  "as_of": "2026-10-16",
+  "provider": {
+    "id": "anthropic",
+    "name": "Anthropic",
+    "short": "Anthropic",
+    "type": "captive",
+    "color": "#D97757",
+    "parent": "Anthropic PBC",
+    "ticker": null
+  },
+  "sources": {
+    "anth-western-downs": {
+      "title": "DataCenterNews Asia Pacific: Anthropic leases first stage of Queensland data campus (citing Dexus market update, Sep 2026)",
+      "url": "https://datacenternews.asia/story/anthropic-leases-first-stage-of-queensland-data-campus",
+      "accessed": "2026-09-22",
+      "tier": "B",
+      "note": "Lease documentation for stage one of the proposed Western Downs Digital Park near Dalby, by Dexus's Australian Data Centres with Zerra DC and Macquarie Capital, subject to customary approvals. No MW or lease value disclosed by Dexus."
+    }
+  },
+  "totals": {
+    "power": []
+  },
+  "regions": [],
+  "sites": [
+    {
+      "id": "anth-western-downs",
+      "name": "Western Downs Digital Park (stage one)",
+      "metro": "near Dalby, Queensland",
+      "country": "Australia",
+      "geo": "Asia Pacific",
+      "coords": [
+        151.2634,
+        -27.1823
+      ],
+      "coords_precision": "campus",
+      "coords_src": "anth-western-downs",
+      "status": "contracted",
+      "status_src": "anth-western-downs",
+      "online": null,
+      "delivery": "leased",
+      "host": "Australian Data Centres (Dexus) / Zerra DC / Macquarie Capital",
+      "delivery_src": "anth-western-downs",
+      "power": [],
+      "gpus": null,
+      "anchor": null,
+      "grid": null,
+      "notes": "Leased by Anthropic's Australian subsidiary, subject to customary approvals. No MW or lease value disclosed; circulating dollar figures are not used."
+    }
+  ],
+  "pipeline": [],
+  "provider_notes": [
+    "Anthropic is a tenant: it leases capacity for its own use and sells no cloud capacity, so it sits with the captive operators. Capacity it uses inside other providers' facilities is not itemised here."
+  ]
+}

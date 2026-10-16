@@ -1,6 +1,6 @@
 {
   "schema_version": "1.4",
-  "as_of": "2026-09-21",
+  "as_of": "2026-10-16",
   "provider": {
     "id": "crusoe",
     "name": "Crusoe",
@@ -31,6 +31,20 @@
       "accessed": "2026-08-01",
       "tier": "B",
       "note": "Expert-judgment constraint index, 1-5, anchored to cited queue and capacity figures."
+    },
+    "crusoe-armstrong": {
+      "title": "Crusoe: developing data center campus in Armstrong County, Texas (GlobeNewswire, 28 Sep 2026)",
+      "url": "https://www.globenewswire.com/news-release/2026/09/28/3370313/0/en/crusoe-developing-data-center-campus-in-armstrong-county-texas.html",
+      "accessed": "2026-09-29",
+      "tier": "A",
+      "note": "Crusoe confirms it is developing Google's campus; under construction since June 2025; direct connection to Goodnight 1 (265.5 MW, operational) and Goodnight 2 (265.5 MW, under construction) wind farms. No campus MW stated."
+    },
+    "crusoe-jayton": {
+      "title": "DCD: Crusoe files for $4.8bn data center campus in Jayton, Texas (Oct 2026)",
+      "url": "https://www.datacenterdynamics.com/en/news/crusoe-files-for-48bn-data-center-campus-in-jayton-texas/",
+      "accessed": "2026-10-02",
+      "tier": "B",
+      "note": "Two buildings of 759,260 sq ft each, $4.8bn site investment, construction from January 2027, go-live May and July 2029; tied to Childress 'Project Hyper'. No MW stated."
     }
   },
   "totals": {
@@ -159,6 +173,68 @@
         "leverage": "Low",
         "src": "grid-headroom-map"
       }
+    },
+    {
+      "id": "crusoe-armstrong",
+      "name": "Armstrong County campus",
+      "metro": "Armstrong County, Texas (outside Amarillo)",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -101.3449,
+        34.9296
+      ],
+      "coords_precision": "region-centroid",
+      "coords_src": "crusoe-armstrong",
+      "status": "under-construction",
+      "status_src": "crusoe-armstrong",
+      "online": null,
+      "delivery": "build-to-suit",
+      "host": null,
+      "delivery_src": "crusoe-armstrong",
+      "power": [],
+      "gpus": null,
+      "anchor": {
+        "name": "Google",
+        "src": "crusoe-armstrong"
+      },
+      "grid": null,
+      "broke_ground": {
+        "year": 2025,
+        "src": "crusoe-armstrong"
+      },
+      "notes": "Directly connected to the Goodnight 1 (265.5 MW, operational) and Goodnight 2 (265.5 MW, under construction) wind farms. 'More than one gigawatt' and 933 MW of gas turbines are trade-reported only, so no campus MW is recorded."
+    },
+    {
+      "id": "crusoe-jayton",
+      "name": "Jayton (Project Hyper)",
+      "metro": "Jayton, Texas (Kent County)",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -100.5739,
+        33.2481
+      ],
+      "coords_precision": "campus",
+      "coords_src": "crusoe-jayton",
+      "status": "announced",
+      "status_src": "crusoe-jayton",
+      "online": "go-live May and July 2029 (filing)",
+      "delivery": "self-built",
+      "host": null,
+      "delivery_src": "crusoe-jayton",
+      "power": [],
+      "gpus": null,
+      "anchor": null,
+      "grid": null,
+      "investment": {
+        "text": "$4.8 billion",
+        "amount_bn": 4.8,
+        "currency": "USD",
+        "basis": "site investment per filing, as reported",
+        "src": "crusoe-jayton"
+      },
+      "notes": "Two buildings of 759,260 sq ft each, construction from January 2027; a spur of Crusoe's Childress 'Project Hyper'. No MW stated."
     }
   ],
   "pipeline": []

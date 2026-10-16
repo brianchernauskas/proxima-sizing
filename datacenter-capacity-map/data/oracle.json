@@ -1,6 +1,6 @@
 {
   "schema_version": "1.5",
-  "as_of": "2026-09-21",
+  "as_of": "2026-10-16",
   "provider": {
     "id": "oracle",
     "name": "Oracle Cloud Infrastructure",
@@ -94,6 +94,27 @@
       "accessed": "2026-08-01",
       "tier": "B",
       "note": "Expert-judgment constraint index, 1-5, anchored to cited queue and capacity figures."
+    },
+    "jupiter-fuelcells": {
+      "title": "El Paso Matters: Project Jupiter rent, force majeure and power (24 Sep 2026)",
+      "url": "https://elpasomatters.org/2026/09/24/project-jupiter-rent-force-majeure-new-mexico-oracle-ai-el-paso-data-center/",
+      "accessed": "2026-09-25",
+      "tier": "B",
+      "note": "2.45 GW of on-site Bloom Energy fuel cells on gas via a proposed pipeline, air permit pending; Oracle's 24 Sep 2026 force majeure notice to Stack Infrastructure / Blue Owl over power timing."
+    },
+    "lighthouse-atc": {
+      "title": "Wisconsin Watch: PSC sends ATC's Port Washington data centre connection back to the drawing board (Aug 2026)",
+      "url": "https://wisconsinwatch.org/2026/08/wisconsin-psc-regulators-data-center-connection-project-atc-back-to-drawing-board-port-washington/",
+      "accessed": "2026-09-30",
+      "tier": "B",
+      "note": "First power depends on an ATC transmission connection whose PSC application was reset in August 2026."
+    },
+    "lighthouse-pointbeach": {
+      "title": "Wisconsin Watch: We Energies deal would give Oracle data centre Point Beach nuclear power (Oct 2026)",
+      "url": "https://wisconsinwatch.org/2026/10/wisconsin-we-energies-deal-oracle-data-center-nuclear-energy-power-point-beach-plant/",
+      "accessed": "2026-10-05",
+      "tier": "B",
+      "note": "Oracle plans to subscribe to 10-20% of Point Beach output (reported 125-250 MW), subject to Wisconsin PSC approval."
     }
   },
   "totals": {
@@ -1870,7 +1891,16 @@
       "delivery": "leased",
       "host": "BorderPlex Digital Assets / STACK Infrastructure",
       "delivery_src": "jupiter-press",
-      "power": [],
+      "power": [
+        {
+          "stage": "planned",
+          "mw": 2450,
+          "basis": "generation",
+          "src": "jupiter-fuelcells",
+          "as_of": "2026-09-24",
+          "note": "on-site Bloom fuel cells on gas via a proposed pipeline; air permit pending; not IT load"
+        }
+      ],
       "gpus": null,
       "anchor": {
         "name": "OpenAI (Stargate)",
@@ -1882,7 +1912,7 @@
         "leverage": "Low",
         "src": "grid-headroom-map"
       },
-      "notes": "18-year lease to Oracle Cloud Infrastructure. No MW figure found in a source reached here."
+      "notes": "18-year lease to Oracle Cloud Infrastructure. No MW figure found in a source reached here. Oracle sent a force majeure notice to Stack Infrastructure / Blue Owl on 24 Sep 2026 over power timing (El Paso Matters). Status stays 'announced' until Oracle or a filing confirms a delay."
     },
     {
       "id": "orcl-saline",
@@ -1962,7 +1992,8 @@
         "constraint_index": 3.35,
         "leverage": "Moderate",
         "src": "grid-headroom-map"
-      }
+      },
+      "notes": "First power depends on an ATC transmission connection whose PSC application was reset in August 2026, so the original December 2027 connection target is uncertain (Wisconsin Watch). Oracle plans to subscribe to 10-20% of Point Beach nuclear output (reported 125-250 MW), subject to PSC approval; not recorded as contracted power."
     }
   ],
   "pipeline": [],

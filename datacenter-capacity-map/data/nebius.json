@@ -1,6 +1,6 @@
 {
   "schema_version": "1.4",
-  "as_of": "2026-09-21",
+  "as_of": "2026-10-16",
   "provider": {
     "id": "nebius",
     "name": "Nebius",
@@ -59,6 +59,20 @@
       "accessed": "2026-08-01",
       "tier": "B",
       "note": "Expert-judgment constraint index, 1-5, anchored to cited queue and capacity figures."
+    },
+    "nj-dep-vineland": {
+      "title": "NJDEP news release 26_0044: Vineland data centre fined for unpermitted generators (22 Sep 2026)",
+      "url": "https://dep.nj.gov/newsrel/26_0044/",
+      "accessed": "2026-09-25",
+      "tier": "A",
+      "note": "62 x 1,982 kW natural-gas generators run without permits at the DataOne-owned site; $1.07M fine; ordered to permit them or cease operation."
+    },
+    "nebius-aib": {
+      "title": "GuruFocus: AIB Data Centers secures 50 MW IT capacity contract with Nebius (30 Sep 2026)",
+      "url": "https://www.gurufocus.com/news/9103546/aib-data-centers-secures-50-mw-it-capacity-contract-with-nebius-ticker-aib",
+      "accessed": "2026-09-30",
+      "tier": "B",
+      "note": "Secondary report of AIB's announcement; AIB's own release not reached. 50 MW IT in two data halls, 12-year initial term, backed by a 15-year ESA for 65 MW of utility load."
     }
   },
   "totals": {
@@ -228,8 +242,8 @@
       "status_src": "nb-vineland",
       "online": "Microsoft deliveries stated to start late 2025",
       "delivery": null,
-      "host": null,
-      "delivery_src": null,
+      "host": "DataOne (owner and operator, per NJDEP)",
+      "delivery_src": "nj-dep-vineland",
       "power": [
         {
           "stage": "potential",
@@ -251,7 +265,7 @@
         "leverage": "Moderate",
         "src": "grid-headroom-map"
       },
-      "notes": "Live MW at Vineland has not been disclosed; status is the latest the provider has stated."
+      "notes": "Live MW at Vineland has not been disclosed; status is the latest the provider has stated. NJDEP fined the site $1.07M on 22 Sep 2026 for running 62 x 1,982 kW natural-gas generators without permits and ordered them permitted or shut; the operator says they are temporary pending Bloom Energy fuel cells."
     },
     {
       "id": "nb-kansascity",
@@ -302,6 +316,40 @@
       "power": [],
       "gpus": null,
       "anchor": null
+    },
+    {
+      "id": "nb-aib-southeast",
+      "name": "AIB Data Centers site",
+      "metro": "South-eastern United States (undisclosed)",
+      "country": "United States",
+      "geo": "North America",
+      "coords": [
+        -84.9,
+        33.3
+      ],
+      "coords_precision": "region-centroid",
+      "coords_src": "nebius-aib",
+      "coords_note": "Location undisclosed. The point marks the region only, not a site.",
+      "status": "contracted",
+      "status_src": "nebius-aib",
+      "online": null,
+      "delivery": "leased",
+      "host": "AIB Data Centers",
+      "delivery_src": "nebius-aib",
+      "power": [
+        {
+          "stage": "contracted",
+          "mw": 50,
+          "basis": "IT",
+          "src": "nebius-aib",
+          "as_of": "2026-09-30",
+          "note": "two data halls, 12-year initial term; backed by a 65 MW utility load ESA"
+        }
+      ],
+      "gpus": null,
+      "anchor": null,
+      "grid": null,
+      "notes": "Terms as reported by secondary outlets; AIB's own release was not reached."
     }
   ],
   "pipeline": [],

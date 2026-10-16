@@ -174,7 +174,7 @@ const state = {
   collisions: [],
   world: null,
   geo: 'Global',
-  provider: 'all',          // 'all' | 'hyperscaler' | 'neocloud' | a provider id
+  provider: 'all',          // 'all' | 'hyperscaler' | 'neocloud' | 'colo' | 'captive' | a provider id
   colorBy: 'provider',
   selected: null,
   sort: { key: 'azs', dir: -1 },
@@ -251,7 +251,7 @@ function renderStats() {
     const pipe = sumMW(build.map(pipeOf));
     const anchored = build.filter(s => s.anchor).length;
     cards.push(
-      { val: build.length, label: 'AI build sites', note: `neoclouds and Oracle; ${build.filter(s => liveOf(s)).length} with live MW disclosed` },
+      { val: build.length, label: 'AI build sites', note: `neoclouds, developers and hyperscaler campuses; ${build.filter(s => liveOf(s)).length} with live MW disclosed` },
       { val: (live.mixed ? '≈ ' : '') + live.total.toLocaleString(), label: 'MW live at named sites',
         note: live.mixed ? `mixed bases (${live.bases.join(' / ')}) — indicative` : 'fleet totals are larger — see Data quality' },
       { val: (pipe.mixed ? '≈ ' : '') + pipe.total.toLocaleString(), label: 'MW in named pipeline',
@@ -261,7 +261,7 @@ function renderStats() {
   if (cap.length) {
     const usd = cap.filter(s => s.investment && s.investment.currency === 'USD');
     cards.push(
-      { val: cap.length, label: 'Captive sites', note: 'built for own use, not sold as cloud' },
+      { val: cap.length, label: 'Captive sites', note: 'used by the operator itself, not sold as cloud' },
       { val: '$' + Math.round(usd.reduce((a, s) => a + s.investment.amount_bn, 0)) + 'bn+', label: 'Stated investment',
         note: `${usd.length} USD-denominated sites; stated minimums; no MW published` });
   }
@@ -280,12 +280,14 @@ function renderStats() {
 function renderControls() {
   const hyper = state.providers.filter(p => p.type === 'hyperscaler');
   const neo   = state.providers.filter(p => p.type === 'neocloud');
+  const colo  = state.providers.filter(p => p.type === 'colo');
   const captive = state.providers.filter(p => p.type === 'captive');
   const btn = (id, label, cls) =>
     `<button data-provider="${esc(id)}" aria-pressed="${id === state.provider}"${cls ? ` class="${cls}"` : ''}>${esc(label)}</button>`;
   $('seg-provider').innerHTML =
-    btn('all', 'All') + btn('hyperscaler', 'Hyperscalers', 'is-group') + btn('neocloud', 'Neoclouds', 'is-group') + btn('captive', 'Captive', 'is-group') +
-    hyper.concat(neo, captive).map(p => btn(p.id, p.short)).join('');
+    btn('all', 'All') + btn('hyperscaler', 'Hyperscalers', 'is-group') + btn('neocloud', 'Neoclouds', 'is-group') +
+    (colo.length ? btn('colo', 'Developers', 'is-group') : '') + btn('captive', 'Captive', 'is-group') +
+    hyper.concat(neo, colo, captive).map(p => btn(p.id, p.short)).join('');
   $('seg-geo').innerHTML = GEOS.map(g =>
     `<button data-geo="${esc(g)}" aria-pressed="${g === state.geo}">${esc(g)}</button>`).join('');
   $('seg-color').innerHTML = Object.entries(COLOR_MODES).map(([k, m]) =>

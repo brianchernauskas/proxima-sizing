@@ -3,8 +3,10 @@
 Interactive global and regional view of hyperscaler and neocloud data centre footprint —
 what is live, where, and what it means for buyer leverage.
 
-**Status: step 2 of 5 complete.** Eleven providers — four hyperscalers (203 regions), six
-neoclouds, and Meta as a captive operator (71 sites in all) — with full provenance plumbing.
+**Status: step 2 of 5 complete.** Fifteen providers: four hyperscalers (203 regions), six
+neoclouds, three developers (Applied Digital, TeraWulf, Valara) and two captive operators
+(Meta, Anthropic), 85 sites in all, with full provenance plumbing. Sites added from the daily
+digest's reviewed proposals (2026-10-16) carry their digest source and tier.
 
 ## What is here
 
@@ -20,6 +22,9 @@ neoclouds, and Meta as a captive operator (71 sites in all) — with full proven
 | `data/oracle.json` | 55 Oracle regions across seven realms, plus 4 Stargate build sites |
 | `data/{coreweave,nebius,iren,crusoe,lambda,nscale}.json` | 34 neocloud sites with disclosed MW, sourced |
 | `data/meta.json` | 33 Meta sites with stated investment and groundbreaking year |
+| `data/{applied-digital,terawulf,valara}.json` | Developers (`type: colo`): build and lease AI campuses, sell no cloud |
+| `data/anthropic.json` | Anthropic as a captive tenant: leases for its own use, sells no cloud |
+| `sites[]` in `aws.json`, `gcp.json` | Hyperscaler campuses named in planning and utility filings (AWS and Google publish none) |
 | `SCHEMA.md` | The contract every provider file must satisfy |
 
 Served locally on port 3120 (`dc-capacity-map` in the workspace `.claude/launch.json`).
